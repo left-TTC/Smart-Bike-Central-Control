@@ -15,6 +15,7 @@ This is a **Keil** project created for **STM32F103C8T6**, that is, the source co
 ![Language](https://img.shields.io/badge/Language-wxss-yellow)      
 ![Language](https://img.shields.io/badge/Language-wxml-blue)      
 ![Language](https://img.shields.io/badge/Language-JavaScript-orange)     
+![resource](https://img.shields.io/badge/resource-WeChatDeveloperTools-blue)
 
 WeChat applet source code for use with central control
 
