@@ -12,9 +12,9 @@ This is a **Keil** project created for **STM32F103C8T6**, that is, the source co
 这是一个为**STM32F103C8T6**创建的**Keil**项目，即中控的源代码
 
 ##  2.Wechat/微信小程序
-![Language](https://img.shields.io/badge/Language-wxss-yellow)
-![Language](https://img.shields.io/badge/Language-wxml-blue)
-![Language](https://img.shields.io/badge/Language-JavaScript-orange)
+![Language](https://img.shields.io/badge/Language-wxss-yellow)      
+![Language](https://img.shields.io/badge/Language-wxml-blue)      
+![Language](https://img.shields.io/badge/Language-JavaScript-orange)     
 
 WeChat applet source code for use with central control
 
