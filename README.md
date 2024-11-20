@@ -29,7 +29,7 @@ OR [Direct access to our eda library](https://oshwhub.com/andy89/dian-dong-che-z
 note:You need to log in to your eda account first, otherwise the link cannot be reached correctly
 
 用嘉立创eda构造的中控系统板的**原理图**以及**PCB样板图**         
-或者 [直接访问我们的eda库](https://oshwhub.com/andy89/dian-dong-che-zhong-kong-1) 
+或者 [直接访问我们的eda库](https://oshwhub.com/andy89/dian-dong-che-zhong-kong-1)   
 注：需要先登录好eda账户，否则链接无法正确抵达
 
 ## 4.Contact Us/联系我们
