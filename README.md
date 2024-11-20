@@ -6,6 +6,7 @@ This is a new electric vehicle central control that adapts to various protocols.
 
 ##  1.Controller/中控
 ![Language](https://img.shields.io/badge/Language-C-green)
+
 This is a **Keil** project created for **STM32F103C8T6**, that is, the source code of the central control
 
 这是一个为**STM32F103C8T6**创建的**Keil**项目，即中控的源代码
@@ -14,12 +15,14 @@ This is a **Keil** project created for **STM32F103C8T6**, that is, the source co
 ![Language](https://img.shields.io/badge/Language-wxss-yellow)
 ![Language](https://img.shields.io/badge/Language-wxml-blue)
 ![Language](https://img.shields.io/badge/Language-JavaScript-orange)
+
 WeChat applet source code for use with central control
 
 与中控配套使用的微信小程序源码
 
 ## 3.eda/嘉立创相关资料
 ![resource](https://img.shields.io/badge/resource-iceda-blue)
+
 **Schematic diagram** and **PCB** sample diagram of the central control system board constructed using iceda
 OR [Direct access to our eda library](https://jlcpcb.com/parts/componentDetails?componentId=12345)
 
