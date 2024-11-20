@@ -24,10 +24,10 @@ WeChat applet source code for use with central control
 ![resource](https://img.shields.io/badge/resource-iceda-blue)
 
 **Schematic diagram** and **PCB** sample diagram of the central control system board constructed using iceda
-OR [Direct access to our eda library](https://jlcpcb.com/parts/componentDetails?componentId=12345)
+ OR [Direct access to our eda library](https://jlcpcb.com/parts/componentDetails?componentId=12345)
 
 用嘉立创eda构造的中控系统板的**原理图**以及**PCB样板图**
-或者 [直接访问我们的eda库](https://jlcpcb.com/parts/componentDetails?componentId=12345)
+ 或者 [直接访问我们的eda库](https://jlcpcb.com/parts/componentDetails?componentId=12345)
 
 ## 4.Contact Us/联系我们
 
