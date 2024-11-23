@@ -193,7 +193,7 @@
 <view class="TransformDeviceView" wx:if="{{showTransferDevice === true}}">
   <view class="transformBox">
     <view class="transformInputContainer">
-      <input type="text" placeholder="输入接收人地址" bindinput="transformInput" value="{{transformInput}}" />
+      <input type="text" class="GiveInput" placeholder="输入接收人地址" bindinput="transformInput" value="{{transformInput}}" />
     </view>
     <button class="TransformDevicebutton" bind:tap="TransformDevicebutton">
       <text class="TransformDeviceTitle">确认转让</text>
@@ -223,7 +223,7 @@
     </view>
     <view class="headLine"></view>
     <!--用户基本界面-->
-    <view wx:if="{{ifUserLoad === true&&ifShowUserInfo===false}}" class="userInformationBox">
+    <view wx:if="{{ifUserLoad === true&&ifShowUserInfo===false&&showMyDevice ===false}}" class="userInformationBox">
       <button class="wallet" bind:tap="walletShow">
         <image class="walletImage" src="/image/wallet.png"></image>
         <text  class="walletTitle">钱包</text>
@@ -233,7 +233,50 @@
         <text wx:if="{{ifUserInfo===false}}" class="userInfoTitle">点击完善</text>
         <text wx:if="{{ifUserInfo===true}}" class="userInfoTitle">用户信息</text>
       </button>
+      <button class="wallet" bind:tap="MyDeviceShow">
+        <image class="MyDeviceImage" src="/image/device.png"></image>
+        <text  class="walletTitle">设备</text>
+      </button>
     </view>
+    <!--查看我的设备-->
+      <!--查看总的设备-->
+      <scroll-view scroll-y="true" wx:if="{{showMyDevice === true && ifUserLoad === true && ifList === true}}" class="userInformationBoxCanFlow">
+        <button wx:for="{{myDevice}}" wx:key="{{item.id}}" class="myDevicesCheckButton"  bind:tap="checkThisDevice" data-Device="{{item}}">
+          <text class="myDeviceName">{{item.name}}</text>
+          <image class="SetMyDevice" src="/image/set.png"></image>
+        </button> 
+      </scroll-view>
+      <!--查看单个设备的具体信息-->
+      <view wx:if="{{showMyDevice === true && ifUserLoad === true && ifList === false}}" class="userInformationBox">
+        <view class="DetailName">
+          <text class="DetailNameTitle">{{checkingDevice.name}}</text>
+        </view>
+        <text class="rentRemind">—-保守信任用户每次充电后都需要您的授权—-</text>
+        <scroll-view scroll-y="true" class="scrollBox">
+          <view wx:for="{{checkingDevice.rentUser}}" wx:key="{{checkingDevice.list}}" class="rentUsingBox">
+            <view class="rentNameContainer">
+              <text class="rentName">{{item.add}}</text>
+            </view>
+            <view class="rentTimeContainer">
+              <text class="rentTimeTo">{{item.time}}</text>
+            </view>
+            <view class="showRentTow">
+              <view wx:if="{{item.trust === true}}">
+                <text class="openTitle1">完全信任</text>
+              </view>
+              <view wx:if="{{item.trust === false}}">
+                <text class="openTitle2">保守信任</text>
+              </view>
+              <view wx:if="{{item.open === true}}">
+                <text class="openTitle1">可开座舱锁</text>
+              </view>
+              <view wx:if="{{item.open === false}}">
+                <text class="openTitle2">已禁止开锁</text>
+              </view>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
     <!--查看与修改用户手机和微信界面-->
     <view wx:if="{{ifUserLoad === true&&ifShowUserInfo===true && showChangePAW === false}}" class="userInformationBox">
       <view class="PhoneBox">
@@ -315,13 +358,19 @@
         <text class="canRegisterTitle">创建账号</text>
       </button>
     </view>
-    <button wx:if="{{ifShowUserInfo===false}}" class="exitUser" bind:tap="hideUserModal">
+    <button wx:if="{{ifUserLoad === true&&ifShowUserInfo===false&&showMyDevice ===false}}" class="exitUser" bind:tap="hideUserModal">
       <text class="exitTitle">关闭</text>
     </button>
-    <button wx:if="{{ifShowUserInfo===true && showChangePAW ===false}}" class="exitUser" bind:tap="backToWallet">
+    <button wx:if="{{ifUserLoad === true&&ifShowUserInfo===true && showChangePAW === false}}" class="exitUser" bind:tap="backToWallet">
         <text class="exitTitle">返回</text>
     </button>
-    <button wx:if="{{ifShowUserInfo===true && showChangePAW === true}}" class="exitUser" bind:tap="backToPAW">
+    <button wx:if="{{ifUserLoad === true&&ifShowUserInfo===true && showChangePAW === true}}" class="exitUser" bind:tap="backToPAW">
+        <text class="exitTitle">返回</text>
+    </button>
+    <button wx:if="{{showMyDevice === true && ifUserLoad === true && ifList === true}}" class="exitUser" bind:tap="backToWalletFromDevie">
+        <text class="exitTitle">返回</text>
+    </button>
+    <button wx:if="{{showMyDevice === true && ifUserLoad === true && ifList === false}}" class="exitUser" bind:tap="backToDevie">
         <text class="exitTitle">返回</text>
     </button>
   </view>

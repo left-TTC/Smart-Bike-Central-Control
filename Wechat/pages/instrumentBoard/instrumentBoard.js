@@ -21,10 +21,10 @@ Page({
     mileageavailable:'检测中',
     Batterylockstate:-1,
     ifConnect:0,          //启动状态
-    devicecon:1,          //是否连接到车    iNIT 0
-    showingModal:false,  //连接弹窗     Init true
-    showingUserModal:false,        //用户界面弹窗
-    ifUserLoad:false,      //用户是否登录
+    devicecon:0,          //是否连接到车    iNIT 0
+    showingModal:true,  //连接弹窗     Init true
+    showingUserModal:false,        //用户界面弹窗 init false
+    ifUserLoad:false,      //用户是否登录 init f
     ifRegisterAction:false,       //是否是注册行为 
     mnemonic:'',//助记词
     password:'',//密码
@@ -54,7 +54,7 @@ Page({
     isCollecting: true,  //是否需要继续连接字段
     ifUserInfo:false,    //是否已经储存账户信息
     ifShowUserInfo:false,//点击跳跃到基本信息栏
-    ifMyDevice:true,    //显示为是否为我的车  init:false
+    ifMyDevice:false,    //显示为是否为我的车  init:false
     showingRentModal:false,//是否显示出借相关弹窗
     rentAddressInput:'',
     ifOpenBattery:'no',
@@ -67,6 +67,10 @@ Page({
     showNeedRentModal:false,//需要借用设备时展示
     showTransferDevice:false,//转让设备界面
     transformInput:'',
+    showMyDevice:false, //显示我的设备页面  init f
+    myDevice:[] , //用于存储已有的设备
+    ifList:true, //是在列表中还是单个设备
+    checkingDevice:{rentUser:[]}, //当前设备名字
   },
   /**
    * 生命周期函数--监听页面加载
@@ -98,6 +102,12 @@ Page({
     const wallet = new ethers.Wallet(privateKey);
     const StorePhone = wx.getStorageSync('UsingDeviceChat');
     const StoreChat = wx.getStorageSync('UsingDevicePhone');
+    const myDeviceNow = wx.getStorageSync('myDevice');
+    if(myDeviceNow && Array.isArray(myDeviceNow)){
+      this.setData({myDevice:myDeviceNow})
+    }else{
+      this.setData({myDevice:[]})
+    }
     this.setData({              //上号更新私钥和完整钱包
       privateKey:privateKey,
       wallet:wallet,
@@ -340,6 +350,7 @@ listentoBlue:function(){//收取信息
         console.log(userPhone);console.log(this.data.UsingDevicePhone);
         this.sendMyPhoneAndChat();                //update the phone and chat
       }
+      this.addAMyDevice();
     }else{this.setData({ifMyDevice:false})
     if((userWechat!=''|| userPhone!='')&&this.data.ifMyDevice === false){
       this.setData({RentDevicePhone:userPhone,RentDeviceChat:userWechat})
@@ -394,11 +405,12 @@ listentoBlue:function(){//收取信息
     if(ERR === 'UserErr'){wx.showToast({title: '您没有使用此设备的权限',icon:'error',duration:1000})}
     else if(ERR === 'CommandErr'){wx.showToast({title: '出现了问题哦',icon:'error',duration:1000})}
     else if(ERR === 'FormatErr'){wx.showToast({title: '出现了问题哦',icon:'error',duration:1000})}
+    else if(ERR === 'RegisterOk'){this.addAMyDevice()}
     else if(ERR === 'RegisterErr'){wx.showToast({title: '注册失败，请重试',icon:'error',duration:1000})}
     else if(ERR === 'AddRrentErr'){wx.showToast({title: '添加租借失败，请重试',icon:'error',duration:1000})}
-    else if(ERR === 'getRent'){wx.showToast({title: '添加租借成功',icon:'success',duration:1000})}
-    else if(ERR === 'UpdateOld'){wx.showToast({title: '已更新租界用户信息',icon:'success',duration:1000})}
-    else if(ERR === 'ChangeSuperOK'){wx.showToast({title: '转让成功',icon:'success',duration:1000})}
+    else if(ERR === 'getRent'){this.updateRentUserInfo()}
+    else if(ERR === 'UpdateOld'){this.updateRentUserInfo()}
+    else if(ERR === 'ChangeSuperOK'){this.deleteMydevice()}
     else if(ERR === 'ChangeSuperErr'){wx.showToast({title: '转让失败，请重试',icon:'error',duration:1000})}
     else if(ERR === 'addPACOK'){wx.showToast({title: '添加用户信息成功',icon:'error',duration:1000})}
     else if(ERR === 'TimeErr'){wx.showToast({title: '命令超时',icon:'error',duration:1000})}
@@ -425,14 +437,83 @@ listentoBlue:function(){//收取信息
     const TimeGet = hours +':'+ minutes;
     console.log('TimeGet')
     this.setData({whenRentCanUsedTo:TimeGet})
+  },addAMyDevice:function(){
+    const ifHavingThisDevice = this.data.myDevice.find(item => item.name === this.data.connectingName);
+    if(!ifHavingThisDevice){
+      const newDevice ={
+        id:this.data.myDevice.length>0 ? this.data.myDevice[myDevice.length-1].id+1 : 1,
+        name:this.data.connectingName,
+        rentUser:[]
+      };const updatedMyDevice = [...this.data.myDevice, newDevice];
+      this.setData({ myDevice: updatedMyDevice });
+      try {
+        wx.setStorageSync('myDevice', updatedMyDevice);
+        const content = `您已成为${this.data.connectingName}的车主`
+        wx.showModal({title: '注册成功', content:content,confirmText:'好',showCancel:false})
+      } catch (error) {
+        console.error('设备注册失败:', error);
+        wx.showToast({ title: '注册失败', icon: 'error', duration: 1000 });
+      }
+    } 
+  },getBriefAdd:function(add){
+    let address = add.startsWith('0x') ? add.slice(2) : add;
+    if(address.length === 40){
+      console.log('yes,it\'s forty')
+      const start = address.slice(0,4);
+      const end = address.slice(-4);
+      const brief = start + '...' +end;
+      return brief;
+    }
+  },getRentTimeTo:function(rentDay,rentTime){
+    let Time;
+    if(rentTime.length == 0){Time = '23:59'}else{Time = rentTime}
+    const realTime = rentDay +'-'+ Time;
+    return realTime;
+  },deleteMydevice:function(){
+    const willDeleteDeviceName = this.data.connectingName;
+    let newId = 1;
+    const updatedDevice = this.data.myDevice
+      .filter(item => item.name !== willDeleteDeviceName)
+      .map(item => ({ ...item, id: newId++ }));
+    this.setData({myDevice:updatedDevice});
+    wx.setStorageSync('myDevice', updatedDevice,()=>{
+      wx.showToast({title: '转让成功',icon:'success',duration:1000})
+    });
+  },updateRentUserInfo: function () {
+    console.log(this.data.myDevice);
+    const needUpdateDevice = this.data.myDevice.find(item => item.name === this.data.connectingName);
+    console.log(needUpdateDevice);
+    if (needUpdateDevice) {
+      console.log(this.data.rentAddressInput);
+      const needUpdateRentUserId = this.getBriefAdd(this.data.rentAddressInput);
+      const needUpdateTime = this.getRentTimeTo(this.data.RentDay, this.data.RentTime);
+      const userIndex = needUpdateDevice.rentUser.findIndex(user => user.add === needUpdateRentUserId);
+      console.log(needUpdateTime, needUpdateRentUserId, userIndex);
+      const newRentUser = {
+        add: needUpdateRentUserId,
+        time: needUpdateTime,
+        trust: this.data.ifOpenBattery === 'yes',
+        open: this.data.ifTrustRent === 'yes',
+      };
+      if (userIndex !== -1) {
+        needUpdateDevice.rentUser[userIndex] = newRentUser;
+      } else {
+        needUpdateDevice.rentUser.push(newRentUser);
+      }
+      const updatedMyDevice = this.data.myDevice.map(item =>
+        item.name === this.data.connectingName ? needUpdateDevice : item
+      );
+      this.setData({ myDevice: updatedMyDevice,rentAddressInput:'',ifOpenBattery:'no',RentDay:'',RentTime:'',ifTrustRent:'no',});
+      wx.setStorageSync('myDevice', updatedMyDevice,);
+      wx.showToast({
+        title: userIndex !== -1 ? '已更新租借用户信息' : '已添加租借用户信息',
+        icon: 'success',
+        duration: 1000,
+      });
+      console.log(updatedMyDevice);
+    }
   },
 //发信息
-sendCommand1: function(data) {  
-  const command = data + '\n'; 
-  console.log(command);
-  this.sendData(command);
-},
-
 sendsecretCommand:function(event){
   const command = event.currentTarget.dataset.command;
   const cmd={
@@ -607,71 +688,45 @@ getDeviceRSSI: function() {
   },
   //--------------------连接弹窗------------------
   showModal() {
-    this.setData({
-      showingModal: true
-    });
+    this.setData({showingModal: true});
   },
   hideModal:function() {
-    this.setData({
-      showingModal:false
-    })
+    this.setData({showingModal:false})
     //this.updateCircle(this.data.batteryPowerPercentage);
   },
   showUserModal:function(){
-    this.setData({
-      showingUserModal:true
-    })
+    this.setData({ showingUserModal:true})
   },
   hideUserModal:function(){
-    this.setData({
-      showingUserModal:false
-    })
+    this.setData({showingUserModal:false})
     //this.updateCircle(this.data.batteryPowerPercentage);
   },
   showRegisterModal:function(){
-    this.setData({
-      ifRegisterAction:true
-    })
+    this.setData({ifRegisterAction:true })
   },
   hideRegisterModal:function(){
-    this.setData({
-      ifRegisterAction:false
-    })
+    this.setData({ifRegisterAction:false})
   },
   showLoadrModal:function(){
-    this.setData({
-      ifLoadAction:true
-    })
+    this.setData({ifLoadAction:true})
   },
   hideLoadrModal:function(){
-    this.setData({
-      ifLoadAction:false
-    })
+    this.setData({ifLoadAction:false})
   },
   exitRegisterOrLoad:function(){
-    this.setData({
-      ifRegisterAction:false
-    })
+    this.setData({ifRegisterAction:false})
   },
   //---------------更新设备列表----------------
   loadDevices: function() {
     const app = getApp();
-    this.setData({
-      devices: app.devices // 从全局获取设备列表
-    });
-  },
-  //---------------用户登录-------------------
-  userLoad:function(){
-
+    this.setData({devices: app.devices});
   },
   //---------------创建账号--------------------
   userRegister:function(){
     this.showRegisterModal()
   },onInputRegister:function(event){
     const helpDO = event.detail.value;
-    this.setData({
-      mnemonic:helpDO
-    });if (helpDO.length >= 10){
+    this.setData({ mnemonic:helpDO});if (helpDO.length >= 10){
       this.setData({
         iconSrc1:'/image/right.png',
         mnemonicOK:true
@@ -935,13 +990,13 @@ showRentModal:function(){       //展示出借页面
             const Command = 'RentAdd'+this.data.rentAddressInput+battery+RentTimeStamp+Trust;
             console.log(Command)
             this.sendsecretUnfixedCommand(Command);
-            this.setData({rentAddressInput:'',ifOpenBattery:'no',RentDay:'',RentTime:'',ifTrustRent:'no',showingRentModal:false})}}
+            this.setData({showingRentModal:false})}}
       })}else{
       wx.showToast({ title: '时间不正确',icon:'error', duration:1000})
     } }else{wx.showToast({title: '不是标准的钱包地址',icon:'error',duration:1000})
   }
 },ExitRent:function(){
-  this.setData({rentAddressInput:'',ifOpenBattery:'no',RentDay:'',RentTime:'',ifTrustRent:'no',showingRentModal:false})
+  this.setData({showingRentModal:false})
 },
 //电话和微信号
 backToWallet:function(){
@@ -1000,8 +1055,6 @@ showTransferDevice:function(){
 },TransformDevicebutton:function(){
   if(this.data.transformInput.length == 42){
     this.promptPassword();
-    const cmd = 'SuChange'+this.data.transformInput;
-    this.sendsecretUnfixedCommand(cmd)
   }else {
     wx.showToast({title: '地址不和规范',icon:'error',duration:1000})
   }
@@ -1014,12 +1067,60 @@ showTransferDevice:function(){
     placeholderText: '请输入密码', 
     success: function (res) {
       if (res.confirm) { const inputpassword = res.content;
-        if (password) {that.verifyPasswordAndExecute(inputpassword);} 
+        if (inputpassword) {that.verifyPasswordAndExecute(inputpassword);} 
         else {wx.showToast({ title: '密码不能为空', icon: 'error', duration: 1000 });}
       }
     }
   });
 },verifyPasswordAndExecute:function(inputpassword){
-  
+  console.log(this.data.password)
+  if(inputpassword===this.data.password){
+    const cmd = 'SuChange'+this.data.transformInput;
+    this.sendsecretUnfixedCommand(cmd)
+  }else{
+    wx.showToast({title: '密码错误',icon:'error',duration:1000})
+  }
+},
+
+//检查我的设备
+MyDeviceShow:function(){
+  this.setData({showMyDevice:true})
+},checkThisDevice:function(e){
+  const deviceDetail = e.currentTarget.dataset.device;
+  if(deviceDetail.name){
+    this.sequenceRentUserAgain(deviceDetail);
+  }else{
+    wx.showToast({title: '发生了错误',icon:'error',duration:1000})
+  }  
+},sequenceRentUserAgain:function(deviceDetail){
+  console.log('checking')
+  const thisDevice = this.data.myDevice.find(item => item.name === deviceDetail.name)
+  if (thisDevice && thisDevice.rentUser){
+    const updatedRentUser = thisDevice.rentUser
+    .filter(user => {
+      const isValid = this.checkRentTimeValid(user.time);
+      console.log(isValid);
+      return isValid;  
+    });thisDevice.rentUser = updatedRentUser
+    const updatedMyDevice = [...this.data.myDevice];
+    const deviceIndex = updatedMyDevice.findIndex(item => item.name === deviceDetail.name);
+    if (deviceIndex !== -1) {
+       updatedMyDevice[deviceIndex] = thisDevice;  // 直接替换设备对象
+    }
+    console.log('updated:',updatedMyDevice)
+    this.setData({myDevice:updatedMyDevice,ifList:false,checkingDevice:thisDevice})
+    wx.setStorageSync('myDevice', updatedMyDevice);
+  }
+},checkRentTimeValid:function(timechar){
+  const nowTime = Math.floor(Date.now() / 1000);
+  const formattedTime = timechar.replace(/-(?=\d{2}:\d{2}$)/, 'T');
+  const rentToTime = Math.floor(new Date(formattedTime).getTime() / 1000);
+  if(rentToTime > nowTime){
+    return true;
+  }else{return false}
+},backToWalletFromDevie:function(){
+  this.setData({showMyDevice:false})
+},backToDevie:function(){
+  this.setData({ifList:true})
 },
 })

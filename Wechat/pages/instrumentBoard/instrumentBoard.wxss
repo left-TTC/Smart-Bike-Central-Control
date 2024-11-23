@@ -827,10 +827,6 @@
 }
 /*出借弹窗e*/
 /*微信号和电话号s*/
-.userInformationBox{
-  display: flex;
-  flex-direction: column;
-}
 .PhoneIma{
   height: 80rpx;
   width: 80rpx;
@@ -933,6 +929,7 @@
   font-weight: 550;
   color: white;
 }
+/*微信号和电话号e*/
 /*转让弹窗*/
 .TransformDeviceView{
   position: fixed; /* 固定定位 */
@@ -981,8 +978,11 @@
   justify-content: center;
   border-radius: 20rpx;
   margin-top: 5%;
+}.GiveInput{
+  width: 100%;
 }
 /*转让弹窗*/
+/*wantRent*/
 .QRBox{
   position: fixed; /* 固定定位 */
   top: 0;
@@ -996,4 +996,89 @@
   z-index: 1000; /* 确保弹窗在上方 */
 }
 .QRShow{}
-/*微信号和电话号e*/
+/*wantRent*/
+/*Mydevice*/
+.MyDeviceImage{
+  height: 85rpx;
+  width: 85rpx;
+}.userInformationBoxCanFlow{
+  width: 100%;
+  height: 65%;
+}.myDevicesCheckButton{
+  width: 90%;
+  height: 17%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #9ACD32;
+  margin-top: 2%;
+  border-radius: 20rpx;
+}.SetMyDevice{
+  height: 60rpx;
+  width: 60rpx;
+}.myDeviceName{
+  color: white;
+  font-size: 38rpx;
+  font-weight: 550;
+}.DetailName{
+  background: linear-gradient(to right, yellowgreen, lightgreen, limegreen);
+  height: 13%;
+  width: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 30rpx;
+}.DetailNameTitle{
+  color: white;
+  font-weight: 600;
+  font-size: 42rpx;
+}.rentRemind{
+  color: #9ACD32;
+  font-size: 28rpx;
+  margin: 1% 0;
+}.rentUsingBox{
+  width: 88%;
+  height: 40%;
+  display: flex;
+  flex-direction: column;
+  background-color: #f8f8f8;
+  border-radius: 30rpx ;
+  justify-content: center;
+  margin-top: 2%;
+  margin-left: 6%;
+}.rentName{
+  font-weight: 600;
+  font-size: 36rpx;
+  font-style: italic;
+}.showRentTow{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}.rentNameContainer{
+  display: flex;
+  justify-content: center;
+  margin-top: 2%;
+}.rentTimeContainer{
+  display: flex;
+  justify-content: center;
+}.rentTimeTo{
+  margin-top: 2%;
+  font-size: 35rpx;
+  color: #9ACD32;
+  font-weight: 600;
+}.showRentTow{
+  margin-top: 1%;
+}.openTitle1{
+  font-size: 34rpx;
+  color: yellowgreen;
+  font-weight: 600;
+}.openTitle2{
+  font-size: 34rpx;
+  font-weight: 600;
+}.scrollBox{
+  display: flex;
+  justify-content: center;
+  height: 80%;
+}
+/*Mydevice*/

@@ -297,6 +297,7 @@ void DoToTheseJson(void){
 			strcpy(Err, "RegisterErr");
 			return;
 		}else{
+			strcpy(Err, "RegisterOk");
 			ifNeedRigisterSuperUser = 0;
 		}
 	}
