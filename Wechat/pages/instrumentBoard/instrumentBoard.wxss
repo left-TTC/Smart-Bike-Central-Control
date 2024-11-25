@@ -897,6 +897,11 @@
   font-size: 40rpx;
   font-weight: 550;
   color: #9ACD32;
+}.ChangePhonetext1{
+  margin-top: 2%;
+  font-size: 32rpx;
+  font-weight: 550;
+  color: #9ACD32;
 }
 .ChangeInputContainer{
   width: 100%;
@@ -928,6 +933,20 @@
   font-size: 38rpx;
   font-weight: 550;
   color: white;
+}.chooseImageText{
+  font-size: 29rpx;
+  color: gray;
+}.QRneedShow{
+  position: absolute;
+  z-index: -100;
+  opacity: 0;
+  bottom: 1500rpx;
+}.chooseImageText1{
+  font-size: 29rpx;
+  color:yellowgreen
+}.visitingCardRow{
+  display: flex;
+  flex-direction: row;
 }
 /*微信号和电话号e*/
 /*转让弹窗*/
@@ -983,19 +1002,32 @@
 }
 /*转让弹窗*/
 /*wantRent*/
-.QRBox{
-  position: fixed; /* 固定定位 */
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+.qrCodeImage{
+  margin-top: 16%;
+  width: 60%;
+}.borrowText{
+  font-size: 44rpx;
+  margin-top: 15%;
+  color: #9ACD32;
+}.exitBorrowButton{
+  position: absolute;
+  margin-top: 90%;
+  width: 40%;
+  height: 7%;
   display: flex;
-  justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.5); /* 半透明背景 */
-  z-index: 1000; /* 确保弹窗在上方 */
+  justify-content: center;
+  border-radius: 20rpx;
+  background-color: #9ACD32;
+}.exitBorrowText{
+  font-size: 39rpx;
+  font-weight: 600;
+  color: white;
+}.QRHide{
+  position: absolute;
+  opacity: 0;
+  bottom: 10000rpx;
 }
-.QRShow{}
 /*wantRent*/
 /*Mydevice*/
 .MyDeviceImage{

@@ -2,6 +2,7 @@
   "dependencies": {
     "crypto-js": "^4.2.0",
     "ethers": "^6.13.4",
+    "jsqr": "^1.4.0",
     "weapp-qrcode": "^1.0.0"
   },
   "devDependencies": {

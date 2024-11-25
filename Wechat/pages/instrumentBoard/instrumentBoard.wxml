@@ -63,7 +63,7 @@
         </button>
       </view>
       <view class="rentBox">
-        <button wx:if="{{ifMyDevice === false && devicecon === 1}}" class="notmy">
+        <button wx:if="{{ifMyDevice === false && devicecon === 1}}" class="notmy" bind:tap="ShowDeviceMasterQR">
           <image class="rentImage" src="/image/rent.png"></image>
           <text class="rentTitle">借用</text>
         </button>
@@ -186,8 +186,16 @@
     <button class="ExitRentButton" bindtap="ExitRent">取消</button>
   </view>
 </view>
-<view class="QRBox" wx:if="{{showNeedRentModal === true}}">
-    <canvas class="QRShow" style="width: 200px; height: 200px;" canvas-id="myQrcode"></canvas>
+<!--借用区-->
+<view class="RentBox" wx:if="{{showNeedRentModal === true}}">
+  <view class="connectPage">
+    <text class="borrowText">扫描二维码添加车主好友</text>
+    <canvas class="QRHide" canvas-id="myQrcode" style="width: 200px; height: 200px;"></canvas>
+    <image wx:if="{{qrCodeImagePath}}" src="{{qrCodeImagePath}}" mode="widthFix" class="qrCodeImage" show-menu-by-longpress="true" />
+    <button class="exitBorrowButton" bind:tap="exitBorrrow">
+      <text class="exitBorrowText">退出</text>
+    </button>
+  </view>
 </view>
 <!--转让弹窗-->
 <view class="TransformDeviceView" wx:if="{{showTransferDevice === true}}">
@@ -242,7 +250,10 @@
       <!--查看总的设备-->
       <scroll-view scroll-y="true" wx:if="{{showMyDevice === true && ifUserLoad === true && ifList === true}}" class="userInformationBoxCanFlow">
         <button wx:for="{{myDevice}}" wx:key="{{item.id}}" class="myDevicesCheckButton"  bind:tap="checkThisDevice" data-Device="{{item}}">
-          <text class="myDeviceName">{{item.name}}</text>
+          <view class="ledtAllDevice">
+            <text class="myDeviceName">{{item.name}}</text>
+            <text class="myDeviceName"> {{item.version}}</text>
+          </view>
           <image class="SetMyDevice" src="/image/set.png"></image>
         </button> 
       </scroll-view>
@@ -292,7 +303,7 @@
         <view class="PhoneContainer">
           <image class="PhoneIma" src="/image/wechat.png"></image>
           <text class="InfouseShow" wx:if="{{UsingDeviceChat === ''}}">还未添加哦</text>
-          <text class="InfouseShow" wx:if="{{UsingDeviceChat != ''}}">{{UsingDeviceChat}}</text>
+          <text class="InfouseShow" wx:if="{{UsingDeviceChat != ''}}">已添加</text>
         </view>
       </view>
       <button wx:if="{{UsingDevicePhone === '' || UsingDeviceChat === ''}}" class=" AboutInfoButton" bind:tap="ChangePhoneAndChat">
@@ -316,13 +327,18 @@
         </view> 
       </view>
       <view class="ChangePhoneBox">
-        <text class="ChangePhonetext">微信号码</text>
-        <view class="ChangeInputContainer">
-        <input class="ChangeInputStyle" type="text" placeholder="输入您的微信号" bindinput="ChatCHangeInput" value="{{chat}}" />
-        </view> 
+        <view class="visitingCardRow">
+          <text class="ChangePhonetext">名片</text>
+          <text class="ChangePhonetext1">(仅限黑白方块二维码，平台不限)</text>
+        </view>
+        <button class="ChangeInputContainer" bind:tap="chooseAWechatImage">
+          <text wx:if="{{chat === ''}}" class="chooseImageText">传入一张微信名片</text>
+          <text wx:if="{{chat != ''}}" class="chooseImageText1">修改填入的微信名片</text>
+        </button>
       </view>
       <button class="PhoneAndChatChangeSubumit" bind:tap="SubmitChangePAW">
-        <text class="SubmitchangeButtontext">提交修改</text>
+        <text  class="SubmitchangeButtontext">提交修改</text>
+        <canvas class="QRneedShow" canvas-id="myCanvas" style="width: 1500px; height: 1800px;"></canvas>
       </button>
     </view>
     <!--register-->
