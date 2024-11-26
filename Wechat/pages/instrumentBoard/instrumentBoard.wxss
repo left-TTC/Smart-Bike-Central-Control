@@ -1114,3 +1114,74 @@
   height: 80%;
 }
 /*Mydevice*/
+.timeLimitShow{
+  position: fixed; /* 固定定位 */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5); /* 半透明背景 */
+  z-index: 1100; /* 确保弹窗在上方 */
+}.selectBox{
+  height: 20%;
+  width: 80%;
+  margin-bottom: 40%;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  border-radius: 40rpx;
+  flex-direction: column;
+}.siteBox{
+  display: flex;
+  flex-direction: row;
+  margin-top: 2%;
+  justify-content: center;
+}.timeLimitText{
+  font-size: 42rpx;
+  font-weight: 600;
+  color: #9ACD32;
+}.QRbuttonBox{
+  display: flex;
+  flex-direction: row;
+  margin-top: 8%;
+}.exitGenerateQR{
+  width: 30%;
+  background-color: #9ACD32;
+  border-radius: 20rpx;
+  height: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}.timeLimitText1{
+  font-size: 42rpx;
+  font-weight: 600;
+  color: white;
+}
+
+.showAuthorQRBox{
+  background-color: white;
+  height: 60%;
+  width: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 70rpx;
+  flex-direction: column;
+}.qrCodeImage1{
+  width: 75%;
+}.saveQRCodeText{
+  margin-top: 10%;
+  font-size: 40rpx;
+  color: #9ACD32;
+}.exitAuthorQRButton{
+  width: 30%;
+  margin-top: 10%;
+  height: 10%;
+  border-radius: 30rpx;
+  background-color: #9ACD32;
+}.exitAuthorQRButtonText{
+  color: white;
+}

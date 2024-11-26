@@ -58,7 +58,7 @@
         <view class="couldnotOpenLockButton" wx:if="{{Batterylockstate === 1 || Batterylockstate === -1}}">
           <text class="couldnotScript">开锁</text>
         </view>
-        <button wx:if="{{Batterylockstate === 0 }}" class="couldOpenLockButton" bind:tap="sendsecretCommand" data-command="batterylock">
+        <button wx:if="{{Batterylockstate === 0 }}" class="couldOpenLockButton" bind:tap="judgeIdentityAndSendCommand" data-command="batterylock">
           <text class="couldnotScript1">开锁</text>
         </button>
       </view>
@@ -118,10 +118,10 @@
         <view wx:if="{{devicecon === 0}}" class="noLinkStartBox">
           <image class="startimage" src="/image/start.png"></image>
         </view>
-        <button wx:if="{{devicecon === 1 && ifConnect ===0}}" class="LinkStartBoxWithNo" bind:tap="sendsecretCommand" data-command="bikelock">
+        <button wx:if="{{devicecon === 1 && ifConnect ===0}}" class="LinkStartBoxWithNo" bind:tap="judgeIdentityAndSendCommand" data-command="bikelock">
           <image class="startimage" src="/image/start1.png"></image>
         </button>
-        <button wx:if="{{devicecon === 1 && ifConnect ===1}}" class="noLinkStartBoxWithYes" bind:tap="sendsecretCommand" data-command="unbikelock">
+        <button wx:if="{{devicecon === 1 && ifConnect ===1}}" class="noLinkStartBoxWithYes" bind:tap="judgeIdentityAndSendCommand" data-command="unbikelock">
           <image class="stopimage" src="/image/close.png"></image>
         </button>
     </view>
@@ -259,12 +259,12 @@
       </scroll-view>
       <!--查看单个设备的具体信息-->
       <view wx:if="{{showMyDevice === true && ifUserLoad === true && ifList === false}}" class="userInformationBox">
-        <view class="DetailName">
+        <button class="DetailName" bind:tap="showSelctTime" >
           <text class="DetailNameTitle">{{checkingDevice.name}}</text>
-        </view>
-        <text class="rentRemind">—-保守信任用户每次充电后都需要您的授权—-</text>
+        </button>
+        <text class="rentRemind">—-保守信任用户每次重启后都需要您的授权—-</text>
         <scroll-view scroll-y="true" class="scrollBox">
-          <view wx:for="{{checkingDevice.rentUser}}" wx:key="{{checkingDevice.list}}" class="rentUsingBox">
+          <view wx:for="{{checkingDevice.rentUser}}" wx:key="{{checkingDevice.add}}" class="rentUsingBox">
             <view class="rentNameContainer">
               <text class="rentName">{{item.add}}</text>
             </view>
@@ -389,6 +389,34 @@
     <button wx:if="{{showMyDevice === true && ifUserLoad === true && ifList === false}}" class="exitUser" bind:tap="backToDevie">
         <text class="exitTitle">返回</text>
     </button>
+  </view>
+  <view wx:if="{{setQrTimeModal === true}}" class="timeLimitShow">
+    <view class="selectBox" wx:if="{{showGeneratedQR === false}}">
+      <view class="siteBox">
+        <text class="timeLimitText">二维码有效时间为-</text>
+        <picker mode="selector" range="{{range}}" bindchange="onPickerChange">
+          <view class="picker">
+            <text class="timeLimitText"> {{selectedValue}}-分钟</text>
+          </view>
+        </picker>
+      </view>
+      <view class="QRbuttonBox">
+        <button class="exitGenerateQR" bind:tap="generateTiemLimitQRCode">
+          <text class="timeLimitText1">授权</text>
+        </button>
+        <button class="exitGenerateQR" bind:tap="exitGenerateQR">
+          <text class="timeLimitText1">取消</text>
+        </button>
+      </view>
+    </view>
+    <view class="showAuthorQRBox"wx:if="{{showGeneratedQR === true}}">
+      <canvas class="QRHide" canvas-id="AuthorizationQrcode" style="width: 200px; height: 200px;"></canvas>
+      <image  wx:if="{{AuthorizationQRcodePath}}" src="{{AuthorizationQRcodePath}}" mode="widthFix" class="qrCodeImage1" show-menu-by-longpress="true" />
+      <text class="saveQRCodeText">长按保存发送给需要授权的用户</text>
+      <button class="exitAuthorQRButton" bind:tap="exitAuthorQRButton">
+        <text class="exitAuthorQRButtonText">退出</text>
+      </button>
+    </view>
   </view>
 </view>
 

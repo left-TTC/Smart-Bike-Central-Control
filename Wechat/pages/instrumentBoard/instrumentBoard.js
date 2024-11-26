@@ -79,6 +79,14 @@ Page({
     ifList:true,                     //是在列表中还是单个设备   Is it in a list or a single device
     checkingDevice:{rentUser:[]},    //当前设备名字   Current device name
     qrCodeImagePath:'',              //存放二维码路径   Path to store QR code
+    setQrTimeModal:false,            //show the set time limit modal
+    range: [1, 2, 3, 4, 5],          //range of time limit
+    selectedValue: 3,                //default value
+    showGeneratedQR:false,           //select time frist and then generate a QR code
+    AuthorizationQRcodePath:'',
+    rentNeedAuthor:false,            //rent user need qr authorize
+    haveGetConnet:0,             //The first command after restarting the connection will fail   
+    usingDeviceWallet:'',
   },
   onLoad(options) {
     getApp().initializeBluetooth();
@@ -137,16 +145,32 @@ Page({
   onReady() {
     this.loadDevices();
     if(this.data.UsingDevicePhone!='' && this.data.UsingDeviceChat!=''){this.setData({ifUserInfo:true})}
+    this.checkConnectionAndAutoLink();
   },
- 
-  onShow() {
+//Timer 1
+  checkConnectionAndAutoLink: function() {
     this.checkConnectionStatusInterval = setInterval(() => {
-      const currentApp = getApp();
-      if (currentApp.ifCounldConnect === true) {
-        this.automaticLink();
-        clearInterval(this.checkConnectionStatusInterval);
+      const currentApp = getApp();  
+      console.log('waiting')
+      if (currentApp.ifCounldConnect === true) {  
+        this.automaticLink(); 
+        clearInterval(this.checkConnectionStatusInterval); 
       }
-    }, 500);
+    }, 500);  
+  },
+//Timer 2
+  getIdentityInterval:function(){
+    this.identityInterval = setInterval(()=>{
+      if(this.data.haveGetConnet > 0){
+        clearInterval(this.identityInterval);
+      }else if(this.data.devicecon === 1){
+        this.sendsecretUnfixedCommand('verifyID');
+      }
+    },1500)
+  },
+
+  onShow() {
+    this.getIdentityInterval();
   },
   /**
  * @methodName        automaticLink
@@ -179,7 +203,7 @@ Page({
         if(res.devices.length>0){
           wx.closeBLEConnection({
             deviceId: res.devices.deviceID,
-            success:(res)=>{
+            success:()=>{
               this.DoforDevice(data,null);
             }
           })
@@ -275,7 +299,6 @@ getServices:function(deviceID){
     },fail:()=>{wx.showToast({ title: '连接出现问题',icon:'error',duration:1000})}
   })
 },
-
 /**
  * Method to get feature ID / 获取特征id的方法  
  * @param deviceID            The id of the device connecting / 连接设备的id
@@ -296,7 +319,6 @@ getCharacteristics: function(deviceId, serviceId){
     },
   })
 },
-
 /**
  * Method to update information to the global and display  / 更新信息到全局并调用的方法  
  * @param deviceID            The id of the device connecting / 连接设备的id
@@ -425,7 +447,7 @@ listentoBlue:function(){
     const userWechat = data.chat;
     const userPhone = data.Phone;
     const BikeAddress = data.Wallet;
-    this.setData({connectingName:name})
+    this.setData({connectingName:name,usingDeviceWallet:BikeAddress})
     if(BikeAddress === this.data.wallet.address.substring(2)){ //说明是自己的车
       this.setData({ifMyDevice:true})                          //标记
       if((userWechat != this.data.UsingDeviceChat || userPhone != this.data.UsingDevicePhone)&&(this.data.UsingDeviceChat.length>0||this.data.UsingDevicePhone.length>0)){
@@ -439,7 +461,7 @@ listentoBlue:function(){
     }
   }
   },
-  /**
+/**
  * @methodName        handleDeviceStatus
  * @description       Method to Processing of relevant basic data about driving device
  * @param             data                    //the processed data about the device's basical info
@@ -450,6 +472,7 @@ listentoBlue:function(){
  * @see               DoToRatate         // Calculate the speed      
  * @see               ShowRunnigError    // Respond to the signal from the running controller   
  * @see               DealRunningStatus  // Respond to vehicle operating status
+ * @see               DealTimeAndJudgeIfNeedAuthor  Determine if authorization is required
  */ 
   handleDeviceStatus:function(data){
     const batteryVoltage = data.BatteryVoltage;
@@ -459,9 +482,15 @@ listentoBlue:function(){
     const ERR = data.ERR;
     const Version = data.V;
     const RunningStatus = data.BS;
+    const NowTime = data.Now
     if(this.data.ifMyDevice===false){
       const CanrentOpenBattery = data.RB;
       const RemainTime = data.TLim;
+      console.log(data.T);
+      if(data.T === 'N'){               
+        // First confirm whether you trust,then check the time
+        this.DealTimeAndJudgeIfNeedAuthor(NowTime);
+      }else if(data.T === 'Y'){this.setData({rentNeedAuthor:false})}
       this.setData({ifRentopenBattery:CanrentOpenBattery})
       this.calculateWhen(RemainTime);
     }
@@ -472,7 +501,24 @@ listentoBlue:function(){
     this.ShowRunnigError(ERR);
     this.DealRunningStatus(RunningStatus);
   },
-  /**
+/**
+ * @methodName        DealTimeAndJudgeIfNeedAuthor
+ * @description       Method to determine whether authorization update time is required
+ * @param             time     the timestamp 
+ * @returns           none             
+ */ 
+  DealTimeAndJudgeIfNeedAuthor:function(time){
+    const timeStamp = Math.floor(Date.now() / 1000);
+    const timeDifferenceThreshold = 300;
+    if((timeStamp-timeDifferenceThreshold)>time){          
+      //The time gap is too large, indicating that the time has not been updated.
+      this.setData({rentNeedAuthor:true})
+    }else{
+      //If the time difference is small, stm32 will automatically correct it
+      this.setData({rentNeedAuthor:false})
+    }
+  },
+/**
  * @methodName        DoToBatteryState
  * @description       Method to respond Battery lock status
  * @param             data         //the string related to the batterylock status
@@ -523,22 +569,30 @@ listentoBlue:function(){
  *                                     Delete a device from My Devices after transferring it
  */ 
   ShowRunnigError:function(ERR){
-    if(ERR === 'UserErr'){wx.showToast({title: '您没有使用此设备的权限',icon:'error',duration:1000})}
-    else if(ERR === 'CommandErr'){wx.showToast({title: '出现了问题哦',icon:'error',duration:1000})}
-    else if(ERR === 'FormatErr'){wx.showToast({title: '出现了问题哦',icon:'error',duration:1000})}
-    else if(ERR === 'RegisterOk'){this.addAMyDevice()}
-    else if(ERR === 'RegisterErr'){wx.showToast({title: '注册失败，请重试',icon:'error',duration:1000})}
-    else if(ERR === 'AddRrentErr'){wx.showToast({title: '添加租借失败，请重试',icon:'error',duration:1000})}
-    else if(ERR === 'getRent'){this.updateRentUserInfo()}
-    else if(ERR === 'UpdateOld'){this.updateRentUserInfo()}
-    else if(ERR === 'ChangeSuperOK'){this.deleteMydevice()}
-    else if(ERR === 'ChangeSuperErr'){wx.showToast({title: '转让失败，请重试',icon:'error',duration:1000})}
-    else if(ERR === 'addPACOK'){wx.showToast({title: '添加用户信息成功',icon:'success',duration:1000})}
-    else if(ERR === 'TimeErr'){wx.showToast({title: '命令超时',icon:'error',duration:1000})}
-    else if(ERR === 'SignCmdErr'){wx.showToast({title: '命令有误',icon:'error',duration:1000})}
-    else if(ERR === 'SignAddErr'){wx.showToast({title: '地址错误',icon:'error',duration:1000})}
-    else if(ERR === 'IDErr'){wx.showToast({title: '出现了问题哦，请重试',icon:'error',duration:1000})}
-    else if(ERR === 'UserErr'){wx.showToast({title: '您没有使用此设备的权限',icon:'error',duration:1000})}
+    if(ERR){
+      if(this.data.haveGetConnet < 2){
+        this.setData({haveGetConnet:this.data.haveGetConnet + 1});
+        return;
+      }
+      if(ERR === 'UserErr'){wx.showToast({title: '您没有使用此设备的权限',icon:'error',duration:1000})}
+      else if(ERR === 'CommandErr'){wx.showToast({title: '出现了问题哦',icon:'error',duration:1000})}
+      else if(ERR === 'FormatErr'){wx.showToast({title: '出现了问题哦',icon:'error',duration:1000})}
+      else if(ERR === 'RegisterOk'){this.addAMyDevice()}
+      else if(ERR === 'RegisterErr'){wx.showToast({title: '注册失败，请重试',icon:'error',duration:1000})}
+      else if(ERR === 'AddRrentErr'){wx.showToast({title: '添加租借失败，请重试',icon:'error',duration:1000})}
+      else if(ERR === 'getRent'){this.updateRentUserInfo()}
+      else if(ERR === 'UpdateOld'){this.updateRentUserInfo()}
+      else if(ERR === 'ChangeSuperOK'){this.deleteMydevice()}
+      else if(ERR === 'ChangeSuperErr'){wx.showToast({title: '转让失败，请重试',icon:'error',duration:1000})}
+      else if(ERR === 'addPACOK'){wx.showToast({title: '添加用户信息成功',icon:'success',duration:1000})}
+      else if(ERR === 'TimeErr'){wx.showToast({title: '时间错误',icon:'error',duration:1000})}
+      else if(ERR === 'SignCmdErr'){wx.showToast({title: '命令有误',icon:'error',duration:1000})}
+      else if(ERR === 'SignAddErr'){wx.showToast({title: '地址错误',icon:'error',duration:1000})}
+      else if(ERR === 'IDErr'){wx.showToast({title: '出现了问题哦，请重试',icon:'error',duration:1000})}
+      else if(ERR === 'Timeup'){
+        this.setData({rentNeedAuthor:false})
+        wx.showToast({title: '时间已更新',icon:'success',duration:1000})}
+    }
   },
   /**
  * @methodName        DealRunningStatus
@@ -569,7 +623,6 @@ listentoBlue:function(){
     const timeDifference = Math.abs(currentTimestamp - timestampInSeconds);
     const hours = Math.floor(timeDifference / 3600);const minutes = Math.floor((timeDifference % 3600) / 60);
     const TimeGet = hours +':'+ minutes;
-    console.log('TimeGet')
     this.setData({whenRentCanUsedTo:TimeGet})
   },
 /**
@@ -580,14 +633,16 @@ listentoBlue:function(){
  */ 
   addAMyDevice:function(){
     const ifHavingThisDevice = this.data.myDevice.find(item => item.name === this.data.connectingName);
-    if(!ifHavingThisDevice){
+    console.log(this.data.UsingcarVersion,this.data.UUIDOfSTM,this.data.connectingName)
+    if(!ifHavingThisDevice && this.data.UsingcarVersion!='' && this.data.UUIDOfSTM!='' && this.data.connectingName!=''){
       const newDevice ={
         version:this.data.UsingcarVersion,
         id:this.data.myDevice.length>0 ? this.data.myDevice[myDevice.length-1].id+1 : 1,
         name:this.data.connectingName,
+        uuid:this.data.UUIDOfSTM,
         rentUser:[]
       };const updatedMyDevice = [...this.data.myDevice, newDevice];
-      console.log(updatedMyDevice)
+      console.log(updatedMyDevice);
       this.setData({ myDevice: updatedMyDevice });
       try {
         wx.setStorageSync('myDevice', updatedMyDevice);
@@ -609,7 +664,6 @@ listentoBlue:function(){
   getBriefAdd:function(add){
     let address = add.startsWith('0x') ? add.slice(2) : add;
     if(address.length === 40){
-      console.log('yes,it\'s forty')
       const start = address.slice(0,4);
       const end = address.slice(-4);
       const brief = start + '...' +end;
@@ -657,15 +711,14 @@ listentoBlue:function(){
   updateRentUserInfo: function () {
     const needUpdateDevice = this.data.myDevice.find(item => item.name === this.data.connectingName);
     if (needUpdateDevice) {
-      console.log(this.data.rentAddressInput);
       const needUpdateRentUserId = this.getBriefAdd(this.data.rentAddressInput);
       const needUpdateTime = this.getRentTimeTo(this.data.RentDay, this.data.RentTime);
       const userIndex = needUpdateDevice.rentUser.findIndex(user => user.add === needUpdateRentUserId);
       const newRentUser = {
         add: needUpdateRentUserId,
         time: needUpdateTime,
-        trust: this.data.ifOpenBattery === 'yes',
-        open: this.data.ifTrustRent === 'yes',
+        open: this.data.ifOpenBattery === 'yes',
+        trust: this.data.ifTrustRent === 'yes',
       };
       if (userIndex !== -1) {
         needUpdateDevice.rentUser[userIndex] = newRentUser;
@@ -685,32 +738,68 @@ listentoBlue:function(){
     }
   },
 /**
- * @methodName        sendsecretCommand
- * @description       button method:used to send Button binding command
+ * @methodName        judgeIdentityAndSendCommand
+ * @description       Determine whether to update the time and send a command
  * @param             event           Button binding command
  * @returns           none   
- * @see               sendByTwenty    the way to send command to stm32
+ * @see               sendsecretUnfixedCommand    the way to send command to stm32
+ * @see               dealUptaTimeQR              Processing authorization QR code
  * @note              Because Android has a length limit of 20 ; So we tried different sending formats
  */ 
-sendsecretCommand:function(event){
+judgeIdentityAndSendCommand:function(event){
   const command = event.currentTarget.dataset.command;
-  const cmd={
-    TimeStamp:Math.floor(Date.now() / 1000),
-    command:command,
-    UUID:this.data.UUIDOfSTM
+  //1.superuser   2.rentuser but authorization is not required
+  if(this.data.ifMyDevice === true || this.data.rentNeedAuthor === false){
+    this.sendsecretUnfixedCommand(command);
+    wx.showToast({title: '已发送，请等待响应',icon:'success',duration:1000})
+  }else{
+    wx.scanCode({
+      success:(res)=>{
+        console.log(res);
+        this.dealUptaTimeQR(res);
+      },fail:()=>{
+        wx.showToast({title: '请扫描授权码',icon:'error',duration:1000})
+      }
+    })
   }
-  var cmdstr=JSON.stringify(cmd)
-  const signature =  this.data.wallet.signMessageSync(cmdstr);
-  const obj = {
-    cmd:cmdstr,
-    PubKey: this.data.wallet.signingKey.publicKey,
-    signature:signature,
-    address:this.data.wallet.address
-};
-const jsonString = '<' + JSON.stringify(obj) + '>';
-  console.log(jsonString);
-  this.sendByTwenty(jsonString);
-  wx.showToast({title: '已发送，请等待响应',icon:'success',duration:1000})
+},
+/**
+ * @methodName        dealUptaTimeQR
+ * @description       Processing QR code data
+ * @param             data           Parsed QR code data
+ * @returns           none   
+ * @see               sendByTwenty        the way to send command to stm32
+ */
+dealUptaTimeQR:function(data){
+  const paraData = JSON.parse(data.result)
+  if(paraData.l && paraData.t && paraData.p &&paraData.s){
+    const limitTime = paraData.l;
+    const dateNow = Math.floor(Date.now() / 1000);
+    const time = paraData.t;
+    if(dateNow < (time+60*limitTime)){
+      const Devicepubkey = paraData.p;
+      const deviceSignature = paraData.s;
+      const time = paraData.t;
+      const cmd={
+        TimeStamp:time,
+        command:'MC',
+        UUID:this.data.UUIDOfSTM
+      }
+      var cmdstr=JSON.stringify(cmd)
+      const obj = {
+        cmd:cmdstr,
+        PubKey: Devicepubkey,
+        signature:deviceSignature,
+        address:'0x'+this.data.usingDeviceWallet,
+      }
+      const jsonString = '<' + JSON.stringify(obj) + '>';
+      this.sendByTwenty(jsonString);
+    }else{
+      wx.showToast({title: '二维码过期',icon:'error',duration:1000})
+    }
+  }else{
+    wx.showToast({title: '二维码错误',icon:'error',duration:1000})
+  }
 },
 /**
  * @methodName        sendsecretUnfixedCommand
@@ -736,7 +825,6 @@ sendsecretUnfixedCommand:function(data){
     address:this.data.wallet.address
 };
   const jsonString = '<' + JSON.stringify(obj) + '>';
-  console.log(jsonString);
   this.sendByTwenty(jsonString);
 },
 /**
@@ -796,14 +884,15 @@ sendByTwenty:function(JsonString){
  * @note              
  */ 
 sendData: function(command) {
-  console.log(this.data.characteristicId1);
   wx.writeBLECharacteristicValue({
     characteristicId: this.data.characteristicId1,
     deviceId: this.data.deviceId,
     serviceId: this.data.serviceId,
     value: this.stringToBuffer(command), 
     fail: () => {
-      wx.showToast({title: '发送失败',icon: 'none',duration: 1000,});
+      if(this.data.haveGetConnet > 0){
+        wx.showToast({title: '发送失败',icon: 'none',duration: 1000,});
+      }
     },
   });
 },
@@ -1078,7 +1167,6 @@ walletShow:function(){
         }
       }
     })
-    
   },
 /**
  * @methodName        generateRandomNumber
@@ -1433,7 +1521,6 @@ sequenceRentUserAgain:function(deviceDetail){
     const updatedRentUser = thisDevice.rentUser
     .filter(user => {
       const isValid = this.checkRentTimeValid(user.time);
-      console.log(isValid);
       return isValid;  
     });thisDevice.rentUser = updatedRentUser
     const updatedMyDevice = [...this.data.myDevice];
@@ -1441,7 +1528,7 @@ sequenceRentUserAgain:function(deviceDetail){
     if (deviceIndex !== -1) {
        updatedMyDevice[deviceIndex] = thisDevice;  // 直接替换设备对象
     }
-    console.log('updated:',updatedMyDevice)
+    
     this.setData({myDevice:updatedMyDevice,ifList:false,checkingDevice:thisDevice})
     wx.setStorageSync('myDevice', updatedMyDevice);
   }
@@ -1514,5 +1601,88 @@ generateQRCode: function() {
 //Exit from the loan page
 exitBorrrow:function(){
   this.setData({showNeedRentModal:false})
+},
+//used to show select time limit modal
+showSelctTime:function(){
+  this.setData({setQrTimeModal:true})
+},
+//Respond to selected value
+onPickerChange: function (e) {
+  const selected = this.data.range[e.detail.value];
+  this.setData({selectedValue: selected});
+},
+/**
+ * @methodName        generateTiemLimitQRCode
+ * @description       Set pre-generation parameters
+ * @param             none
+ * @returns           none
+ * @see               generateAuthorCode    Generate a specific QR code
+ */
+generateTiemLimitQRCode:function(){
+  const uuid = this.data.checkingDevice.uuid;
+  const usingTime = Math.floor(Date.now() / 1000);
+  const limitTime = this.data.selectedValue;
+  const command = 'MC';
+  const cmd={
+    TimeStamp:usingTime,
+    command:command,
+    UUID:uuid
+  }
+  console.log(cmd)
+  var cmdstr=JSON.stringify(cmd)
+  const signature =  this.data.wallet.signMessageSync(cmdstr);
+  const willeGenerateQR = {
+    //pubkey,signature,time    only need three 
+    p:this.data.wallet.signingKey.publicKey,
+    l:limitTime,
+    s:signature,
+    t:usingTime
+  }
+  this.generateAuthorCode(willeGenerateQR);
+},
+/**
+ * @methodName        generateAuthorCode
+ * @description       Generate a QR code based on the parameters
+ * @param             data
+ * @returns           none
+ * @see               generateAuthorCode    Generate a specific QR code
+ */
+generateAuthorCode:function(data){
+  const qrCodeContent = JSON.stringify(data);
+  const canvasId = 'AuthorizationQrcode';
+  drawQrcode({
+    width: 200,            
+    height: 200,              
+    canvasId: canvasId,      
+    text: qrCodeContent,    
+    typeNumber:18,
+    background: '#ffffff',  
+    foreground: '#000000'    
+  });
+  setTimeout(() => {
+    wx.canvasToTempFilePath({
+      canvasId: 'AuthorizationQrcode',
+      success: (res) => {
+        this.setData({AuthorizationQRcodePath: res.tempFilePath});
+        const ctx = wx.createCanvasContext('AuthorizationQrcode', this);
+        ctx.clearRect(0, 0, 200, 200);
+        ctx.draw();
+      },fail:()=>{
+        const ctx = wx.createCanvasContext('AuthorizationQrcode', this);
+        ctx.clearRect(0, 0, 200, 200);
+        ctx.draw();
+        wx.showToast({title: '生成失败',icon:'error',duration:1000})
+      }
+    });
+  }, 500);
+  this.setData({showGeneratedQR:true})
+},
+//exit select time modal
+exitGenerateQR:function(){
+  this.setData({setQrTimeModal:false,selectedValue:3})
+},
+//exit generate QRcode and reset all relevant values
+exitAuthorQRButton:function(){
+  this.setData({showGeneratedQR:false,setQrTimeModal:false,AuthorizationQRcodePath:'',selectedValue:3})
 },
 })
