@@ -48,7 +48,7 @@ typedef struct{
 	char Bike_Name[12];
 	char WalletAddress[41];
 	char User_PhoneNumber[12];
-	char User_Wechat[60];
+	char User_Wechat[70];
 } SuperUser;
 
 extern SuperUser SuperUser_Flash;

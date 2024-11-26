@@ -289,6 +289,7 @@ int VerifyIf_RentUser(void){
 	for(int i= 0;i<Rent_Flash_Struct.userCount;i++){
 		RentUser* NowCheckingUser = &Rent_Flash_Struct.users[i]; 
 		if(strncmp(NowCheckingUser->RentAddress,&Address,sizeof(Address))==0){
+			strcpy(RentToTime, NowCheckingUser->TimeStamp);
 			if(strcmp(NowCheckingUser->CanUserOpenBatteryLock ,"Y")==0){
 				CanRentOpenBattery = 1;
 			}
@@ -550,7 +551,7 @@ int AddPhoneAndChat(const char*BikeCommand){           //get a json with phoneNu
 	char INfo[100];
 	strncpy(INfo,BikeCommand+6,sizeof(INfo)-1);
 	INfo[sizeof(INfo)-1]='\0'; 
-	char phone[15];char chat[20];
+	char phone[15];char chat[70];
 	if(Parse_PhoneAndChat(INfo,phone,chat)==1){
 		Update_Struct_ChatNumber(chat);
 		Update_Struct_PhoneNumber(phone);

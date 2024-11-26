@@ -145,15 +145,17 @@ void Blue_check(void){
 * Return        :
 *				 0--illegal
 *				 1--valid
+*				 2--update time successfully
 **********************************************************/
 int Verify_Time(const char *timeFromPhone){
 	time_t recievedTime = ConvertUint_time(timeFromPhone);
-	if(((recievedTime +20) > usingStamp )&& needUpUsingTime == 1){
+	if(((recievedTime +20) > usingStamp )&& needUpUsingTime == 1 && ((recievedTime - 320) < usingStamp)){
+		usingStamp = recievedTime;					 //Paving the way for mini program authorization
 		return 1;
 	}if(needUpUsingTime == 0 && (VerifyIf_Superser() == 1 || CanTrust == 1) && ((recievedTime +20) > usingStamp)){       //upDateTime
 		needUpUsingTime =1;                          //means have already update the time
 		usingStamp = recievedTime;                   //superUser's time update the user's time
-		return 1;
+		return 2;
 	}
 	return 0;
 }
@@ -306,7 +308,8 @@ void DoToTheseJson(void){
 	if(IfSuperUser_Using == 1){                                              //means the using user is SuperUser
 		if(Verify_UUID(uuid) == 1){
 			if(command_verify(Command,Signature,Add_prefix_Address,PubKey) == 1 ){
-				if(Verify_Time(time)==1){
+				int Time_Verify = Verify_Time(time);
+				if(Time_Verify==1){
 					if(strcmp(BikeCommand, "batterylock") == 0){
 						BatteryLock_number = 1;
 					}else if(strcmp(BikeCommand, "bikelock") == 0){
@@ -334,8 +337,14 @@ void DoToTheseJson(void){
 						if(AddPhoneAndChat(BikeCommand)==1){
 							strcpy(Err, "addPACOK");
 						}                                                    
+					}else if(strcmp(BikeCommand, "verifyID") == 0){
+						strcpy(Err, "getConnect");
 					}
-				}else{strcpy(Err, "TimeErr"); return;}
+				}else if(Time_Verify==2){
+					strcpy(Err, "Timeup"); return;
+				}else if(Time_Verify==0){
+					strcpy(Err, "TimeErr"); return;
+				}
 			}else{int k = command_verify(Command,Signature,Address,PubKey);
 				if(k == 2){
 					strcpy(Err, "SignCmdErr"); return;
@@ -348,7 +357,8 @@ void DoToTheseJson(void){
 	if(IfRentUser_Using == 1){
 		if(Verify_UUID(uuid) == 1){
 			if(command_verify(Command,Signature,Add_prefix_Address,PubKey) == 1 ){
-				if(Verify_Time(time)==1){
+				int Time_Verify_rent = Verify_Time(time);
+				if(Time_Verify_rent==1){
 					if(strcmp(BikeCommand, "batterylock") == 0){
 						if(CanRentOpenBattery ==1){
 							BatteryLock_number = 1;
@@ -359,8 +369,11 @@ void DoToTheseJson(void){
 					}else if(strcmp(BikeCommand, "unbikelock"  ) == 0){
 						BikeLock_number = 0;
 						GPIO_ResetBits(GPIOC, GPIO_Pin_13);
+					}else if(strcmp(BikeCommand, "verifyID") == 0){
+						strcpy(Err, "getConnect");
 					}
-				}else{strcpy(Err, "TimeErr"); return;}
+				}else if(Time_Verify_rent==2){strcpy(Err, "Timeup"); return;}
+				 else if(Time_Verify_rent==0){strcpy(Err, "TimeErr"); return;}
 			}else{int k = command_verify(Command,Signature,Address,PubKey);
 				if(k == 2){
 					strcpy(Err, "SignCmdErr"); return;
@@ -418,7 +431,7 @@ void USART3_IRQHandler(void){
 **********************************************************/
 void CreateSendToPhoneJson(char*SendJSON,const char*BatteyVoltage,const char*BatteryState,const char*rotata){
 	cJSON *root = cJSON_CreateObject();
-	cJSON_AddStringToObject(root, "V", "V1.0");
+	cJSON_AddStringToObject(root, "V", "V1.1");
 	cJSON_AddStringToObject(root, "BatteryVoltage", BatteyVoltage);
     cJSON_AddStringToObject(root, "BatteryState", BatteryState);
 	cJSON_AddStringToObject(root, "Rotate", rotata);
@@ -430,6 +443,10 @@ void CreateSendToPhoneJson(char*SendJSON,const char*BatteyVoltage,const char*Bat
 			cJSON_AddStringToObject(root, "RB", "Y");
 		}else{
 			cJSON_AddStringToObject(root, "RB", "N");
+		}if(CanTrust == 1){
+			cJSON_AddStringToObject(root, "T", "Y");
+		}else{
+			cJSON_AddStringToObject(root, "T", "N");
 		}
 		if(strlen(&RentToTime)>0){
 			cJSON_AddStringToObject(root, "TLim", &RentToTime);
