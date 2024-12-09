@@ -27,7 +27,7 @@ extern char BatteryState;
 extern time_t usingStamp; 
 int main(void){	
 	//int fla = (Flash_Erase(0x0800F400));Flash_Erase(0x0800F800);Flash_Erase(0x0800FC00);
-	//IWDG_Init();                              //open IWDG =>if 2s withoutFeed=>Reset
+	IWDG_Init();                              //open IWDG =>if 2s withoutFeed=>Reset
 	AD_Init();     
 	Blue_Init();
 	beep_Init();
@@ -65,11 +65,11 @@ int main(void){
 			cleanIllegalUser();         //every 30s check wheather the rent time llegal
 		}
 //----------------------BikeLock on And Bluetooth connected----------------------
-//BikeLock_number£º1-on 0-off;Tooth_Flag: 1-disconnect 0-connect;
+//BikeLock_numberÂ£Âº1-on 0-off;Tooth_Flag: 1-disconnect 0-connect;
 		if(BikeLock_number == 1){
 			if(Bikelockcount%10==0){        //logically redundant ,set just at once 	
 				Controller_on();            //supply electricity
-				Bikelockcount ++;           //when Bikelockcount = 1£¬don't enter the loop
+				Bikelockcount ++;           //when Bikelockcount = 1Â£Â¬don't enter the loop
 				beep_unlock();
 			}if(whilecount%100==0){
 				unLockBikeCommand1();
