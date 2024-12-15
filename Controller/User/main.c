@@ -27,8 +27,8 @@ extern char BatteryState;
 extern time_t usingStamp; 
 int main(void){	
 	//int fla = (Flash_Erase(0x0800F400));Flash_Erase(0x0800F800);Flash_Erase(0x0800FC00);
-	//IWDG_Init();                              //open IWDG =>if 2s withoutFeed=>Reset
-	AD_Init();     
+	IWDG_Init();                              //open IWDG =>if 2s withoutFeed=>Reset
+  	AD_Init();     
 	Blue_Init();
 	beep_Init();
 	All_Struct_Init();                      //get Flash

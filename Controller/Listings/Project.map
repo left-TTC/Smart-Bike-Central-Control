@@ -279,6 +279,19 @@ Section Cross References
     controller.o(i.unLockBikeCommand1) refers to serial.o(i.Serial_SendArray) for Serial_SendArray
     controller.o(i.unLockBikeCommand2) refers to serial.o(i.Serial_SendArray) for Serial_SendArray
     controller.o(i.unLockBikeCommand3) refers to serial.o(i.Serial_SendArray) for Serial_SendArray
+    beep.o(i.BlueTooth_Connect_Voice) refers to memcpy.o(.text) for __aeabi_memcpy4
+    beep.o(i.BlueTooth_Connect_Voice) refers to stm32f10x_tim.o(i.TIM_OC1Init) for TIM_OC1Init
+    beep.o(i.BlueTooth_Connect_Voice) refers to stm32f10x_tim.o(i.TIM_OC1PreloadConfig) for TIM_OC1PreloadConfig
+    beep.o(i.BlueTooth_Connect_Voice) refers to delay.o(i.Delay_us) for Delay_us
+    beep.o(i.BlueTooth_Connect_Voice) refers to beep.o(.constdata) for .constdata
+    beep.o(i.PWM_Init) refers to stm32f10x_rcc.o(i.RCC_APB2PeriphClockCmd) for RCC_APB2PeriphClockCmd
+    beep.o(i.PWM_Init) refers to stm32f10x_gpio.o(i.GPIO_Init) for GPIO_Init
+    beep.o(i.PWM_Init) refers to stm32f10x_tim.o(i.TIM_TimeBaseInit) for TIM_TimeBaseInit
+    beep.o(i.PWM_Init) refers to stm32f10x_tim.o(i.TIM_OC2Init) for TIM_OC2Init
+    beep.o(i.PWM_Init) refers to stm32f10x_tim.o(i.TIM_OC2PreloadConfig) for TIM_OC2PreloadConfig
+    beep.o(i.PWM_Init) refers to stm32f10x_tim.o(i.TIM_Cmd) for TIM_Cmd
+    beep.o(i.PWM_Init) refers to stm32f10x_tim.o(i.TIM_ITConfig) for TIM_ITConfig
+    beep.o(i.PWM_Init) refers to system_stm32f10x.o(.data) for SystemCoreClock
     beep.o(i.beep) refers to beep.o(i.beep_on) for beep_on
     beep.o(i.beep) refers to beep.o(i.beep_off) for beep_off
     beep.o(i.beep_Init) refers to stm32f10x_rcc.o(i.RCC_APB2PeriphClockCmd) for RCC_APB2PeriphClockCmd
@@ -385,6 +398,7 @@ Section Cross References
     fault.o(i.IWDG_Init) refers to stm32f10x_iwdg.o(i.IWDG_SetPrescaler) for IWDG_SetPrescaler
     fault.o(i.IWDG_Init) refers to stm32f10x_iwdg.o(i.IWDG_SetReload) for IWDG_SetReload
     fault.o(i.IWDG_Init) refers to stm32f10x_iwdg.o(i.IWDG_Enable) for IWDG_Enable
+    main.o(i.main) refers to fault.o(i.IWDG_Init) for IWDG_Init
     main.o(i.main) refers to ad.o(i.AD_Init) for AD_Init
     main.o(i.main) refers to bluetooth.o(i.Blue_Init) for Blue_Init
     main.o(i.main) refers to beep.o(i.beep_Init) for beep_Init
@@ -1250,11 +1264,7 @@ Removing Unused input sections from the image.
     Removing stm32f10x_i2c.o(i.I2C_StretchClockCmd), (24 bytes).
     Removing stm32f10x_i2c.o(i.I2C_StructInit), (30 bytes).
     Removing stm32f10x_i2c.o(i.I2C_TransmitPEC), (24 bytes).
-    Removing stm32f10x_iwdg.o(i.IWDG_Enable), (16 bytes).
     Removing stm32f10x_iwdg.o(i.IWDG_GetFlagStatus), (24 bytes).
-    Removing stm32f10x_iwdg.o(i.IWDG_SetPrescaler), (12 bytes).
-    Removing stm32f10x_iwdg.o(i.IWDG_SetReload), (12 bytes).
-    Removing stm32f10x_iwdg.o(i.IWDG_WriteAccessCmd), (12 bytes).
     Removing stm32f10x_pwr.o(i.PWR_BackupAccessCmd), (12 bytes).
     Removing stm32f10x_pwr.o(i.PWR_ClearFlag), (20 bytes).
     Removing stm32f10x_pwr.o(i.PWR_DeInit), (22 bytes).
@@ -1481,7 +1491,9 @@ Removing Unused input sections from the image.
     Removing serial.o(i.Serial_SendString), (26 bytes).
     Removing serial.o(i.fputc), (16 bytes).
     Removing ad.o(i.AD1_GetValue), (36 bytes).
-    Removing fault.o(i.IWDG_Init), (38 bytes).
+    Removing beep.o(i.BlueTooth_Connect_Voice), (92 bytes).
+    Removing beep.o(i.PWM_Init), (188 bytes).
+    Removing beep.o(.constdata), (12288 bytes).
     Removing cjson.o(i.cJSON_AddArrayToObject), (48 bytes).
     Removing cjson.o(i.cJSON_AddBoolToObject), (52 bytes).
     Removing cjson.o(i.cJSON_AddFalseToObject), (48 bytes).
@@ -1556,7 +1568,7 @@ Removing Unused input sections from the image.
     Removing cjson.o(.bss), (15 bytes).
     Removing uECC.o(.data), (0 bytes).
 
-511 unused section(s) (total 21203 bytes) removed from the image.
+509 unused section(s) (total 33681 bytes) removed from the image.
 
 ==============================================================================
 
@@ -1566,63 +1578,63 @@ Image Symbol Table
 
     Symbol Name                              Value     Ov Type        Size  Object(Section)
 
+    ../clib/microlib/ctype/ctype.c           0x00000000   Number         0  isupper_o.o ABSOLUTE
+    ../clib/microlib/ctype/ctype.c           0x00000000   Number         0  islower_o.o ABSOLUTE
+    ../clib/microlib/ctype/ctype.c           0x00000000   Number         0  isalnum_o.o ABSOLUTE
+    ../clib/microlib/ctype/ctype.c           0x00000000   Number         0  isgraph_o.o ABSOLUTE
+    ../clib/microlib/ctype/ctype.c           0x00000000   Number         0  isspace_c.o ABSOLUTE
+    ../clib/microlib/ctype/ctype.c           0x00000000   Number         0  isblank_o.o ABSOLUTE
+    ../clib/microlib/ctype/ctype.c           0x00000000   Number         0  iscntrl_o.o ABSOLUTE
+    ../clib/microlib/ctype/ctype.c           0x00000000   Number         0  ctype_c.o ABSOLUTE
+    ../clib/microlib/ctype/ctype.c           0x00000000   Number         0  isalpha_o.o ABSOLUTE
     ../clib/microlib/ctype/ctype.c           0x00000000   Number         0  isspace_o.o ABSOLUTE
+    ../clib/microlib/ctype/ctype.c           0x00000000   Number         0  ctype_o.o ABSOLUTE
     ../clib/microlib/ctype/ctype.c           0x00000000   Number         0  ispunct_o.o ABSOLUTE
     ../clib/microlib/ctype/ctype.c           0x00000000   Number         0  isprint_o.o ABSOLUTE
-    ../clib/microlib/ctype/ctype.c           0x00000000   Number         0  islower_o.o ABSOLUTE
-    ../clib/microlib/ctype/ctype.c           0x00000000   Number         0  isgraph_o.o ABSOLUTE
     ../clib/microlib/ctype/ctype.c           0x00000000   Number         0  isdigit_o.o ABSOLUTE
-    ../clib/microlib/ctype/ctype.c           0x00000000   Number         0  iscntrl_o.o ABSOLUTE
-    ../clib/microlib/ctype/ctype.c           0x00000000   Number         0  isupper_o.o ABSOLUTE
-    ../clib/microlib/ctype/ctype.c           0x00000000   Number         0  isspace_c.o ABSOLUTE
-    ../clib/microlib/ctype/ctype.c           0x00000000   Number         0  ctype_c.o ABSOLUTE
-    ../clib/microlib/ctype/ctype.c           0x00000000   Number         0  isblank_o.o ABSOLUTE
-    ../clib/microlib/ctype/ctype.c           0x00000000   Number         0  isalnum_o.o ABSOLUTE
-    ../clib/microlib/ctype/ctype.c           0x00000000   Number         0  ctype_o.o ABSOLUTE
     ../clib/microlib/ctype/ctype.c           0x00000000   Number         0  isxdigit_o.o ABSOLUTE
-    ../clib/microlib/ctype/ctype.c           0x00000000   Number         0  isalpha_o.o ABSOLUTE
     ../clib/microlib/ctype/tolower.c         0x00000000   Number         0  tolower.o ABSOLUTE
     ../clib/microlib/division.c              0x00000000   Number         0  uldiv.o ABSOLUTE
     ../clib/microlib/division.c              0x00000000   Number         0  uidiv.o ABSOLUTE
     ../clib/microlib/errno.c                 0x00000000   Number         0  errno.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry9b.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry10a.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry10b.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry11a.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry11b.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry8b.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry7b.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry9a.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry2.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry9a.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry10b.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry9b.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry11a.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry5.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry11b.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry7a.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry7b.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry8a.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry8b.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry10a.o ABSOLUTE
+    ../clib/microlib/longlong.c              0x00000000   Number         0  llushr.o ABSOLUTE
     ../clib/microlib/longlong.c              0x00000000   Number         0  llsshr.o ABSOLUTE
     ../clib/microlib/longlong.c              0x00000000   Number         0  llshl.o ABSOLUTE
-    ../clib/microlib/longlong.c              0x00000000   Number         0  llushr.o ABSOLUTE
-    ../clib/microlib/malloc/malloc.c         0x00000000   Number         0  malloc.o ABSOLUTE
     ../clib/microlib/malloc/malloc.c         0x00000000   Number         0  mallocr.o ABSOLUTE
-    ../clib/microlib/malloc/malloc.c         0x00000000   Number         0  malloca.o ABSOLUTE
+    ../clib/microlib/malloc/malloc.c         0x00000000   Number         0  malloc.o ABSOLUTE
     ../clib/microlib/malloc/malloc.c         0x00000000   Number         0  mallocra.o ABSOLUTE
+    ../clib/microlib/malloc/malloc.c         0x00000000   Number         0  malloca.o ABSOLUTE
     ../clib/microlib/malloc/mvars.c          0x00000000   Number         0  mvars.o ABSOLUTE
     ../clib/microlib/printf/printf.c         0x00000000   Number         0  printf1.o ABSOLUTE
-    ../clib/microlib/printf/printf.c         0x00000000   Number         0  printfa.o ABSOLUTE
-    ../clib/microlib/printf/printf.c         0x00000000   Number         0  printf5.o ABSOLUTE
-    ../clib/microlib/printf/printf.c         0x00000000   Number         0  printf6.o ABSOLUTE
-    ../clib/microlib/printf/printf.c         0x00000000   Number         0  printf2.o ABSOLUTE
     ../clib/microlib/printf/printf.c         0x00000000   Number         0  printf3.o ABSOLUTE
     ../clib/microlib/printf/printf.c         0x00000000   Number         0  printf4.o ABSOLUTE
+    ../clib/microlib/printf/printf.c         0x00000000   Number         0  printf5.o ABSOLUTE
+    ../clib/microlib/printf/printf.c         0x00000000   Number         0  printf6.o ABSOLUTE
     ../clib/microlib/printf/printf.c         0x00000000   Number         0  printf7.o ABSOLUTE
-    ../clib/microlib/printf/printf.c         0x00000000   Number         0  printfb.o ABSOLUTE
     ../clib/microlib/printf/printf.c         0x00000000   Number         0  printf8.o ABSOLUTE
+    ../clib/microlib/printf/printf.c         0x00000000   Number         0  printfa.o ABSOLUTE
     ../clib/microlib/printf/printf.c         0x00000000   Number         0  printf0.o ABSOLUTE
+    ../clib/microlib/printf/printf.c         0x00000000   Number         0  printf2.o ABSOLUTE
+    ../clib/microlib/printf/printf.c         0x00000000   Number         0  printfb.o ABSOLUTE
     ../clib/microlib/printf/stubs.s          0x00000000   Number         0  stubs.o ABSOLUTE
     ../clib/microlib/stdio/streams.c         0x00000000   Number         0  stdout.o ABSOLUTE
-    ../clib/microlib/string/memcpy.c         0x00000000   Number         0  memcpya.o ABSOLUTE
-    ../clib/microlib/string/memcpy.c         0x00000000   Number         0  memcpy.o ABSOLUTE
     ../clib/microlib/string/memcpy.c         0x00000000   Number         0  memcpyb.o ABSOLUTE
     ../clib/microlib/string/memcpy.c         0x00000000   Number         0  memcpyc.o ABSOLUTE
+    ../clib/microlib/string/memcpy.c         0x00000000   Number         0  memcpya.o ABSOLUTE
+    ../clib/microlib/string/memcpy.c         0x00000000   Number         0  memcpy.o ABSOLUTE
     ../clib/microlib/string/memset.c         0x00000000   Number         0  memseta.o ABSOLUTE
     ../clib/microlib/string/memset.c         0x00000000   Number         0  memset.o ABSOLUTE
     ../clib/microlib/string/strchr.c         0x00000000   Number         0  strchr.o ABSOLUTE
@@ -1633,25 +1645,25 @@ Image Symbol Table
     ../clib/microlib/string/strncpy.c        0x00000000   Number         0  strncpy.o ABSOLUTE
     ../clib/microlib/string/strstr.c         0x00000000   Number         0  strstr.o ABSOLUTE
     ../clib/microlib/stubs.s                 0x00000000   Number         0  iusefp.o ABSOLUTE
-    ../clib/scanf.c                          0x00000000   Number         0  strtod.o ABSOLUTE
     ../clib/scanf.c                          0x00000000   Number         0  _strtoul.o ABSOLUTE
+    ../clib/scanf.c                          0x00000000   Number         0  _chval.o ABSOLUTE
+    ../clib/scanf.c                          0x00000000   Number         0  strtod.o ABSOLUTE
     ../clib/scanf.c                          0x00000000   Number         0  _sgetc.o ABSOLUTE
     ../clib/scanf.c                          0x00000000   Number         0  scanf_char.o ABSOLUTE
-    ../clib/scanf.c                          0x00000000   Number         0  _chval.o ABSOLUTE
-    ../clib/scanf.c                          0x00000000   Number         0  __0sscanf.o ABSOLUTE
-    ../clib/scanf.c                          0x00000000   Number         0  strtol.o ABSOLUTE
-    ../clib/scanf.c                          0x00000000   Number         0  scanf_fp.o ABSOLUTE
     ../clib/scanf.c                          0x00000000   Number         0  _scanf.o ABSOLUTE
+    ../clib/scanf.c                          0x00000000   Number         0  __0sscanf.o ABSOLUTE
+    ../clib/scanf.c                          0x00000000   Number         0  scanf_fp.o ABSOLUTE
+    ../clib/scanf.c                          0x00000000   Number         0  strtol.o ABSOLUTE
     ../fplib/microlib/d2f.c                  0x00000000   Number         0  d2f.o ABSOLUTE
     ../fplib/microlib/f2d.c                  0x00000000   Number         0  f2d.o ABSOLUTE
     ../fplib/microlib/fpadd.c                0x00000000   Number         0  dadd.o ABSOLUTE
     ../fplib/microlib/fpdiv.c                0x00000000   Number         0  ddiv.o ABSOLUTE
-    ../fplib/microlib/fpepilogue.c           0x00000000   Number         0  fepilogue.o ABSOLUTE
     ../fplib/microlib/fpepilogue.c           0x00000000   Number         0  depilogue.o ABSOLUTE
+    ../fplib/microlib/fpepilogue.c           0x00000000   Number         0  fepilogue.o ABSOLUTE
     ../fplib/microlib/fpfix.c                0x00000000   Number         0  dfixul.o ABSOLUTE
     ../fplib/microlib/fpfix.c                0x00000000   Number         0  dfixi.o ABSOLUTE
-    ../fplib/microlib/fpflt.c                0x00000000   Number         0  dfltui.o ABSOLUTE
     ../fplib/microlib/fpflt.c                0x00000000   Number         0  dfltul.o ABSOLUTE
+    ../fplib/microlib/fpflt.c                0x00000000   Number         0  dfltui.o ABSOLUTE
     ../fplib/microlib/fpflt.c                0x00000000   Number         0  dflti.o ABSOLUTE
     ../fplib/microlib/fpmul.c                0x00000000   Number         0  dmul.o ABSOLUTE
     ../mathlib/strtod.c                      0x00000000   Number         0  strtod.o ABSOLUTE
@@ -1781,8 +1793,8 @@ Image Symbol Table
     .text                                    0x08003bd8   Section        0  _strtoul.o(.text)
     .text                                    0x08003c78   Section        0  strtod.o(.text)
     _local_sscanf                            0x08003c79   Thumb Code    54  strtod.o(.text)
-    .text                                    0x08003d14   Section        0  fepilogue.o(.text)
     .text                                    0x08003d14   Section        0  iusefp.o(.text)
+    .text                                    0x08003d14   Section        0  fepilogue.o(.text)
     .text                                    0x08003d82   Section        0  depilogue.o(.text)
     .text                                    0x08003e3c   Section        0  dfltul.o(.text)
     .text                                    0x08003e54   Section        0  dfixul.o(.text)
@@ -1852,186 +1864,191 @@ Image Symbol Table
     i.GetUniqueID                            0x08005540   Section        0  battery.o(i.GetUniqueID)
     i.Get_BatteryLockState                   0x08005584   Section        0  battery.o(i.Get_BatteryLockState)
     i.HardFault_Handler                      0x080055b4   Section        0  stm32f10x_it.o(i.HardFault_Handler)
-    i.IWDG_Feed                              0x080055b8   Section        0  fault.o(i.IWDG_Feed)
-    i.IWDG_ReloadCounter                     0x080055c0   Section        0  stm32f10x_iwdg.o(i.IWDG_ReloadCounter)
-    i.MemManage_Handler                      0x080055d0   Section        0  stm32f10x_it.o(i.MemManage_Handler)
-    i.NMI_Handler                            0x080055d4   Section        0  stm32f10x_it.o(i.NMI_Handler)
-    i.NVIC_Init                              0x080055d8   Section        0  misc.o(i.NVIC_Init)
-    i.NVIC_PriorityGroupConfig               0x08005648   Section        0  misc.o(i.NVIC_PriorityGroupConfig)
-    i.Parse_PhoneAndChat                     0x0800565c   Section        0  flash.o(i.Parse_PhoneAndChat)
-    i.PendSV_Handler                         0x08005710   Section        0  stm32f10x_it.o(i.PendSV_Handler)
-    i.RCC_ADCCLKConfig                       0x08005714   Section        0  stm32f10x_rcc.o(i.RCC_ADCCLKConfig)
-    i.RCC_APB1PeriphClockCmd                 0x0800572c   Section        0  stm32f10x_rcc.o(i.RCC_APB1PeriphClockCmd)
-    i.RCC_APB2PeriphClockCmd                 0x0800574c   Section        0  stm32f10x_rcc.o(i.RCC_APB2PeriphClockCmd)
-    i.RCC_GetClocksFreq                      0x0800576c   Section        0  stm32f10x_rcc.o(i.RCC_GetClocksFreq)
-    i.Read_FLASH_Rent_Struct                 0x08005840   Section        0  flash.o(i.Read_FLASH_Rent_Struct)
-    i.Read_FLASH_Super_Struct                0x08005890   Section        0  flash.o(i.Read_FLASH_Super_Struct)
-    i.SVC_Handler                            0x080058e0   Section        0  stm32f10x_it.o(i.SVC_Handler)
-    i.Save_NowFlashStruct                    0x080058e4   Section        0  flash.o(i.Save_NowFlashStruct)
-    i.Save_RentUser_Struct                   0x0800598c   Section        0  flash.o(i.Save_RentUser_Struct)
-    i.Send_AT_Command                        0x080059ec   Section        0  bluetooth.o(i.Send_AT_Command)
-    i.Send_CommandFlashCarve                 0x08005a04   Section        0  bluetooth.o(i.Send_CommandFlashCarve)
-    i.Send_CommandOver                       0x08005a14   Section        0  bluetooth.o(i.Send_CommandOver)
-    i.Send_CommandStart                      0x08005a24   Section        0  bluetooth.o(i.Send_CommandStart)
-    i.Serial_Init                            0x08005a34   Section        0  serial.o(i.Serial_Init)
-    i.Serial_SendArray                       0x08005aec   Section        0  serial.o(i.Serial_SendArray)
-    i.Serial_SendByte                        0x08005b08   Section        0  serial.o(i.Serial_SendByte)
-    i.SetSysClock                            0x08005b28   Section        0  system_stm32f10x.o(i.SetSysClock)
-    SetSysClock                              0x08005b29   Thumb Code     8  system_stm32f10x.o(i.SetSysClock)
-    i.SetSysClockTo72                        0x08005b30   Section        0  system_stm32f10x.o(i.SetSysClockTo72)
-    SetSysClockTo72                          0x08005b31   Thumb Code   214  system_stm32f10x.o(i.SetSysClockTo72)
-    i.SysTick_Handler                        0x08005c10   Section        0  stm32f10x_it.o(i.SysTick_Handler)
-    i.SystemInit                             0x08005c14   Section        0  system_stm32f10x.o(i.SystemInit)
-    i.TIM2_IRQHandler                        0x08005c74   Section        0  bluetooth.o(i.TIM2_IRQHandler)
-    i.TIM_ClearITPendingBit                  0x08005c98   Section        0  stm32f10x_tim.o(i.TIM_ClearITPendingBit)
-    i.TIM_Cmd                                0x08005c9e   Section        0  stm32f10x_tim.o(i.TIM_Cmd)
-    i.TIM_GetITStatus                        0x08005cb6   Section        0  stm32f10x_tim.o(i.TIM_GetITStatus)
-    i.TIM_ITConfig                           0x08005cd8   Section        0  stm32f10x_tim.o(i.TIM_ITConfig)
-    i.TIM_TimeBaseInit                       0x08005cec   Section        0  stm32f10x_tim.o(i.TIM_TimeBaseInit)
-    i.TimeClock_Init                         0x08005d90   Section        0  bluetooth.o(i.TimeClock_Init)
-    i.USART1_IRQHandler                      0x08005df8   Section        0  serial.o(i.USART1_IRQHandler)
-    i.USART3_IRQHandler                      0x08005e98   Section        0  bluetooth.o(i.USART3_IRQHandler)
-    i.USART_ClearITPendingBit                0x08005fa4   Section        0  stm32f10x_usart.o(i.USART_ClearITPendingBit)
-    i.USART_Cmd                              0x08005fc2   Section        0  stm32f10x_usart.o(i.USART_Cmd)
-    i.USART_GetFlagStatus                    0x08005fda   Section        0  stm32f10x_usart.o(i.USART_GetFlagStatus)
-    i.USART_GetITStatus                      0x08005ff4   Section        0  stm32f10x_usart.o(i.USART_GetITStatus)
-    i.USART_ITConfig                         0x08006048   Section        0  stm32f10x_usart.o(i.USART_ITConfig)
-    i.USART_Init                             0x08006094   Section        0  stm32f10x_usart.o(i.USART_Init)
-    i.USART_ReceiveData                      0x0800616c   Section        0  stm32f10x_usart.o(i.USART_ReceiveData)
-    i.USART_SendData                         0x08006176   Section        0  stm32f10x_usart.o(i.USART_SendData)
-    i.UpdateUser                             0x08006180   Section        0  flash.o(i.UpdateUser)
-    i.Update_Struct_ChatNumber               0x080061f8   Section        0  flash.o(i.Update_Struct_ChatNumber)
-    i.Update_Struct_DeviceName               0x08006214   Section        0  flash.o(i.Update_Struct_DeviceName)
-    i.Update_Struct_PhoneNumber              0x08006230   Section        0  flash.o(i.Update_Struct_PhoneNumber)
-    i.Update_Struct_WalletAddress            0x0800624c   Section        0  flash.o(i.Update_Struct_WalletAddress)
-    i.UsageFault_Handler                     0x08006268   Section        0  stm32f10x_it.o(i.UsageFault_Handler)
-    i.VerifyIf_RentUser                      0x0800626c   Section        0  flash.o(i.VerifyIf_RentUser)
-    i.VerifyIf_Superser                      0x080062e4   Section        0  flash.o(i.VerifyIf_Superser)
-    i.Verify_Time                            0x08006310   Section        0  bluetooth.o(i.Verify_Time)
-    i.Verify_UUID                            0x08006384   Section        0  bluetooth.o(i.Verify_UUID)
-    i.__0snprintf                            0x080063a0   Section        0  printfa.o(i.__0snprintf)
-    i.__0sprintf                             0x080063d0   Section        0  printfa.o(i.__0sprintf)
-    i.__aeabi_errno_addr                     0x080063f8   Section        0  errno.o(i.__aeabi_errno_addr)
-    i.__free$realloc                         0x08006400   Section        0  mallocr.o(i.__free$realloc)
-    i.__malloc$realloc                       0x0800645c   Section        0  mallocr.o(i.__malloc$realloc)
-    i.__scatterload_copy                     0x080064ac   Section       14  handlers.o(i.__scatterload_copy)
-    i.__scatterload_null                     0x080064ba   Section        2  handlers.o(i.__scatterload_null)
-    i.__scatterload_zeroinit                 0x080064bc   Section       14  handlers.o(i.__scatterload_zeroinit)
-    i._fp_digits                             0x080064cc   Section        0  printfa.o(i._fp_digits)
-    _fp_digits                               0x080064cd   Thumb Code   366  printfa.o(i._fp_digits)
-    i._is_digit                              0x08006650   Section        0  scanf_fp.o(i._is_digit)
-    i._printf_core                           0x08006660   Section        0  printfa.o(i._printf_core)
-    _printf_core                             0x08006661   Thumb Code  1744  printfa.o(i._printf_core)
-    i._printf_post_padding                   0x08006d3c   Section        0  printfa.o(i._printf_post_padding)
-    _printf_post_padding                     0x08006d3d   Thumb Code    36  printfa.o(i._printf_post_padding)
-    i._printf_pre_padding                    0x08006d60   Section        0  printfa.o(i._printf_pre_padding)
-    _printf_pre_padding                      0x08006d61   Thumb Code    46  printfa.o(i._printf_pre_padding)
-    i._snputc                                0x08006d8e   Section        0  printfa.o(i._snputc)
-    _snputc                                  0x08006d8f   Thumb Code    22  printfa.o(i._snputc)
-    i._sputc                                 0x08006da4   Section        0  printfa.o(i._sputc)
-    _sputc                                   0x08006da5   Thumb Code    10  printfa.o(i._sputc)
-    i.add_item_to_array                      0x08006dae   Section        0  cjson.o(i.add_item_to_array)
-    add_item_to_array                        0x08006daf   Thumb Code    54  cjson.o(i.add_item_to_array)
-    i.add_item_to_object                     0x08006de4   Section        0  cjson.o(i.add_item_to_object)
-    add_item_to_object                       0x08006de5   Thumb Code   122  cjson.o(i.add_item_to_object)
-    i.beep                                   0x08006e5e   Section        0  beep.o(i.beep)
-    i.beep_Init                              0x08006e8c   Section        0  beep.o(i.beep_Init)
-    i.beep_lock                              0x08006eb8   Section        0  beep.o(i.beep_lock)
-    i.beep_off                               0x08006ef8   Section        0  beep.o(i.beep_off)
-    i.beep_on                                0x08006f08   Section        0  beep.o(i.beep_on)
-    i.beep_unlock                            0x08006f18   Section        0  beep.o(i.beep_unlock)
-    i.buffer_skip_whitespace                 0x08006f58   Section        0  cjson.o(i.buffer_skip_whitespace)
-    buffer_skip_whitespace                   0x08006f59   Thumb Code    72  cjson.o(i.buffer_skip_whitespace)
-    i.cJSON_AddNumberToObject                0x08006fa0   Section        0  cjson.o(i.cJSON_AddNumberToObject)
-    i.cJSON_AddStringToObject                0x08006fdc   Section        0  cjson.o(i.cJSON_AddStringToObject)
-    i.cJSON_CreateNumber                     0x08007010   Section        0  cjson.o(i.cJSON_CreateNumber)
-    i.cJSON_CreateObject                     0x08007074   Section        0  cjson.o(i.cJSON_CreateObject)
-    i.cJSON_CreateString                     0x0800708c   Section        0  cjson.o(i.cJSON_CreateString)
-    i.cJSON_Delete                           0x080070c0   Section        0  cjson.o(i.cJSON_Delete)
-    i.cJSON_GetErrorPtr                      0x08007120   Section        0  cjson.o(i.cJSON_GetErrorPtr)
-    i.cJSON_GetObjectItem                    0x08007130   Section        0  cjson.o(i.cJSON_GetObjectItem)
-    i.cJSON_IsNumber                         0x08007142   Section        0  cjson.o(i.cJSON_IsNumber)
-    i.cJSON_IsString                         0x08007158   Section        0  cjson.o(i.cJSON_IsString)
-    i.cJSON_New_Item                         0x0800716e   Section        0  cjson.o(i.cJSON_New_Item)
-    cJSON_New_Item                           0x0800716f   Thumb Code    26  cjson.o(i.cJSON_New_Item)
-    i.cJSON_Parse                            0x08007188   Section        0  cjson.o(i.cJSON_Parse)
-    i.cJSON_ParseWithLengthOpts              0x08007198   Section        0  cjson.o(i.cJSON_ParseWithLengthOpts)
-    i.cJSON_ParseWithOpts                    0x0800726c   Section        0  cjson.o(i.cJSON_ParseWithOpts)
-    i.cJSON_PrintUnformatted                 0x08007294   Section        0  cjson.o(i.cJSON_PrintUnformatted)
-    i.cJSON_strdup                           0x080072a8   Section        0  cjson.o(i.cJSON_strdup)
-    cJSON_strdup                             0x080072a9   Thumb Code    56  cjson.o(i.cJSON_strdup)
-    i.case_insensitive_strcmp                0x080072e0   Section        0  cjson.o(i.case_insensitive_strcmp)
-    case_insensitive_strcmp                  0x080072e1   Thumb Code    72  cjson.o(i.case_insensitive_strcmp)
-    i.cast_away_const                        0x08007328   Section        0  cjson.o(i.cast_away_const)
-    cast_away_const                          0x08007329   Thumb Code     2  cjson.o(i.cast_away_const)
-    i.changeDeviceName                       0x0800732c   Section        0  battery.o(i.changeDeviceName)
-    i.checkBatteryCommand                    0x080073fc   Section        0  battery.o(i.checkBatteryCommand)
-    i.checkUserValid                         0x08007488   Section        0  flash.o(i.checkUserValid)
-    i.cleanIllegalUser                       0x080074a8   Section        0  flash.o(i.cleanIllegalUser)
-    i.compare_double                         0x08007504   Section        0  cjson.o(i.compare_double)
-    compare_double                           0x08007505   Thumb Code   112  cjson.o(i.compare_double)
-    i.createFlashToPhoneJson                 0x08007578   Section        0  bluetooth.o(i.createFlashToPhoneJson)
-    i.ensure                                 0x08007644   Section        0  cjson.o(i.ensure)
-    ensure                                   0x08007645   Thumb Code   184  cjson.o(i.ensure)
-    i.get_decimal_point                      0x080076fc   Section        0  cjson.o(i.get_decimal_point)
-    get_decimal_point                        0x080076fd   Thumb Code     4  cjson.o(i.get_decimal_point)
-    i.get_object_item                        0x08007700   Section        0  cjson.o(i.get_object_item)
-    get_object_item                          0x08007701   Thumb Code    82  cjson.o(i.get_object_item)
-    i.internal_alloc                         0x08007754   Section        0  mallocr.o(i.internal_alloc)
-    internal_alloc                           0x08007755   Thumb Code    76  mallocr.o(i.internal_alloc)
-    i.main                                   0x080077a4   Section        0  main.o(i.main)
-    i.parse_ALLJSON                          0x080079d0   Section        0  bluetooth.o(i.parse_ALLJSON)
-    i.parse_array                            0x08007b50   Section        0  cjson.o(i.parse_array)
-    parse_array                              0x08007b51   Thumb Code   248  cjson.o(i.parse_array)
-    i.parse_hex4                             0x08007c48   Section        0  cjson.o(i.parse_hex4)
-    parse_hex4                               0x08007c49   Thumb Code    90  cjson.o(i.parse_hex4)
-    i.parse_number                           0x08007ca4   Section        0  cjson.o(i.parse_number)
-    parse_number                             0x08007ca5   Thumb Code   298  cjson.o(i.parse_number)
-    i.parse_object                           0x08007ddc   Section        0  cjson.o(i.parse_object)
-    parse_object                             0x08007ddd   Thumb Code   332  cjson.o(i.parse_object)
-    i.parse_string                           0x08007f28   Section        0  cjson.o(i.parse_string)
-    parse_string                             0x08007f29   Thumb Code   398  cjson.o(i.parse_string)
-    i.parse_value                            0x080080b8   Section        0  cjson.o(i.parse_value)
-    parse_value                              0x080080b9   Thumb Code   290  cjson.o(i.parse_value)
-    i.print                                  0x080081f4   Section        0  cjson.o(i.print)
-    print                                    0x080081f5   Thumb Code   188  cjson.o(i.print)
-    i.print_array                            0x080082b0   Section        0  cjson.o(i.print_array)
-    print_array                              0x080082b1   Thumb Code   178  cjson.o(i.print_array)
-    i.print_number                           0x08008364   Section        0  cjson.o(i.print_number)
-    print_number                             0x08008365   Thumb Code   304  cjson.o(i.print_number)
-    i.print_object                           0x080084b8   Section        0  cjson.o(i.print_object)
-    print_object                             0x080084b9   Thumb Code   372  cjson.o(i.print_object)
-    i.print_string                           0x0800862c   Section        0  cjson.o(i.print_string)
-    print_string                             0x0800862d   Thumb Code    16  cjson.o(i.print_string)
-    i.print_string_ptr                       0x0800863c   Section        0  cjson.o(i.print_string_ptr)
-    print_string_ptr                         0x0800863d   Thumb Code   360  cjson.o(i.print_string_ptr)
-    i.print_value                            0x080087b0   Section        0  cjson.o(i.print_value)
-    print_value                              0x080087b1   Thumb Code   236  cjson.o(i.print_value)
-    i.read_Flash                             0x080088b4   Section        0  flash.o(i.read_Flash)
-    i.realloc                                0x080088bc   Section        0  mallocr.o(i.realloc)
-    i.skip_utf8_bom                          0x08008928   Section        0  cjson.o(i.skip_utf8_bom)
-    skip_utf8_bom                            0x08008929   Thumb Code    56  cjson.o(i.skip_utf8_bom)
-    i.strtod                                 0x08008964   Section        0  strtod.o(i.strtod)
-    i.suffix_object                          0x08008980   Section        0  cjson.o(i.suffix_object)
-    suffix_object                            0x08008981   Thumb Code     6  cjson.o(i.suffix_object)
-    i.unLockBikeCommand1                     0x08008986   Section        0  controller.o(i.unLockBikeCommand1)
-    i.unLockBikeCommand2                     0x080089b6   Section        0  controller.o(i.unLockBikeCommand2)
-    i.unLockBikeCommand3                     0x080089ec   Section        0  controller.o(i.unLockBikeCommand3)
-    i.update_offset                          0x08008a22   Section        0  cjson.o(i.update_offset)
-    update_offset                            0x08008a23   Thumb Code    36  cjson.o(i.update_offset)
-    i.utf16_literal_to_utf8                  0x08008a46   Section        0  cjson.o(i.utf16_literal_to_utf8)
-    utf16_literal_to_utf8                    0x08008a47   Thumb Code   300  cjson.o(i.utf16_literal_to_utf8)
-    .constdata                               0x08008b72   Section      129  ctype_o.o(.constdata)
-    .constdata                               0x08008bf4   Section        4  ctype_o.o(.constdata)
-    table                                    0x08008bf4   Data           4  ctype_o.o(.constdata)
-    [Anonymous Symbol]                       0x08008bf8   Section        0  uECC.o(.rodata)
-    RC                                       0x08008bf8   Data         192  uECC.o(.rodata)
-    curve_secp256k1                          0x08008cb8   Data         180  uECC.o(.rodata)
-    curve_secp192r1                          0x08008d6c   Data         180  uECC.o(.rodata)
-    curve_secp224r1                          0x08008e20   Data         180  uECC.o(.rodata)
-    curve_secp256r1                          0x08008ed4   Data         180  uECC.o(.rodata)
-    curve_secp160r1                          0x08008f88   Data         180  uECC.o(.rodata)
-    [Anonymous Symbol]                       0x0800943c   Section        0  uECC.o(.rodata.str1.1)
+    i.IWDG_Enable                            0x080055b8   Section        0  stm32f10x_iwdg.o(i.IWDG_Enable)
+    i.IWDG_Feed                              0x080055c8   Section        0  fault.o(i.IWDG_Feed)
+    i.IWDG_Init                              0x080055d0   Section        0  fault.o(i.IWDG_Init)
+    i.IWDG_ReloadCounter                     0x080055f8   Section        0  stm32f10x_iwdg.o(i.IWDG_ReloadCounter)
+    i.IWDG_SetPrescaler                      0x08005608   Section        0  stm32f10x_iwdg.o(i.IWDG_SetPrescaler)
+    i.IWDG_SetReload                         0x08005614   Section        0  stm32f10x_iwdg.o(i.IWDG_SetReload)
+    i.IWDG_WriteAccessCmd                    0x08005620   Section        0  stm32f10x_iwdg.o(i.IWDG_WriteAccessCmd)
+    i.MemManage_Handler                      0x0800562c   Section        0  stm32f10x_it.o(i.MemManage_Handler)
+    i.NMI_Handler                            0x08005630   Section        0  stm32f10x_it.o(i.NMI_Handler)
+    i.NVIC_Init                              0x08005634   Section        0  misc.o(i.NVIC_Init)
+    i.NVIC_PriorityGroupConfig               0x080056a4   Section        0  misc.o(i.NVIC_PriorityGroupConfig)
+    i.Parse_PhoneAndChat                     0x080056b8   Section        0  flash.o(i.Parse_PhoneAndChat)
+    i.PendSV_Handler                         0x0800576c   Section        0  stm32f10x_it.o(i.PendSV_Handler)
+    i.RCC_ADCCLKConfig                       0x08005770   Section        0  stm32f10x_rcc.o(i.RCC_ADCCLKConfig)
+    i.RCC_APB1PeriphClockCmd                 0x08005788   Section        0  stm32f10x_rcc.o(i.RCC_APB1PeriphClockCmd)
+    i.RCC_APB2PeriphClockCmd                 0x080057a8   Section        0  stm32f10x_rcc.o(i.RCC_APB2PeriphClockCmd)
+    i.RCC_GetClocksFreq                      0x080057c8   Section        0  stm32f10x_rcc.o(i.RCC_GetClocksFreq)
+    i.Read_FLASH_Rent_Struct                 0x0800589c   Section        0  flash.o(i.Read_FLASH_Rent_Struct)
+    i.Read_FLASH_Super_Struct                0x080058ec   Section        0  flash.o(i.Read_FLASH_Super_Struct)
+    i.SVC_Handler                            0x0800593c   Section        0  stm32f10x_it.o(i.SVC_Handler)
+    i.Save_NowFlashStruct                    0x08005940   Section        0  flash.o(i.Save_NowFlashStruct)
+    i.Save_RentUser_Struct                   0x080059e8   Section        0  flash.o(i.Save_RentUser_Struct)
+    i.Send_AT_Command                        0x08005a48   Section        0  bluetooth.o(i.Send_AT_Command)
+    i.Send_CommandFlashCarve                 0x08005a60   Section        0  bluetooth.o(i.Send_CommandFlashCarve)
+    i.Send_CommandOver                       0x08005a70   Section        0  bluetooth.o(i.Send_CommandOver)
+    i.Send_CommandStart                      0x08005a80   Section        0  bluetooth.o(i.Send_CommandStart)
+    i.Serial_Init                            0x08005a90   Section        0  serial.o(i.Serial_Init)
+    i.Serial_SendArray                       0x08005b48   Section        0  serial.o(i.Serial_SendArray)
+    i.Serial_SendByte                        0x08005b64   Section        0  serial.o(i.Serial_SendByte)
+    i.SetSysClock                            0x08005b84   Section        0  system_stm32f10x.o(i.SetSysClock)
+    SetSysClock                              0x08005b85   Thumb Code     8  system_stm32f10x.o(i.SetSysClock)
+    i.SetSysClockTo72                        0x08005b8c   Section        0  system_stm32f10x.o(i.SetSysClockTo72)
+    SetSysClockTo72                          0x08005b8d   Thumb Code   214  system_stm32f10x.o(i.SetSysClockTo72)
+    i.SysTick_Handler                        0x08005c6c   Section        0  stm32f10x_it.o(i.SysTick_Handler)
+    i.SystemInit                             0x08005c70   Section        0  system_stm32f10x.o(i.SystemInit)
+    i.TIM2_IRQHandler                        0x08005cd0   Section        0  bluetooth.o(i.TIM2_IRQHandler)
+    i.TIM_ClearITPendingBit                  0x08005cf4   Section        0  stm32f10x_tim.o(i.TIM_ClearITPendingBit)
+    i.TIM_Cmd                                0x08005cfa   Section        0  stm32f10x_tim.o(i.TIM_Cmd)
+    i.TIM_GetITStatus                        0x08005d12   Section        0  stm32f10x_tim.o(i.TIM_GetITStatus)
+    i.TIM_ITConfig                           0x08005d34   Section        0  stm32f10x_tim.o(i.TIM_ITConfig)
+    i.TIM_TimeBaseInit                       0x08005d48   Section        0  stm32f10x_tim.o(i.TIM_TimeBaseInit)
+    i.TimeClock_Init                         0x08005dec   Section        0  bluetooth.o(i.TimeClock_Init)
+    i.USART1_IRQHandler                      0x08005e54   Section        0  serial.o(i.USART1_IRQHandler)
+    i.USART3_IRQHandler                      0x08005ef4   Section        0  bluetooth.o(i.USART3_IRQHandler)
+    i.USART_ClearITPendingBit                0x08006000   Section        0  stm32f10x_usart.o(i.USART_ClearITPendingBit)
+    i.USART_Cmd                              0x0800601e   Section        0  stm32f10x_usart.o(i.USART_Cmd)
+    i.USART_GetFlagStatus                    0x08006036   Section        0  stm32f10x_usart.o(i.USART_GetFlagStatus)
+    i.USART_GetITStatus                      0x08006050   Section        0  stm32f10x_usart.o(i.USART_GetITStatus)
+    i.USART_ITConfig                         0x080060a4   Section        0  stm32f10x_usart.o(i.USART_ITConfig)
+    i.USART_Init                             0x080060f0   Section        0  stm32f10x_usart.o(i.USART_Init)
+    i.USART_ReceiveData                      0x080061c8   Section        0  stm32f10x_usart.o(i.USART_ReceiveData)
+    i.USART_SendData                         0x080061d2   Section        0  stm32f10x_usart.o(i.USART_SendData)
+    i.UpdateUser                             0x080061dc   Section        0  flash.o(i.UpdateUser)
+    i.Update_Struct_ChatNumber               0x08006254   Section        0  flash.o(i.Update_Struct_ChatNumber)
+    i.Update_Struct_DeviceName               0x08006270   Section        0  flash.o(i.Update_Struct_DeviceName)
+    i.Update_Struct_PhoneNumber              0x0800628c   Section        0  flash.o(i.Update_Struct_PhoneNumber)
+    i.Update_Struct_WalletAddress            0x080062a8   Section        0  flash.o(i.Update_Struct_WalletAddress)
+    i.UsageFault_Handler                     0x080062c4   Section        0  stm32f10x_it.o(i.UsageFault_Handler)
+    i.VerifyIf_RentUser                      0x080062c8   Section        0  flash.o(i.VerifyIf_RentUser)
+    i.VerifyIf_Superser                      0x08006340   Section        0  flash.o(i.VerifyIf_Superser)
+    i.Verify_Time                            0x0800636c   Section        0  bluetooth.o(i.Verify_Time)
+    i.Verify_UUID                            0x080063e0   Section        0  bluetooth.o(i.Verify_UUID)
+    i.__0snprintf                            0x080063fc   Section        0  printfa.o(i.__0snprintf)
+    i.__0sprintf                             0x0800642c   Section        0  printfa.o(i.__0sprintf)
+    i.__aeabi_errno_addr                     0x08006454   Section        0  errno.o(i.__aeabi_errno_addr)
+    i.__free$realloc                         0x0800645c   Section        0  mallocr.o(i.__free$realloc)
+    i.__malloc$realloc                       0x080064b8   Section        0  mallocr.o(i.__malloc$realloc)
+    i.__scatterload_copy                     0x08006508   Section       14  handlers.o(i.__scatterload_copy)
+    i.__scatterload_null                     0x08006516   Section        2  handlers.o(i.__scatterload_null)
+    i.__scatterload_zeroinit                 0x08006518   Section       14  handlers.o(i.__scatterload_zeroinit)
+    i._fp_digits                             0x08006528   Section        0  printfa.o(i._fp_digits)
+    _fp_digits                               0x08006529   Thumb Code   366  printfa.o(i._fp_digits)
+    i._is_digit                              0x080066ac   Section        0  scanf_fp.o(i._is_digit)
+    i._printf_core                           0x080066bc   Section        0  printfa.o(i._printf_core)
+    _printf_core                             0x080066bd   Thumb Code  1744  printfa.o(i._printf_core)
+    i._printf_post_padding                   0x08006d98   Section        0  printfa.o(i._printf_post_padding)
+    _printf_post_padding                     0x08006d99   Thumb Code    36  printfa.o(i._printf_post_padding)
+    i._printf_pre_padding                    0x08006dbc   Section        0  printfa.o(i._printf_pre_padding)
+    _printf_pre_padding                      0x08006dbd   Thumb Code    46  printfa.o(i._printf_pre_padding)
+    i._snputc                                0x08006dea   Section        0  printfa.o(i._snputc)
+    _snputc                                  0x08006deb   Thumb Code    22  printfa.o(i._snputc)
+    i._sputc                                 0x08006e00   Section        0  printfa.o(i._sputc)
+    _sputc                                   0x08006e01   Thumb Code    10  printfa.o(i._sputc)
+    i.add_item_to_array                      0x08006e0a   Section        0  cjson.o(i.add_item_to_array)
+    add_item_to_array                        0x08006e0b   Thumb Code    54  cjson.o(i.add_item_to_array)
+    i.add_item_to_object                     0x08006e40   Section        0  cjson.o(i.add_item_to_object)
+    add_item_to_object                       0x08006e41   Thumb Code   122  cjson.o(i.add_item_to_object)
+    i.beep                                   0x08006eba   Section        0  beep.o(i.beep)
+    i.beep_Init                              0x08006ee8   Section        0  beep.o(i.beep_Init)
+    i.beep_lock                              0x08006f14   Section        0  beep.o(i.beep_lock)
+    i.beep_off                               0x08006f54   Section        0  beep.o(i.beep_off)
+    i.beep_on                                0x08006f64   Section        0  beep.o(i.beep_on)
+    i.beep_unlock                            0x08006f74   Section        0  beep.o(i.beep_unlock)
+    i.buffer_skip_whitespace                 0x08006fb4   Section        0  cjson.o(i.buffer_skip_whitespace)
+    buffer_skip_whitespace                   0x08006fb5   Thumb Code    72  cjson.o(i.buffer_skip_whitespace)
+    i.cJSON_AddNumberToObject                0x08006ffc   Section        0  cjson.o(i.cJSON_AddNumberToObject)
+    i.cJSON_AddStringToObject                0x08007038   Section        0  cjson.o(i.cJSON_AddStringToObject)
+    i.cJSON_CreateNumber                     0x0800706c   Section        0  cjson.o(i.cJSON_CreateNumber)
+    i.cJSON_CreateObject                     0x080070d0   Section        0  cjson.o(i.cJSON_CreateObject)
+    i.cJSON_CreateString                     0x080070e8   Section        0  cjson.o(i.cJSON_CreateString)
+    i.cJSON_Delete                           0x0800711c   Section        0  cjson.o(i.cJSON_Delete)
+    i.cJSON_GetErrorPtr                      0x0800717c   Section        0  cjson.o(i.cJSON_GetErrorPtr)
+    i.cJSON_GetObjectItem                    0x0800718c   Section        0  cjson.o(i.cJSON_GetObjectItem)
+    i.cJSON_IsNumber                         0x0800719e   Section        0  cjson.o(i.cJSON_IsNumber)
+    i.cJSON_IsString                         0x080071b4   Section        0  cjson.o(i.cJSON_IsString)
+    i.cJSON_New_Item                         0x080071ca   Section        0  cjson.o(i.cJSON_New_Item)
+    cJSON_New_Item                           0x080071cb   Thumb Code    26  cjson.o(i.cJSON_New_Item)
+    i.cJSON_Parse                            0x080071e4   Section        0  cjson.o(i.cJSON_Parse)
+    i.cJSON_ParseWithLengthOpts              0x080071f4   Section        0  cjson.o(i.cJSON_ParseWithLengthOpts)
+    i.cJSON_ParseWithOpts                    0x080072c8   Section        0  cjson.o(i.cJSON_ParseWithOpts)
+    i.cJSON_PrintUnformatted                 0x080072f0   Section        0  cjson.o(i.cJSON_PrintUnformatted)
+    i.cJSON_strdup                           0x08007304   Section        0  cjson.o(i.cJSON_strdup)
+    cJSON_strdup                             0x08007305   Thumb Code    56  cjson.o(i.cJSON_strdup)
+    i.case_insensitive_strcmp                0x0800733c   Section        0  cjson.o(i.case_insensitive_strcmp)
+    case_insensitive_strcmp                  0x0800733d   Thumb Code    72  cjson.o(i.case_insensitive_strcmp)
+    i.cast_away_const                        0x08007384   Section        0  cjson.o(i.cast_away_const)
+    cast_away_const                          0x08007385   Thumb Code     2  cjson.o(i.cast_away_const)
+    i.changeDeviceName                       0x08007388   Section        0  battery.o(i.changeDeviceName)
+    i.checkBatteryCommand                    0x08007458   Section        0  battery.o(i.checkBatteryCommand)
+    i.checkUserValid                         0x080074e4   Section        0  flash.o(i.checkUserValid)
+    i.cleanIllegalUser                       0x08007504   Section        0  flash.o(i.cleanIllegalUser)
+    i.compare_double                         0x08007560   Section        0  cjson.o(i.compare_double)
+    compare_double                           0x08007561   Thumb Code   112  cjson.o(i.compare_double)
+    i.createFlashToPhoneJson                 0x080075d4   Section        0  bluetooth.o(i.createFlashToPhoneJson)
+    i.ensure                                 0x080076a0   Section        0  cjson.o(i.ensure)
+    ensure                                   0x080076a1   Thumb Code   184  cjson.o(i.ensure)
+    i.get_decimal_point                      0x08007758   Section        0  cjson.o(i.get_decimal_point)
+    get_decimal_point                        0x08007759   Thumb Code     4  cjson.o(i.get_decimal_point)
+    i.get_object_item                        0x0800775c   Section        0  cjson.o(i.get_object_item)
+    get_object_item                          0x0800775d   Thumb Code    82  cjson.o(i.get_object_item)
+    i.internal_alloc                         0x080077b0   Section        0  mallocr.o(i.internal_alloc)
+    internal_alloc                           0x080077b1   Thumb Code    76  mallocr.o(i.internal_alloc)
+    i.main                                   0x08007800   Section        0  main.o(i.main)
+    i.parse_ALLJSON                          0x08007a30   Section        0  bluetooth.o(i.parse_ALLJSON)
+    i.parse_array                            0x08007bb0   Section        0  cjson.o(i.parse_array)
+    parse_array                              0x08007bb1   Thumb Code   248  cjson.o(i.parse_array)
+    i.parse_hex4                             0x08007ca8   Section        0  cjson.o(i.parse_hex4)
+    parse_hex4                               0x08007ca9   Thumb Code    90  cjson.o(i.parse_hex4)
+    i.parse_number                           0x08007d04   Section        0  cjson.o(i.parse_number)
+    parse_number                             0x08007d05   Thumb Code   298  cjson.o(i.parse_number)
+    i.parse_object                           0x08007e3c   Section        0  cjson.o(i.parse_object)
+    parse_object                             0x08007e3d   Thumb Code   332  cjson.o(i.parse_object)
+    i.parse_string                           0x08007f88   Section        0  cjson.o(i.parse_string)
+    parse_string                             0x08007f89   Thumb Code   398  cjson.o(i.parse_string)
+    i.parse_value                            0x08008118   Section        0  cjson.o(i.parse_value)
+    parse_value                              0x08008119   Thumb Code   290  cjson.o(i.parse_value)
+    i.print                                  0x08008254   Section        0  cjson.o(i.print)
+    print                                    0x08008255   Thumb Code   188  cjson.o(i.print)
+    i.print_array                            0x08008310   Section        0  cjson.o(i.print_array)
+    print_array                              0x08008311   Thumb Code   178  cjson.o(i.print_array)
+    i.print_number                           0x080083c4   Section        0  cjson.o(i.print_number)
+    print_number                             0x080083c5   Thumb Code   304  cjson.o(i.print_number)
+    i.print_object                           0x08008518   Section        0  cjson.o(i.print_object)
+    print_object                             0x08008519   Thumb Code   372  cjson.o(i.print_object)
+    i.print_string                           0x0800868c   Section        0  cjson.o(i.print_string)
+    print_string                             0x0800868d   Thumb Code    16  cjson.o(i.print_string)
+    i.print_string_ptr                       0x0800869c   Section        0  cjson.o(i.print_string_ptr)
+    print_string_ptr                         0x0800869d   Thumb Code   360  cjson.o(i.print_string_ptr)
+    i.print_value                            0x08008810   Section        0  cjson.o(i.print_value)
+    print_value                              0x08008811   Thumb Code   236  cjson.o(i.print_value)
+    i.read_Flash                             0x08008914   Section        0  flash.o(i.read_Flash)
+    i.realloc                                0x0800891c   Section        0  mallocr.o(i.realloc)
+    i.skip_utf8_bom                          0x08008988   Section        0  cjson.o(i.skip_utf8_bom)
+    skip_utf8_bom                            0x08008989   Thumb Code    56  cjson.o(i.skip_utf8_bom)
+    i.strtod                                 0x080089c4   Section        0  strtod.o(i.strtod)
+    i.suffix_object                          0x080089e0   Section        0  cjson.o(i.suffix_object)
+    suffix_object                            0x080089e1   Thumb Code     6  cjson.o(i.suffix_object)
+    i.unLockBikeCommand1                     0x080089e6   Section        0  controller.o(i.unLockBikeCommand1)
+    i.unLockBikeCommand2                     0x08008a16   Section        0  controller.o(i.unLockBikeCommand2)
+    i.unLockBikeCommand3                     0x08008a4c   Section        0  controller.o(i.unLockBikeCommand3)
+    i.update_offset                          0x08008a82   Section        0  cjson.o(i.update_offset)
+    update_offset                            0x08008a83   Thumb Code    36  cjson.o(i.update_offset)
+    i.utf16_literal_to_utf8                  0x08008aa6   Section        0  cjson.o(i.utf16_literal_to_utf8)
+    utf16_literal_to_utf8                    0x08008aa7   Thumb Code   300  cjson.o(i.utf16_literal_to_utf8)
+    .constdata                               0x08008bd2   Section      129  ctype_o.o(.constdata)
+    .constdata                               0x08008c54   Section        4  ctype_o.o(.constdata)
+    table                                    0x08008c54   Data           4  ctype_o.o(.constdata)
+    [Anonymous Symbol]                       0x08008c58   Section        0  uECC.o(.rodata)
+    RC                                       0x08008c58   Data         192  uECC.o(.rodata)
+    curve_secp256k1                          0x08008d18   Data         180  uECC.o(.rodata)
+    curve_secp192r1                          0x08008dcc   Data         180  uECC.o(.rodata)
+    curve_secp224r1                          0x08008e80   Data         180  uECC.o(.rodata)
+    curve_secp256r1                          0x08008f34   Data         180  uECC.o(.rodata)
+    curve_secp160r1                          0x08008fe8   Data         180  uECC.o(.rodata)
+    [Anonymous Symbol]                       0x0800949c   Section        0  uECC.o(.rodata.str1.1)
     .data                                    0x20000000   Section       20  stm32f10x_rcc.o(.data)
     APBAHBPrescTable                         0x20000000   Data          16  stm32f10x_rcc.o(.data)
     ADCPrescTable                            0x20000010   Data           4  stm32f10x_rcc.o(.data)
@@ -2372,113 +2389,118 @@ Image Symbol Table
     GetUniqueID                              0x08005541   Thumb Code    42  battery.o(i.GetUniqueID)
     Get_BatteryLockState                     0x08005585   Thumb Code    34  battery.o(i.Get_BatteryLockState)
     HardFault_Handler                        0x080055b5   Thumb Code     4  stm32f10x_it.o(i.HardFault_Handler)
-    IWDG_Feed                                0x080055b9   Thumb Code     8  fault.o(i.IWDG_Feed)
-    IWDG_ReloadCounter                       0x080055c1   Thumb Code    10  stm32f10x_iwdg.o(i.IWDG_ReloadCounter)
-    MemManage_Handler                        0x080055d1   Thumb Code     4  stm32f10x_it.o(i.MemManage_Handler)
-    NMI_Handler                              0x080055d5   Thumb Code     2  stm32f10x_it.o(i.NMI_Handler)
-    NVIC_Init                                0x080055d9   Thumb Code   100  misc.o(i.NVIC_Init)
-    NVIC_PriorityGroupConfig                 0x08005649   Thumb Code    10  misc.o(i.NVIC_PriorityGroupConfig)
-    Parse_PhoneAndChat                       0x0800565d   Thumb Code   164  flash.o(i.Parse_PhoneAndChat)
-    PendSV_Handler                           0x08005711   Thumb Code     2  stm32f10x_it.o(i.PendSV_Handler)
-    RCC_ADCCLKConfig                         0x08005715   Thumb Code    18  stm32f10x_rcc.o(i.RCC_ADCCLKConfig)
-    RCC_APB1PeriphClockCmd                   0x0800572d   Thumb Code    26  stm32f10x_rcc.o(i.RCC_APB1PeriphClockCmd)
-    RCC_APB2PeriphClockCmd                   0x0800574d   Thumb Code    26  stm32f10x_rcc.o(i.RCC_APB2PeriphClockCmd)
-    RCC_GetClocksFreq                        0x0800576d   Thumb Code   192  stm32f10x_rcc.o(i.RCC_GetClocksFreq)
-    Read_FLASH_Rent_Struct                   0x08005841   Thumb Code    70  flash.o(i.Read_FLASH_Rent_Struct)
-    Read_FLASH_Super_Struct                  0x08005891   Thumb Code    70  flash.o(i.Read_FLASH_Super_Struct)
-    SVC_Handler                              0x080058e1   Thumb Code     2  stm32f10x_it.o(i.SVC_Handler)
-    Save_NowFlashStruct                      0x080058e5   Thumb Code   142  flash.o(i.Save_NowFlashStruct)
-    Save_RentUser_Struct                     0x0800598d   Thumb Code    82  flash.o(i.Save_RentUser_Struct)
-    Send_AT_Command                          0x080059ed   Thumb Code    22  bluetooth.o(i.Send_AT_Command)
-    Send_CommandFlashCarve                   0x08005a05   Thumb Code    10  bluetooth.o(i.Send_CommandFlashCarve)
-    Send_CommandOver                         0x08005a15   Thumb Code    10  bluetooth.o(i.Send_CommandOver)
-    Send_CommandStart                        0x08005a25   Thumb Code    10  bluetooth.o(i.Send_CommandStart)
-    Serial_Init                              0x08005a35   Thumb Code   174  serial.o(i.Serial_Init)
-    Serial_SendArray                         0x08005aed   Thumb Code    26  serial.o(i.Serial_SendArray)
-    Serial_SendByte                          0x08005b09   Thumb Code    28  serial.o(i.Serial_SendByte)
-    SysTick_Handler                          0x08005c11   Thumb Code     2  stm32f10x_it.o(i.SysTick_Handler)
-    SystemInit                               0x08005c15   Thumb Code    78  system_stm32f10x.o(i.SystemInit)
-    TIM2_IRQHandler                          0x08005c75   Thumb Code    32  bluetooth.o(i.TIM2_IRQHandler)
-    TIM_ClearITPendingBit                    0x08005c99   Thumb Code     6  stm32f10x_tim.o(i.TIM_ClearITPendingBit)
-    TIM_Cmd                                  0x08005c9f   Thumb Code    24  stm32f10x_tim.o(i.TIM_Cmd)
-    TIM_GetITStatus                          0x08005cb7   Thumb Code    34  stm32f10x_tim.o(i.TIM_GetITStatus)
-    TIM_ITConfig                             0x08005cd9   Thumb Code    18  stm32f10x_tim.o(i.TIM_ITConfig)
-    TIM_TimeBaseInit                         0x08005ced   Thumb Code   122  stm32f10x_tim.o(i.TIM_TimeBaseInit)
-    TimeClock_Init                           0x08005d91   Thumb Code   102  bluetooth.o(i.TimeClock_Init)
-    USART1_IRQHandler                        0x08005df9   Thumb Code   140  serial.o(i.USART1_IRQHandler)
-    USART3_IRQHandler                        0x08005e99   Thumb Code   232  bluetooth.o(i.USART3_IRQHandler)
-    USART_ClearITPendingBit                  0x08005fa5   Thumb Code    30  stm32f10x_usart.o(i.USART_ClearITPendingBit)
-    USART_Cmd                                0x08005fc3   Thumb Code    24  stm32f10x_usart.o(i.USART_Cmd)
-    USART_GetFlagStatus                      0x08005fdb   Thumb Code    26  stm32f10x_usart.o(i.USART_GetFlagStatus)
-    USART_GetITStatus                        0x08005ff5   Thumb Code    84  stm32f10x_usart.o(i.USART_GetITStatus)
-    USART_ITConfig                           0x08006049   Thumb Code    74  stm32f10x_usart.o(i.USART_ITConfig)
-    USART_Init                               0x08006095   Thumb Code   210  stm32f10x_usart.o(i.USART_Init)
-    USART_ReceiveData                        0x0800616d   Thumb Code    10  stm32f10x_usart.o(i.USART_ReceiveData)
-    USART_SendData                           0x08006177   Thumb Code     8  stm32f10x_usart.o(i.USART_SendData)
-    UpdateUser                               0x08006181   Thumb Code   112  flash.o(i.UpdateUser)
-    Update_Struct_ChatNumber                 0x080061f9   Thumb Code    18  flash.o(i.Update_Struct_ChatNumber)
-    Update_Struct_DeviceName                 0x08006215   Thumb Code    18  flash.o(i.Update_Struct_DeviceName)
-    Update_Struct_PhoneNumber                0x08006231   Thumb Code    18  flash.o(i.Update_Struct_PhoneNumber)
-    Update_Struct_WalletAddress              0x0800624d   Thumb Code    18  flash.o(i.Update_Struct_WalletAddress)
-    UsageFault_Handler                       0x08006269   Thumb Code     4  stm32f10x_it.o(i.UsageFault_Handler)
-    VerifyIf_RentUser                        0x0800626d   Thumb Code    94  flash.o(i.VerifyIf_RentUser)
-    VerifyIf_Superser                        0x080062e5   Thumb Code    32  flash.o(i.VerifyIf_Superser)
-    Verify_Time                              0x08006311   Thumb Code   104  bluetooth.o(i.Verify_Time)
-    Verify_UUID                              0x08006385   Thumb Code    22  bluetooth.o(i.Verify_UUID)
-    __0snprintf                              0x080063a1   Thumb Code    44  printfa.o(i.__0snprintf)
-    __1snprintf                              0x080063a1   Thumb Code     0  printfa.o(i.__0snprintf)
-    __2snprintf                              0x080063a1   Thumb Code     0  printfa.o(i.__0snprintf)
-    __c89snprintf                            0x080063a1   Thumb Code     0  printfa.o(i.__0snprintf)
-    snprintf                                 0x080063a1   Thumb Code     0  printfa.o(i.__0snprintf)
-    __0sprintf                               0x080063d1   Thumb Code    34  printfa.o(i.__0sprintf)
-    __1sprintf                               0x080063d1   Thumb Code     0  printfa.o(i.__0sprintf)
-    __2sprintf                               0x080063d1   Thumb Code     0  printfa.o(i.__0sprintf)
-    __c89sprintf                             0x080063d1   Thumb Code     0  printfa.o(i.__0sprintf)
-    sprintf                                  0x080063d1   Thumb Code     0  printfa.o(i.__0sprintf)
-    __aeabi_errno_addr                       0x080063f9   Thumb Code     4  errno.o(i.__aeabi_errno_addr)
-    __rt_errno_addr                          0x080063f9   Thumb Code     0  errno.o(i.__aeabi_errno_addr)
-    free                                     0x08006401   Thumb Code    88  mallocr.o(i.__free$realloc)
-    malloc                                   0x0800645d   Thumb Code    64  mallocr.o(i.__malloc$realloc)
-    __scatterload_copy                       0x080064ad   Thumb Code    14  handlers.o(i.__scatterload_copy)
-    __scatterload_null                       0x080064bb   Thumb Code     2  handlers.o(i.__scatterload_null)
-    __scatterload_zeroinit                   0x080064bd   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
-    _is_digit                                0x08006651   Thumb Code    14  scanf_fp.o(i._is_digit)
-    beep                                     0x08006e5f   Thumb Code    46  beep.o(i.beep)
-    beep_Init                                0x08006e8d   Thumb Code    38  beep.o(i.beep_Init)
-    beep_lock                                0x08006eb9   Thumb Code    64  beep.o(i.beep_lock)
-    beep_off                                 0x08006ef9   Thumb Code    12  beep.o(i.beep_off)
-    beep_on                                  0x08006f09   Thumb Code    12  beep.o(i.beep_on)
-    beep_unlock                              0x08006f19   Thumb Code    64  beep.o(i.beep_unlock)
-    cJSON_AddNumberToObject                  0x08006fa1   Thumb Code    56  cjson.o(i.cJSON_AddNumberToObject)
-    cJSON_AddStringToObject                  0x08006fdd   Thumb Code    48  cjson.o(i.cJSON_AddStringToObject)
-    cJSON_CreateNumber                       0x08007011   Thumb Code    82  cjson.o(i.cJSON_CreateNumber)
-    cJSON_CreateObject                       0x08007075   Thumb Code    20  cjson.o(i.cJSON_CreateObject)
-    cJSON_CreateString                       0x0800708d   Thumb Code    46  cjson.o(i.cJSON_CreateString)
-    cJSON_Delete                             0x080070c1   Thumb Code    92  cjson.o(i.cJSON_Delete)
-    cJSON_GetErrorPtr                        0x08007121   Thumb Code    12  cjson.o(i.cJSON_GetErrorPtr)
-    cJSON_GetObjectItem                      0x08007131   Thumb Code    18  cjson.o(i.cJSON_GetObjectItem)
-    cJSON_IsNumber                           0x08007143   Thumb Code    22  cjson.o(i.cJSON_IsNumber)
-    cJSON_IsString                           0x08007159   Thumb Code    22  cjson.o(i.cJSON_IsString)
-    cJSON_Parse                              0x08007189   Thumb Code    16  cjson.o(i.cJSON_Parse)
-    cJSON_ParseWithLengthOpts                0x08007199   Thumb Code   204  cjson.o(i.cJSON_ParseWithLengthOpts)
-    cJSON_ParseWithOpts                      0x0800726d   Thumb Code    40  cjson.o(i.cJSON_ParseWithOpts)
-    cJSON_PrintUnformatted                   0x08007295   Thumb Code    16  cjson.o(i.cJSON_PrintUnformatted)
-    changeDeviceName                         0x0800732d   Thumb Code   138  battery.o(i.changeDeviceName)
-    checkBatteryCommand                      0x080073fd   Thumb Code    80  battery.o(i.checkBatteryCommand)
-    checkUserValid                           0x08007489   Thumb Code    28  flash.o(i.checkUserValid)
-    cleanIllegalUser                         0x080074a9   Thumb Code    86  flash.o(i.cleanIllegalUser)
-    createFlashToPhoneJson                   0x08007579   Thumb Code   146  bluetooth.o(i.createFlashToPhoneJson)
-    main                                     0x080077a5   Thumb Code   522  main.o(i.main)
-    parse_ALLJSON                            0x080079d1   Thumb Code   334  bluetooth.o(i.parse_ALLJSON)
-    read_Flash                               0x080088b5   Thumb Code     6  flash.o(i.read_Flash)
-    realloc                                  0x080088bd   Thumb Code   102  mallocr.o(i.realloc)
-    strtod                                   0x08008965   Thumb Code    28  strtod.o(i.strtod)
-    unLockBikeCommand1                       0x08008987   Thumb Code    48  controller.o(i.unLockBikeCommand1)
-    unLockBikeCommand2                       0x080089b7   Thumb Code    54  controller.o(i.unLockBikeCommand2)
-    unLockBikeCommand3                       0x080089ed   Thumb Code    54  controller.o(i.unLockBikeCommand3)
-    __ctype_table                            0x08008b72   Data         129  ctype_o.o(.constdata)
-    Region$$Table$$Base                      0x08009444   Number         0  anon$$obj.o(Region$$Table)
-    Region$$Table$$Limit                     0x08009464   Number         0  anon$$obj.o(Region$$Table)
+    IWDG_Enable                              0x080055b9   Thumb Code    10  stm32f10x_iwdg.o(i.IWDG_Enable)
+    IWDG_Feed                                0x080055c9   Thumb Code     8  fault.o(i.IWDG_Feed)
+    IWDG_Init                                0x080055d1   Thumb Code    38  fault.o(i.IWDG_Init)
+    IWDG_ReloadCounter                       0x080055f9   Thumb Code    10  stm32f10x_iwdg.o(i.IWDG_ReloadCounter)
+    IWDG_SetPrescaler                        0x08005609   Thumb Code     6  stm32f10x_iwdg.o(i.IWDG_SetPrescaler)
+    IWDG_SetReload                           0x08005615   Thumb Code     6  stm32f10x_iwdg.o(i.IWDG_SetReload)
+    IWDG_WriteAccessCmd                      0x08005621   Thumb Code     6  stm32f10x_iwdg.o(i.IWDG_WriteAccessCmd)
+    MemManage_Handler                        0x0800562d   Thumb Code     4  stm32f10x_it.o(i.MemManage_Handler)
+    NMI_Handler                              0x08005631   Thumb Code     2  stm32f10x_it.o(i.NMI_Handler)
+    NVIC_Init                                0x08005635   Thumb Code   100  misc.o(i.NVIC_Init)
+    NVIC_PriorityGroupConfig                 0x080056a5   Thumb Code    10  misc.o(i.NVIC_PriorityGroupConfig)
+    Parse_PhoneAndChat                       0x080056b9   Thumb Code   164  flash.o(i.Parse_PhoneAndChat)
+    PendSV_Handler                           0x0800576d   Thumb Code     2  stm32f10x_it.o(i.PendSV_Handler)
+    RCC_ADCCLKConfig                         0x08005771   Thumb Code    18  stm32f10x_rcc.o(i.RCC_ADCCLKConfig)
+    RCC_APB1PeriphClockCmd                   0x08005789   Thumb Code    26  stm32f10x_rcc.o(i.RCC_APB1PeriphClockCmd)
+    RCC_APB2PeriphClockCmd                   0x080057a9   Thumb Code    26  stm32f10x_rcc.o(i.RCC_APB2PeriphClockCmd)
+    RCC_GetClocksFreq                        0x080057c9   Thumb Code   192  stm32f10x_rcc.o(i.RCC_GetClocksFreq)
+    Read_FLASH_Rent_Struct                   0x0800589d   Thumb Code    70  flash.o(i.Read_FLASH_Rent_Struct)
+    Read_FLASH_Super_Struct                  0x080058ed   Thumb Code    70  flash.o(i.Read_FLASH_Super_Struct)
+    SVC_Handler                              0x0800593d   Thumb Code     2  stm32f10x_it.o(i.SVC_Handler)
+    Save_NowFlashStruct                      0x08005941   Thumb Code   142  flash.o(i.Save_NowFlashStruct)
+    Save_RentUser_Struct                     0x080059e9   Thumb Code    82  flash.o(i.Save_RentUser_Struct)
+    Send_AT_Command                          0x08005a49   Thumb Code    22  bluetooth.o(i.Send_AT_Command)
+    Send_CommandFlashCarve                   0x08005a61   Thumb Code    10  bluetooth.o(i.Send_CommandFlashCarve)
+    Send_CommandOver                         0x08005a71   Thumb Code    10  bluetooth.o(i.Send_CommandOver)
+    Send_CommandStart                        0x08005a81   Thumb Code    10  bluetooth.o(i.Send_CommandStart)
+    Serial_Init                              0x08005a91   Thumb Code   174  serial.o(i.Serial_Init)
+    Serial_SendArray                         0x08005b49   Thumb Code    26  serial.o(i.Serial_SendArray)
+    Serial_SendByte                          0x08005b65   Thumb Code    28  serial.o(i.Serial_SendByte)
+    SysTick_Handler                          0x08005c6d   Thumb Code     2  stm32f10x_it.o(i.SysTick_Handler)
+    SystemInit                               0x08005c71   Thumb Code    78  system_stm32f10x.o(i.SystemInit)
+    TIM2_IRQHandler                          0x08005cd1   Thumb Code    32  bluetooth.o(i.TIM2_IRQHandler)
+    TIM_ClearITPendingBit                    0x08005cf5   Thumb Code     6  stm32f10x_tim.o(i.TIM_ClearITPendingBit)
+    TIM_Cmd                                  0x08005cfb   Thumb Code    24  stm32f10x_tim.o(i.TIM_Cmd)
+    TIM_GetITStatus                          0x08005d13   Thumb Code    34  stm32f10x_tim.o(i.TIM_GetITStatus)
+    TIM_ITConfig                             0x08005d35   Thumb Code    18  stm32f10x_tim.o(i.TIM_ITConfig)
+    TIM_TimeBaseInit                         0x08005d49   Thumb Code   122  stm32f10x_tim.o(i.TIM_TimeBaseInit)
+    TimeClock_Init                           0x08005ded   Thumb Code   102  bluetooth.o(i.TimeClock_Init)
+    USART1_IRQHandler                        0x08005e55   Thumb Code   140  serial.o(i.USART1_IRQHandler)
+    USART3_IRQHandler                        0x08005ef5   Thumb Code   232  bluetooth.o(i.USART3_IRQHandler)
+    USART_ClearITPendingBit                  0x08006001   Thumb Code    30  stm32f10x_usart.o(i.USART_ClearITPendingBit)
+    USART_Cmd                                0x0800601f   Thumb Code    24  stm32f10x_usart.o(i.USART_Cmd)
+    USART_GetFlagStatus                      0x08006037   Thumb Code    26  stm32f10x_usart.o(i.USART_GetFlagStatus)
+    USART_GetITStatus                        0x08006051   Thumb Code    84  stm32f10x_usart.o(i.USART_GetITStatus)
+    USART_ITConfig                           0x080060a5   Thumb Code    74  stm32f10x_usart.o(i.USART_ITConfig)
+    USART_Init                               0x080060f1   Thumb Code   210  stm32f10x_usart.o(i.USART_Init)
+    USART_ReceiveData                        0x080061c9   Thumb Code    10  stm32f10x_usart.o(i.USART_ReceiveData)
+    USART_SendData                           0x080061d3   Thumb Code     8  stm32f10x_usart.o(i.USART_SendData)
+    UpdateUser                               0x080061dd   Thumb Code   112  flash.o(i.UpdateUser)
+    Update_Struct_ChatNumber                 0x08006255   Thumb Code    18  flash.o(i.Update_Struct_ChatNumber)
+    Update_Struct_DeviceName                 0x08006271   Thumb Code    18  flash.o(i.Update_Struct_DeviceName)
+    Update_Struct_PhoneNumber                0x0800628d   Thumb Code    18  flash.o(i.Update_Struct_PhoneNumber)
+    Update_Struct_WalletAddress              0x080062a9   Thumb Code    18  flash.o(i.Update_Struct_WalletAddress)
+    UsageFault_Handler                       0x080062c5   Thumb Code     4  stm32f10x_it.o(i.UsageFault_Handler)
+    VerifyIf_RentUser                        0x080062c9   Thumb Code    94  flash.o(i.VerifyIf_RentUser)
+    VerifyIf_Superser                        0x08006341   Thumb Code    32  flash.o(i.VerifyIf_Superser)
+    Verify_Time                              0x0800636d   Thumb Code   104  bluetooth.o(i.Verify_Time)
+    Verify_UUID                              0x080063e1   Thumb Code    22  bluetooth.o(i.Verify_UUID)
+    __0snprintf                              0x080063fd   Thumb Code    44  printfa.o(i.__0snprintf)
+    __1snprintf                              0x080063fd   Thumb Code     0  printfa.o(i.__0snprintf)
+    __2snprintf                              0x080063fd   Thumb Code     0  printfa.o(i.__0snprintf)
+    __c89snprintf                            0x080063fd   Thumb Code     0  printfa.o(i.__0snprintf)
+    snprintf                                 0x080063fd   Thumb Code     0  printfa.o(i.__0snprintf)
+    __0sprintf                               0x0800642d   Thumb Code    34  printfa.o(i.__0sprintf)
+    __1sprintf                               0x0800642d   Thumb Code     0  printfa.o(i.__0sprintf)
+    __2sprintf                               0x0800642d   Thumb Code     0  printfa.o(i.__0sprintf)
+    __c89sprintf                             0x0800642d   Thumb Code     0  printfa.o(i.__0sprintf)
+    sprintf                                  0x0800642d   Thumb Code     0  printfa.o(i.__0sprintf)
+    __aeabi_errno_addr                       0x08006455   Thumb Code     4  errno.o(i.__aeabi_errno_addr)
+    __rt_errno_addr                          0x08006455   Thumb Code     0  errno.o(i.__aeabi_errno_addr)
+    free                                     0x0800645d   Thumb Code    88  mallocr.o(i.__free$realloc)
+    malloc                                   0x080064b9   Thumb Code    64  mallocr.o(i.__malloc$realloc)
+    __scatterload_copy                       0x08006509   Thumb Code    14  handlers.o(i.__scatterload_copy)
+    __scatterload_null                       0x08006517   Thumb Code     2  handlers.o(i.__scatterload_null)
+    __scatterload_zeroinit                   0x08006519   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
+    _is_digit                                0x080066ad   Thumb Code    14  scanf_fp.o(i._is_digit)
+    beep                                     0x08006ebb   Thumb Code    46  beep.o(i.beep)
+    beep_Init                                0x08006ee9   Thumb Code    38  beep.o(i.beep_Init)
+    beep_lock                                0x08006f15   Thumb Code    64  beep.o(i.beep_lock)
+    beep_off                                 0x08006f55   Thumb Code    12  beep.o(i.beep_off)
+    beep_on                                  0x08006f65   Thumb Code    12  beep.o(i.beep_on)
+    beep_unlock                              0x08006f75   Thumb Code    64  beep.o(i.beep_unlock)
+    cJSON_AddNumberToObject                  0x08006ffd   Thumb Code    56  cjson.o(i.cJSON_AddNumberToObject)
+    cJSON_AddStringToObject                  0x08007039   Thumb Code    48  cjson.o(i.cJSON_AddStringToObject)
+    cJSON_CreateNumber                       0x0800706d   Thumb Code    82  cjson.o(i.cJSON_CreateNumber)
+    cJSON_CreateObject                       0x080070d1   Thumb Code    20  cjson.o(i.cJSON_CreateObject)
+    cJSON_CreateString                       0x080070e9   Thumb Code    46  cjson.o(i.cJSON_CreateString)
+    cJSON_Delete                             0x0800711d   Thumb Code    92  cjson.o(i.cJSON_Delete)
+    cJSON_GetErrorPtr                        0x0800717d   Thumb Code    12  cjson.o(i.cJSON_GetErrorPtr)
+    cJSON_GetObjectItem                      0x0800718d   Thumb Code    18  cjson.o(i.cJSON_GetObjectItem)
+    cJSON_IsNumber                           0x0800719f   Thumb Code    22  cjson.o(i.cJSON_IsNumber)
+    cJSON_IsString                           0x080071b5   Thumb Code    22  cjson.o(i.cJSON_IsString)
+    cJSON_Parse                              0x080071e5   Thumb Code    16  cjson.o(i.cJSON_Parse)
+    cJSON_ParseWithLengthOpts                0x080071f5   Thumb Code   204  cjson.o(i.cJSON_ParseWithLengthOpts)
+    cJSON_ParseWithOpts                      0x080072c9   Thumb Code    40  cjson.o(i.cJSON_ParseWithOpts)
+    cJSON_PrintUnformatted                   0x080072f1   Thumb Code    16  cjson.o(i.cJSON_PrintUnformatted)
+    changeDeviceName                         0x08007389   Thumb Code   138  battery.o(i.changeDeviceName)
+    checkBatteryCommand                      0x08007459   Thumb Code    80  battery.o(i.checkBatteryCommand)
+    checkUserValid                           0x080074e5   Thumb Code    28  flash.o(i.checkUserValid)
+    cleanIllegalUser                         0x08007505   Thumb Code    86  flash.o(i.cleanIllegalUser)
+    createFlashToPhoneJson                   0x080075d5   Thumb Code   146  bluetooth.o(i.createFlashToPhoneJson)
+    main                                     0x08007801   Thumb Code   526  main.o(i.main)
+    parse_ALLJSON                            0x08007a31   Thumb Code   334  bluetooth.o(i.parse_ALLJSON)
+    read_Flash                               0x08008915   Thumb Code     6  flash.o(i.read_Flash)
+    realloc                                  0x0800891d   Thumb Code   102  mallocr.o(i.realloc)
+    strtod                                   0x080089c5   Thumb Code    28  strtod.o(i.strtod)
+    unLockBikeCommand1                       0x080089e7   Thumb Code    48  controller.o(i.unLockBikeCommand1)
+    unLockBikeCommand2                       0x08008a17   Thumb Code    54  controller.o(i.unLockBikeCommand2)
+    unLockBikeCommand3                       0x08008a4d   Thumb Code    54  controller.o(i.unLockBikeCommand3)
+    __ctype_table                            0x08008bd2   Data         129  ctype_o.o(.constdata)
+    Region$$Table$$Base                      0x080094a4   Number         0  anon$$obj.o(Region$$Table)
+    Region$$Table$$Limit                     0x080094c4   Number         0  anon$$obj.o(Region$$Table)
     Serial_RxFlag                            0x20000014   Data           1  serial.o(.data)
     ADValue                                  0x20000018   Data           2  ad.o(.data)
     Rotate_Counter                           0x2000001c   Data           4  ad.o(.data)
@@ -2532,70 +2554,70 @@ Memory Map of the image
 
   Image Entry point : 0x080000ed
 
-  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x000094f4, Max: 0x00010000, ABSOLUTE)
+  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x00009554, Max: 0x00010000, ABSOLUTE)
 
-    Execution Region ER_IROM1 (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x00009464, Max: 0x00010000, ABSOLUTE)
+    Execution Region ER_IROM1 (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x000094c4, Max: 0x00010000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
     0x08000000   0x08000000   0x000000ec   Data   RO            3    RESET               startup_stm32f10x_md.o
-    0x080000ec   0x080000ec   0x00000000   Code   RO         4646  * .ARM.Collect$$$$00000000  mc_w.l(entry.o)
-    0x080000ec   0x080000ec   0x00000004   Code   RO         4994    .ARM.Collect$$$$00000001  mc_w.l(entry2.o)
-    0x080000f0   0x080000f0   0x00000004   Code   RO         4997    .ARM.Collect$$$$00000004  mc_w.l(entry5.o)
-    0x080000f4   0x080000f4   0x00000000   Code   RO         4999    .ARM.Collect$$$$00000008  mc_w.l(entry7b.o)
-    0x080000f4   0x080000f4   0x00000000   Code   RO         5001    .ARM.Collect$$$$0000000A  mc_w.l(entry8b.o)
-    0x080000f4   0x080000f4   0x00000008   Code   RO         5002    .ARM.Collect$$$$0000000B  mc_w.l(entry9a.o)
-    0x080000fc   0x080000fc   0x00000000   Code   RO         5004    .ARM.Collect$$$$0000000D  mc_w.l(entry10a.o)
-    0x080000fc   0x080000fc   0x00000000   Code   RO         5006    .ARM.Collect$$$$0000000F  mc_w.l(entry11a.o)
-    0x080000fc   0x080000fc   0x00000004   Code   RO         4995    .ARM.Collect$$$$00002712  mc_w.l(entry2.o)
+    0x080000ec   0x080000ec   0x00000000   Code   RO         4659  * .ARM.Collect$$$$00000000  mc_w.l(entry.o)
+    0x080000ec   0x080000ec   0x00000004   Code   RO         5007    .ARM.Collect$$$$00000001  mc_w.l(entry2.o)
+    0x080000f0   0x080000f0   0x00000004   Code   RO         5010    .ARM.Collect$$$$00000004  mc_w.l(entry5.o)
+    0x080000f4   0x080000f4   0x00000000   Code   RO         5012    .ARM.Collect$$$$00000008  mc_w.l(entry7b.o)
+    0x080000f4   0x080000f4   0x00000000   Code   RO         5014    .ARM.Collect$$$$0000000A  mc_w.l(entry8b.o)
+    0x080000f4   0x080000f4   0x00000008   Code   RO         5015    .ARM.Collect$$$$0000000B  mc_w.l(entry9a.o)
+    0x080000fc   0x080000fc   0x00000000   Code   RO         5017    .ARM.Collect$$$$0000000D  mc_w.l(entry10a.o)
+    0x080000fc   0x080000fc   0x00000000   Code   RO         5019    .ARM.Collect$$$$0000000F  mc_w.l(entry11a.o)
+    0x080000fc   0x080000fc   0x00000004   Code   RO         5008    .ARM.Collect$$$$00002712  mc_w.l(entry2.o)
     0x08000100   0x08000100   0x00000024   Code   RO            4    .text               startup_stm32f10x_md.o
     0x08000124   0x08000124   0x0000000c   PAD
-    0x08000130   0x08000130   0x00002fe0   Code   RO         4637    .text               libecc.a(uECC.o)
-    0x08003110   0x08003110   0x0000000c   Code   RO         4649    .text               mc_w.l(tolower.o)
-    0x0800311c   0x0800311c   0x00000028   Code   RO         4651    .text               mc_w.l(memcpy.o)
-    0x08003144   0x08003144   0x00000024   Code   RO         4657    .text               mc_w.l(memseta.o)
-    0x08003168   0x08003168   0x00000024   Code   RO         4659    .text               mc_w.l(strstr.o)
-    0x0800318c   0x0800318c   0x00000018   Code   RO         4661    .text               mc_w.l(strncpy.o)
-    0x080031a4   0x080031a4   0x00000014   Code   RO         4663    .text               mc_w.l(strchr.o)
-    0x080031b8   0x080031b8   0x0000000e   Code   RO         4665    .text               mc_w.l(strlen.o)
-    0x080031c6   0x080031c6   0x0000001c   Code   RO         4667    .text               mc_w.l(strcmp.o)
-    0x080031e2   0x080031e2   0x00000012   Code   RO         4669    .text               mc_w.l(strcpy.o)
-    0x080031f4   0x080031f4   0x0000001e   Code   RO         4671    .text               mc_w.l(strncmp.o)
+    0x08000130   0x08000130   0x00002fe0   Code   RO         4650    .text               libecc.a(uECC.o)
+    0x08003110   0x08003110   0x0000000c   Code   RO         4662    .text               mc_w.l(tolower.o)
+    0x0800311c   0x0800311c   0x00000028   Code   RO         4664    .text               mc_w.l(memcpy.o)
+    0x08003144   0x08003144   0x00000024   Code   RO         4670    .text               mc_w.l(memseta.o)
+    0x08003168   0x08003168   0x00000024   Code   RO         4672    .text               mc_w.l(strstr.o)
+    0x0800318c   0x0800318c   0x00000018   Code   RO         4674    .text               mc_w.l(strncpy.o)
+    0x080031a4   0x080031a4   0x00000014   Code   RO         4676    .text               mc_w.l(strchr.o)
+    0x080031b8   0x080031b8   0x0000000e   Code   RO         4678    .text               mc_w.l(strlen.o)
+    0x080031c6   0x080031c6   0x0000001c   Code   RO         4680    .text               mc_w.l(strcmp.o)
+    0x080031e2   0x080031e2   0x00000012   Code   RO         4682    .text               mc_w.l(strcpy.o)
+    0x080031f4   0x080031f4   0x0000001e   Code   RO         4684    .text               mc_w.l(strncmp.o)
     0x08003212   0x08003212   0x00000002   PAD
-    0x08003214   0x08003214   0x00000038   Code   RO         4966    .text               mc_w.l(__0sscanf.o)
-    0x0800324c   0x0800324c   0x00000360   Code   RO         4968    .text               mc_w.l(scanf_fp.o)
-    0x080035ac   0x080035ac   0x00000070   Code   RO         4972    .text               mc_w.l(strtol.o)
-    0x0800361c   0x0800361c   0x0000014e   Code   RO         4974    .text               mf_w.l(dadd.o)
-    0x0800376a   0x0800376a   0x000000e4   Code   RO         4976    .text               mf_w.l(dmul.o)
-    0x0800384e   0x0800384e   0x000000de   Code   RO         4978    .text               mf_w.l(ddiv.o)
-    0x0800392c   0x0800392c   0x00000022   Code   RO         4980    .text               mf_w.l(dflti.o)
-    0x0800394e   0x0800394e   0x0000001a   Code   RO         4982    .text               mf_w.l(dfltui.o)
-    0x08003968   0x08003968   0x0000003e   Code   RO         4984    .text               mf_w.l(dfixi.o)
-    0x080039a6   0x080039a6   0x00000026   Code   RO         4986    .text               mf_w.l(f2d.o)
-    0x080039cc   0x080039cc   0x00000030   Code   RO         4988    .text               mf_w.l(cdcmple.o)
-    0x080039fc   0x080039fc   0x00000030   Code   RO         4990    .text               mf_w.l(cdrcmple.o)
-    0x08003a2c   0x08003a2c   0x00000038   Code   RO         4992    .text               mf_w.l(d2f.o)
-    0x08003a64   0x08003a64   0x0000002c   Code   RO         5009    .text               mc_w.l(uidiv.o)
-    0x08003a90   0x08003a90   0x00000062   Code   RO         5011    .text               mc_w.l(uldiv.o)
-    0x08003af2   0x08003af2   0x0000001e   Code   RO         5013    .text               mc_w.l(llshl.o)
-    0x08003b10   0x08003b10   0x00000020   Code   RO         5015    .text               mc_w.l(llushr.o)
-    0x08003b30   0x08003b30   0x00000024   Code   RO         5017    .text               mc_w.l(llsshr.o)
-    0x08003b54   0x08003b54   0x00000008   Code   RO         5019    .text               mc_w.l(ctype_o.o)
-    0x08003b5c   0x08003b5c   0x00000012   Code   RO         5041    .text               mc_w.l(isspace_o.o)
+    0x08003214   0x08003214   0x00000038   Code   RO         4979    .text               mc_w.l(__0sscanf.o)
+    0x0800324c   0x0800324c   0x00000360   Code   RO         4981    .text               mc_w.l(scanf_fp.o)
+    0x080035ac   0x080035ac   0x00000070   Code   RO         4985    .text               mc_w.l(strtol.o)
+    0x0800361c   0x0800361c   0x0000014e   Code   RO         4987    .text               mf_w.l(dadd.o)
+    0x0800376a   0x0800376a   0x000000e4   Code   RO         4989    .text               mf_w.l(dmul.o)
+    0x0800384e   0x0800384e   0x000000de   Code   RO         4991    .text               mf_w.l(ddiv.o)
+    0x0800392c   0x0800392c   0x00000022   Code   RO         4993    .text               mf_w.l(dflti.o)
+    0x0800394e   0x0800394e   0x0000001a   Code   RO         4995    .text               mf_w.l(dfltui.o)
+    0x08003968   0x08003968   0x0000003e   Code   RO         4997    .text               mf_w.l(dfixi.o)
+    0x080039a6   0x080039a6   0x00000026   Code   RO         4999    .text               mf_w.l(f2d.o)
+    0x080039cc   0x080039cc   0x00000030   Code   RO         5001    .text               mf_w.l(cdcmple.o)
+    0x080039fc   0x080039fc   0x00000030   Code   RO         5003    .text               mf_w.l(cdrcmple.o)
+    0x08003a2c   0x08003a2c   0x00000038   Code   RO         5005    .text               mf_w.l(d2f.o)
+    0x08003a64   0x08003a64   0x0000002c   Code   RO         5022    .text               mc_w.l(uidiv.o)
+    0x08003a90   0x08003a90   0x00000062   Code   RO         5024    .text               mc_w.l(uldiv.o)
+    0x08003af2   0x08003af2   0x0000001e   Code   RO         5026    .text               mc_w.l(llshl.o)
+    0x08003b10   0x08003b10   0x00000020   Code   RO         5028    .text               mc_w.l(llushr.o)
+    0x08003b30   0x08003b30   0x00000024   Code   RO         5030    .text               mc_w.l(llsshr.o)
+    0x08003b54   0x08003b54   0x00000008   Code   RO         5032    .text               mc_w.l(ctype_o.o)
+    0x08003b5c   0x08003b5c   0x00000012   Code   RO         5054    .text               mc_w.l(isspace_o.o)
     0x08003b6e   0x08003b6e   0x00000002   PAD
-    0x08003b70   0x08003b70   0x00000028   Code   RO         5056    .text               mc_w.l(scanf_char.o)
-    0x08003b98   0x08003b98   0x00000040   Code   RO         5058    .text               mc_w.l(_sgetc.o)
-    0x08003bd8   0x08003bd8   0x0000009e   Code   RO         5060    .text               mc_w.l(_strtoul.o)
+    0x08003b70   0x08003b70   0x00000028   Code   RO         5069    .text               mc_w.l(scanf_char.o)
+    0x08003b98   0x08003b98   0x00000040   Code   RO         5071    .text               mc_w.l(_sgetc.o)
+    0x08003bd8   0x08003bd8   0x0000009e   Code   RO         5073    .text               mc_w.l(_strtoul.o)
     0x08003c76   0x08003c76   0x00000002   PAD
-    0x08003c78   0x08003c78   0x0000009c   Code   RO         5062    .text               mc_w.l(strtod.o)
-    0x08003d14   0x08003d14   0x00000000   Code   RO         5064    .text               mc_w.l(iusefp.o)
-    0x08003d14   0x08003d14   0x0000006e   Code   RO         5065    .text               mf_w.l(fepilogue.o)
-    0x08003d82   0x08003d82   0x000000ba   Code   RO         5067    .text               mf_w.l(depilogue.o)
-    0x08003e3c   0x08003e3c   0x00000018   Code   RO         5069    .text               mf_w.l(dfltul.o)
-    0x08003e54   0x08003e54   0x00000030   Code   RO         5071    .text               mf_w.l(dfixul.o)
-    0x08003e84   0x08003e84   0x00000024   Code   RO         5073    .text               mc_w.l(init.o)
-    0x08003ea8   0x08003ea8   0x0000001c   Code   RO         5077    .text               mc_w.l(_chval.o)
-    0x08003ec4   0x08003ec4   0x0000032c   Code   RO         5079    .text               mc_w.l(_scanf.o)
+    0x08003c78   0x08003c78   0x0000009c   Code   RO         5075    .text               mc_w.l(strtod.o)
+    0x08003d14   0x08003d14   0x00000000   Code   RO         5077    .text               mc_w.l(iusefp.o)
+    0x08003d14   0x08003d14   0x0000006e   Code   RO         5078    .text               mf_w.l(fepilogue.o)
+    0x08003d82   0x08003d82   0x000000ba   Code   RO         5080    .text               mf_w.l(depilogue.o)
+    0x08003e3c   0x08003e3c   0x00000018   Code   RO         5082    .text               mf_w.l(dfltul.o)
+    0x08003e54   0x08003e54   0x00000030   Code   RO         5084    .text               mf_w.l(dfixul.o)
+    0x08003e84   0x08003e84   0x00000024   Code   RO         5086    .text               mc_w.l(init.o)
+    0x08003ea8   0x08003ea8   0x0000001c   Code   RO         5090    .text               mc_w.l(_chval.o)
+    0x08003ec4   0x08003ec4   0x0000032c   Code   RO         5092    .text               mc_w.l(_scanf.o)
     0x080041f0   0x080041f0   0x00000024   Code   RO         3292    i.AD2_GetValue      ad.o
     0x08004214   0x08004214   0x00000014   Code   RO          196    i.ADC_AnalogWatchdogCmd  stm32f10x_adc.o
     0x08004228   0x08004228   0x00000010   Code   RO          197    i.ADC_AnalogWatchdogSingleChannelConfig  stm32f10x_adc.o
@@ -2614,8 +2636,8 @@ Memory Map of the image
     0x080043d8   0x080043d8   0x0000000a   Code   RO          229    i.ADC_StartCalibration  stm32f10x_adc.o
     0x080043e2   0x080043e2   0x00000002   PAD
     0x080043e4   0x080043e4   0x00000150   Code   RO         3293    i.AD_Init           ad.o
-    0x08004534   0x08004534   0x00000044   Code   RO         3657    i.AddPhoneAndChat   flash.o
-    0x08004578   0x08004578   0x0000002c   Code   RO         3658    i.All_Struct_Init   flash.o
+    0x08004534   0x08004534   0x00000044   Code   RO         3670    i.AddPhoneAndChat   flash.o
+    0x08004578   0x08004578   0x0000002c   Code   RO         3671    i.All_Struct_Init   flash.o
     0x080045a4   0x080045a4   0x00000018   Code   RO         3495    i.BatteryLock_Reset  battery.o
     0x080045bc   0x080045bc   0x00000010   Code   RO         3496    i.BatteryLock_off   battery.o
     0x080045cc   0x080045cc   0x00000010   Code   RO         3497    i.BatteryLock_on    battery.o
@@ -2624,20 +2646,20 @@ Memory Map of the image
     0x08004690   0x08004690   0x00000020   Code   RO         3344    i.BlueAT_SendData   bluetooth.o
     0x080046b0   0x080046b0   0x000000fc   Code   RO         3345    i.Blue_Init         bluetooth.o
     0x080047ac   0x080047ac   0x00000028   Code   RO         3346    i.Blue_check        bluetooth.o
-    0x080047d4   0x080047d4   0x00000004   Code   RO         3905    i.BusFault_Handler  stm32f10x_it.o
-    0x080047d8   0x080047d8   0x0000003c   Code   RO         3659    i.ChangeSuperUser   flash.o
-    0x08004814   0x08004814   0x00000038   Code   RO         3660    i.CheckIfuserExist  flash.o
+    0x080047d4   0x080047d4   0x00000004   Code   RO         3918    i.BusFault_Handler  stm32f10x_it.o
+    0x080047d8   0x080047d8   0x0000003c   Code   RO         3672    i.ChangeSuperUser   flash.o
+    0x08004814   0x08004814   0x00000038   Code   RO         3673    i.CheckIfuserExist  flash.o
     0x0800484c   0x0800484c   0x00000044   Code   RO         3499    i.Check_Now_Battery_Lock_State  battery.o
     0x08004890   0x08004890   0x00000030   Code   RO         3295    i.Check_move        ad.o
     0x080048c0   0x080048c0   0x0000002c   Code   RO         3569    i.Controller_Init   controller.o
     0x080048ec   0x080048ec   0x00000010   Code   RO         3570    i.Controller_off    controller.o
     0x080048fc   0x080048fc   0x00000010   Code   RO         3571    i.Controller_on     controller.o
-    0x0800490c   0x0800490c   0x00000016   Code   RO         3661    i.ConvertUint_time  flash.o
+    0x0800490c   0x0800490c   0x00000016   Code   RO         3674    i.ConvertUint_time  flash.o
     0x08004922   0x08004922   0x00000002   PAD
     0x08004924   0x08004924   0x000001a8   Code   RO         3347    i.CreateSendToPhoneJson  bluetooth.o
     0x08004acc   0x08004acc   0x00000054   Code   RO         3348    i.Date_DeviceToPhone  bluetooth.o
-    0x08004b20   0x08004b20   0x000000a8   Code   RO         3662    i.DealRentCommand   flash.o
-    0x08004bc8   0x08004bc8   0x00000002   Code   RO         3906    i.DebugMon_Handler  stm32f10x_it.o
+    0x08004b20   0x08004b20   0x000000a8   Code   RO         3675    i.DealRentCommand   flash.o
+    0x08004bc8   0x08004bc8   0x00000002   Code   RO         3919    i.DebugMon_Handler  stm32f10x_it.o
     0x08004bca   0x08004bca   0x00000018   Code   RO         3196    i.Delay_ms          delay.o
     0x08004be2   0x08004be2   0x0000002e   Code   RO         3198    i.Delay_us          delay.o
     0x08004c10   0x08004c10   0x000000f8   Code   RO         3349    i.DoToCommand       bluetooth.o
@@ -2650,201 +2672,207 @@ Memory Map of the image
     0x08005210   0x08005210   0x00000018   Code   RO         1064    i.FLASH_Unlock      stm32f10x_flash.o
     0x08005228   0x08005228   0x00000026   Code   RO         1068    i.FLASH_WaitForLastOperation  stm32f10x_flash.o
     0x0800524e   0x0800524e   0x00000002   PAD
-    0x08005250   0x08005250   0x00000078   Code   RO         3663    i.Flash_AddRentUser  flash.o
-    0x080052c8   0x080052c8   0x00000038   Code   RO         3664    i.Flash_Erase       flash.o
-    0x08005300   0x08005300   0x0000005c   Code   RO         3665    i.Flash_Rent_WriteStruct  flash.o
-    0x0800535c   0x0800535c   0x00000034   Code   RO         3666    i.Flash_Struct_Register  flash.o
-    0x08005390   0x08005390   0x0000005c   Code   RO         3667    i.Flash_Super_WriteStruct  flash.o
-    0x080053ec   0x080053ec   0x00000024   Code   RO         3668    i.Flash_Write       flash.o
+    0x08005250   0x08005250   0x00000078   Code   RO         3676    i.Flash_AddRentUser  flash.o
+    0x080052c8   0x080052c8   0x00000038   Code   RO         3677    i.Flash_Erase       flash.o
+    0x08005300   0x08005300   0x0000005c   Code   RO         3678    i.Flash_Rent_WriteStruct  flash.o
+    0x0800535c   0x0800535c   0x00000034   Code   RO         3679    i.Flash_Struct_Register  flash.o
+    0x08005390   0x08005390   0x0000005c   Code   RO         3680    i.Flash_Super_WriteStruct  flash.o
+    0x080053ec   0x080053ec   0x00000024   Code   RO         3681    i.Flash_Write       flash.o
     0x08005410   0x08005410   0x00000116   Code   RO         1347    i.GPIO_Init         stm32f10x_gpio.o
     0x08005526   0x08005526   0x00000012   Code   RO         1351    i.GPIO_ReadInputDataBit  stm32f10x_gpio.o
     0x08005538   0x08005538   0x00000004   Code   RO         1354    i.GPIO_ResetBits    stm32f10x_gpio.o
     0x0800553c   0x0800553c   0x00000004   Code   RO         1355    i.GPIO_SetBits      stm32f10x_gpio.o
     0x08005540   0x08005540   0x00000044   Code   RO         3500    i.GetUniqueID       battery.o
     0x08005584   0x08005584   0x00000030   Code   RO         3501    i.Get_BatteryLockState  battery.o
-    0x080055b4   0x080055b4   0x00000004   Code   RO         3907    i.HardFault_Handler  stm32f10x_it.o
-    0x080055b8   0x080055b8   0x00000008   Code   RO         3839    i.IWDG_Feed         fault.o
-    0x080055c0   0x080055c0   0x00000010   Code   RO         1667    i.IWDG_ReloadCounter  stm32f10x_iwdg.o
-    0x080055d0   0x080055d0   0x00000004   Code   RO         3908    i.MemManage_Handler  stm32f10x_it.o
-    0x080055d4   0x080055d4   0x00000002   Code   RO         3909    i.NMI_Handler       stm32f10x_it.o
-    0x080055d6   0x080055d6   0x00000002   PAD
-    0x080055d8   0x080055d8   0x00000070   Code   RO          137    i.NVIC_Init         misc.o
-    0x08005648   0x08005648   0x00000014   Code   RO          138    i.NVIC_PriorityGroupConfig  misc.o
-    0x0800565c   0x0800565c   0x000000b4   Code   RO         3669    i.Parse_PhoneAndChat  flash.o
-    0x08005710   0x08005710   0x00000002   Code   RO         3910    i.PendSV_Handler    stm32f10x_it.o
-    0x08005712   0x08005712   0x00000002   PAD
-    0x08005714   0x08005714   0x00000018   Code   RO         1773    i.RCC_ADCCLKConfig  stm32f10x_rcc.o
-    0x0800572c   0x0800572c   0x00000020   Code   RO         1775    i.RCC_APB1PeriphClockCmd  stm32f10x_rcc.o
-    0x0800574c   0x0800574c   0x00000020   Code   RO         1777    i.RCC_APB2PeriphClockCmd  stm32f10x_rcc.o
-    0x0800576c   0x0800576c   0x000000d4   Code   RO         1785    i.RCC_GetClocksFreq  stm32f10x_rcc.o
-    0x08005840   0x08005840   0x00000050   Code   RO         3670    i.Read_FLASH_Rent_Struct  flash.o
-    0x08005890   0x08005890   0x00000050   Code   RO         3671    i.Read_FLASH_Super_Struct  flash.o
-    0x080058e0   0x080058e0   0x00000002   Code   RO         3911    i.SVC_Handler       stm32f10x_it.o
-    0x080058e2   0x080058e2   0x00000002   PAD
-    0x080058e4   0x080058e4   0x000000a8   Code   RO         3672    i.Save_NowFlashStruct  flash.o
-    0x0800598c   0x0800598c   0x00000060   Code   RO         3673    i.Save_RentUser_Struct  flash.o
-    0x080059ec   0x080059ec   0x00000016   Code   RO         3351    i.Send_AT_Command   bluetooth.o
-    0x08005a02   0x08005a02   0x00000002   PAD
-    0x08005a04   0x08005a04   0x00000010   Code   RO         3352    i.Send_CommandFlashCarve  bluetooth.o
-    0x08005a14   0x08005a14   0x00000010   Code   RO         3353    i.Send_CommandOver  bluetooth.o
-    0x08005a24   0x08005a24   0x00000010   Code   RO         3354    i.Send_CommandStart  bluetooth.o
-    0x08005a34   0x08005a34   0x000000b8   Code   RO         3220    i.Serial_Init       serial.o
-    0x08005aec   0x08005aec   0x0000001a   Code   RO         3223    i.Serial_SendArray  serial.o
-    0x08005b06   0x08005b06   0x00000002   PAD
-    0x08005b08   0x08005b08   0x00000020   Code   RO         3224    i.Serial_SendByte   serial.o
-    0x08005b28   0x08005b28   0x00000008   Code   RO           24    i.SetSysClock       system_stm32f10x.o
-    0x08005b30   0x08005b30   0x000000e0   Code   RO           25    i.SetSysClockTo72   system_stm32f10x.o
-    0x08005c10   0x08005c10   0x00000002   Code   RO         3912    i.SysTick_Handler   stm32f10x_it.o
-    0x08005c12   0x08005c12   0x00000002   PAD
-    0x08005c14   0x08005c14   0x00000060   Code   RO           27    i.SystemInit        system_stm32f10x.o
-    0x08005c74   0x08005c74   0x00000024   Code   RO         3355    i.TIM2_IRQHandler   bluetooth.o
-    0x08005c98   0x08005c98   0x00000006   Code   RO         2416    i.TIM_ClearITPendingBit  stm32f10x_tim.o
-    0x08005c9e   0x08005c9e   0x00000018   Code   RO         2421    i.TIM_Cmd           stm32f10x_tim.o
-    0x08005cb6   0x08005cb6   0x00000022   Code   RO         2442    i.TIM_GetITStatus   stm32f10x_tim.o
-    0x08005cd8   0x08005cd8   0x00000012   Code   RO         2446    i.TIM_ITConfig      stm32f10x_tim.o
-    0x08005cea   0x08005cea   0x00000002   PAD
-    0x08005cec   0x08005cec   0x000000a4   Code   RO         2492    i.TIM_TimeBaseInit  stm32f10x_tim.o
-    0x08005d90   0x08005d90   0x00000066   Code   RO         3356    i.TimeClock_Init    bluetooth.o
-    0x08005df6   0x08005df6   0x00000002   PAD
-    0x08005df8   0x08005df8   0x000000a0   Code   RO         3227    i.USART1_IRQHandler  serial.o
-    0x08005e98   0x08005e98   0x0000010c   Code   RO         3357    i.USART3_IRQHandler  bluetooth.o
-    0x08005fa4   0x08005fa4   0x0000001e   Code   RO         2957    i.USART_ClearITPendingBit  stm32f10x_usart.o
-    0x08005fc2   0x08005fc2   0x00000018   Code   RO         2960    i.USART_Cmd         stm32f10x_usart.o
-    0x08005fda   0x08005fda   0x0000001a   Code   RO         2963    i.USART_GetFlagStatus  stm32f10x_usart.o
-    0x08005ff4   0x08005ff4   0x00000054   Code   RO         2964    i.USART_GetITStatus  stm32f10x_usart.o
-    0x08006048   0x08006048   0x0000004a   Code   RO         2966    i.USART_ITConfig    stm32f10x_usart.o
-    0x08006092   0x08006092   0x00000002   PAD
-    0x08006094   0x08006094   0x000000d8   Code   RO         2967    i.USART_Init        stm32f10x_usart.o
-    0x0800616c   0x0800616c   0x0000000a   Code   RO         2974    i.USART_ReceiveData  stm32f10x_usart.o
-    0x08006176   0x08006176   0x00000008   Code   RO         2977    i.USART_SendData    stm32f10x_usart.o
-    0x0800617e   0x0800617e   0x00000002   PAD
-    0x08006180   0x08006180   0x00000078   Code   RO         3674    i.UpdateUser        flash.o
-    0x080061f8   0x080061f8   0x0000001c   Code   RO         3675    i.Update_Struct_ChatNumber  flash.o
-    0x08006214   0x08006214   0x0000001c   Code   RO         3676    i.Update_Struct_DeviceName  flash.o
-    0x08006230   0x08006230   0x0000001c   Code   RO         3677    i.Update_Struct_PhoneNumber  flash.o
-    0x0800624c   0x0800624c   0x0000001c   Code   RO         3678    i.Update_Struct_WalletAddress  flash.o
-    0x08006268   0x08006268   0x00000004   Code   RO         3913    i.UsageFault_Handler  stm32f10x_it.o
-    0x0800626c   0x0800626c   0x00000078   Code   RO         3679    i.VerifyIf_RentUser  flash.o
-    0x080062e4   0x080062e4   0x0000002c   Code   RO         3680    i.VerifyIf_Superser  flash.o
-    0x08006310   0x08006310   0x00000074   Code   RO         3358    i.Verify_Time       bluetooth.o
-    0x08006384   0x08006384   0x0000001c   Code   RO         3359    i.Verify_UUID       bluetooth.o
-    0x080063a0   0x080063a0   0x00000030   Code   RO         4911    i.__0snprintf       mc_w.l(printfa.o)
-    0x080063d0   0x080063d0   0x00000028   Code   RO         4912    i.__0sprintf        mc_w.l(printfa.o)
-    0x080063f8   0x080063f8   0x00000008   Code   RO         5049    i.__aeabi_errno_addr  mc_w.l(errno.o)
-    0x08006400   0x08006400   0x0000005c   Code   RO         4942    i.__free$realloc    mc_w.l(mallocr.o)
-    0x0800645c   0x0800645c   0x00000050   Code   RO         4943    i.__malloc$realloc  mc_w.l(mallocr.o)
-    0x080064ac   0x080064ac   0x0000000e   Code   RO         5086    i.__scatterload_copy  mc_w.l(handlers.o)
-    0x080064ba   0x080064ba   0x00000002   Code   RO         5087    i.__scatterload_null  mc_w.l(handlers.o)
-    0x080064bc   0x080064bc   0x0000000e   Code   RO         5088    i.__scatterload_zeroinit  mc_w.l(handlers.o)
-    0x080064ca   0x080064ca   0x00000002   PAD
-    0x080064cc   0x080064cc   0x00000184   Code   RO         4917    i._fp_digits        mc_w.l(printfa.o)
-    0x08006650   0x08006650   0x0000000e   Code   RO         4970    i._is_digit         mc_w.l(scanf_fp.o)
-    0x0800665e   0x0800665e   0x00000002   PAD
-    0x08006660   0x08006660   0x000006dc   Code   RO         4918    i._printf_core      mc_w.l(printfa.o)
-    0x08006d3c   0x08006d3c   0x00000024   Code   RO         4919    i._printf_post_padding  mc_w.l(printfa.o)
-    0x08006d60   0x08006d60   0x0000002e   Code   RO         4920    i._printf_pre_padding  mc_w.l(printfa.o)
-    0x08006d8e   0x08006d8e   0x00000016   Code   RO         4921    i._snputc           mc_w.l(printfa.o)
-    0x08006da4   0x08006da4   0x0000000a   Code   RO         4922    i._sputc            mc_w.l(printfa.o)
-    0x08006dae   0x08006dae   0x00000036   Code   RO         3968    i.add_item_to_array  cjson.o
-    0x08006de4   0x08006de4   0x0000007a   Code   RO         3969    i.add_item_to_object  cjson.o
-    0x08006e5e   0x08006e5e   0x0000002e   Code   RO         3615    i.beep              beep.o
-    0x08006e8c   0x08006e8c   0x0000002c   Code   RO         3616    i.beep_Init         beep.o
-    0x08006eb8   0x08006eb8   0x00000040   Code   RO         3617    i.beep_lock         beep.o
-    0x08006ef8   0x08006ef8   0x00000010   Code   RO         3618    i.beep_off          beep.o
-    0x08006f08   0x08006f08   0x00000010   Code   RO         3619    i.beep_on           beep.o
-    0x08006f18   0x08006f18   0x00000040   Code   RO         3620    i.beep_unlock       beep.o
-    0x08006f58   0x08006f58   0x00000048   Code   RO         3970    i.buffer_skip_whitespace  cjson.o
-    0x08006fa0   0x08006fa0   0x0000003c   Code   RO         3980    i.cJSON_AddNumberToObject  cjson.o
-    0x08006fdc   0x08006fdc   0x00000034   Code   RO         3983    i.cJSON_AddStringToObject  cjson.o
-    0x08007010   0x08007010   0x00000064   Code   RO         3994    i.cJSON_CreateNumber  cjson.o
-    0x08007074   0x08007074   0x00000018   Code   RO         3995    i.cJSON_CreateObject  cjson.o
-    0x0800708c   0x0800708c   0x00000034   Code   RO         3998    i.cJSON_CreateString  cjson.o
-    0x080070c0   0x080070c0   0x00000060   Code   RO         4002    i.cJSON_Delete      cjson.o
-    0x08007120   0x08007120   0x00000010   Code   RO         4014    i.cJSON_GetErrorPtr  cjson.o
-    0x08007130   0x08007130   0x00000012   Code   RO         4016    i.cJSON_GetObjectItem  cjson.o
-    0x08007142   0x08007142   0x00000016   Code   RO         4027    i.cJSON_IsNumber    cjson.o
-    0x08007158   0x08007158   0x00000016   Code   RO         4030    i.cJSON_IsString    cjson.o
-    0x0800716e   0x0800716e   0x0000001a   Code   RO         4033    i.cJSON_New_Item    cjson.o
-    0x08007188   0x08007188   0x00000010   Code   RO         4034    i.cJSON_Parse       cjson.o
-    0x08007198   0x08007198   0x000000d4   Code   RO         4036    i.cJSON_ParseWithLengthOpts  cjson.o
-    0x0800726c   0x0800726c   0x00000028   Code   RO         4037    i.cJSON_ParseWithOpts  cjson.o
-    0x08007294   0x08007294   0x00000014   Code   RO         4041    i.cJSON_PrintUnformatted  cjson.o
-    0x080072a8   0x080072a8   0x00000038   Code   RO         4051    i.cJSON_strdup      cjson.o
-    0x080072e0   0x080072e0   0x00000048   Code   RO         4052    i.case_insensitive_strcmp  cjson.o
-    0x08007328   0x08007328   0x00000002   Code   RO         4053    i.cast_away_const   cjson.o
-    0x0800732a   0x0800732a   0x00000002   PAD
-    0x0800732c   0x0800732c   0x000000d0   Code   RO         3502    i.changeDeviceName  battery.o
-    0x080073fc   0x080073fc   0x0000008c   Code   RO         3503    i.checkBatteryCommand  battery.o
-    0x08007488   0x08007488   0x00000020   Code   RO         3681    i.checkUserValid    flash.o
-    0x080074a8   0x080074a8   0x0000005c   Code   RO         3682    i.cleanIllegalUser  flash.o
-    0x08007504   0x08007504   0x00000074   Code   RO         4054    i.compare_double    cjson.o
-    0x08007578   0x08007578   0x000000cc   Code   RO         3360    i.createFlashToPhoneJson  bluetooth.o
-    0x08007644   0x08007644   0x000000b8   Code   RO         4056    i.ensure            cjson.o
-    0x080076fc   0x080076fc   0x00000004   Code   RO         4058    i.get_decimal_point  cjson.o
-    0x08007700   0x08007700   0x00000052   Code   RO         4059    i.get_object_item   cjson.o
-    0x08007752   0x08007752   0x00000002   PAD
-    0x08007754   0x08007754   0x00000050   Code   RO         4944    i.internal_alloc    mc_w.l(mallocr.o)
-    0x080077a4   0x080077a4   0x0000022c   Code   RO         3857    i.main              main.o
-    0x080079d0   0x080079d0   0x00000180   Code   RO         3361    i.parse_ALLJSON     bluetooth.o
-    0x08007b50   0x08007b50   0x000000f8   Code   RO         4061    i.parse_array       cjson.o
-    0x08007c48   0x08007c48   0x0000005a   Code   RO         4062    i.parse_hex4        cjson.o
-    0x08007ca2   0x08007ca2   0x00000002   PAD
-    0x08007ca4   0x08007ca4   0x00000138   Code   RO         4063    i.parse_number      cjson.o
-    0x08007ddc   0x08007ddc   0x0000014c   Code   RO         4064    i.parse_object      cjson.o
-    0x08007f28   0x08007f28   0x0000018e   Code   RO         4065    i.parse_string      cjson.o
-    0x080080b6   0x080080b6   0x00000002   PAD
-    0x080080b8   0x080080b8   0x0000013c   Code   RO         4066    i.parse_value       cjson.o
-    0x080081f4   0x080081f4   0x000000bc   Code   RO         4067    i.print             cjson.o
-    0x080082b0   0x080082b0   0x000000b2   Code   RO         4068    i.print_array       cjson.o
-    0x08008362   0x08008362   0x00000002   PAD
-    0x08008364   0x08008364   0x00000154   Code   RO         4069    i.print_number      cjson.o
-    0x080084b8   0x080084b8   0x00000174   Code   RO         4070    i.print_object      cjson.o
-    0x0800862c   0x0800862c   0x00000010   Code   RO         4071    i.print_string      cjson.o
-    0x0800863c   0x0800863c   0x00000174   Code   RO         4072    i.print_string_ptr  cjson.o
-    0x080087b0   0x080087b0   0x00000104   Code   RO         4073    i.print_value       cjson.o
-    0x080088b4   0x080088b4   0x00000006   Code   RO         3683    i.read_Flash        flash.o
-    0x080088ba   0x080088ba   0x00000002   PAD
-    0x080088bc   0x080088bc   0x0000006c   Code   RO         4945    i.realloc           mc_w.l(mallocr.o)
-    0x08008928   0x08008928   0x0000003c   Code   RO         4077    i.skip_utf8_bom     cjson.o
-    0x08008964   0x08008964   0x0000001c   Code   RO         4643    i.strtod            m_ws.l(strtod.o)
-    0x08008980   0x08008980   0x00000006   Code   RO         4078    i.suffix_object     cjson.o
-    0x08008986   0x08008986   0x00000030   Code   RO         3572    i.unLockBikeCommand1  controller.o
-    0x080089b6   0x080089b6   0x00000036   Code   RO         3573    i.unLockBikeCommand2  controller.o
-    0x080089ec   0x080089ec   0x00000036   Code   RO         3574    i.unLockBikeCommand3  controller.o
-    0x08008a22   0x08008a22   0x00000024   Code   RO         4079    i.update_offset     cjson.o
-    0x08008a46   0x08008a46   0x0000012c   Code   RO         4080    i.utf16_literal_to_utf8  cjson.o
-    0x08008b72   0x08008b72   0x00000081   Data   RO         5020    .constdata          mc_w.l(ctype_o.o)
-    0x08008bf3   0x08008bf3   0x00000001   PAD
-    0x08008bf4   0x08008bf4   0x00000004   Data   RO         5021    .constdata          mc_w.l(ctype_o.o)
-    0x08008bf8   0x08008bf8   0x00000844   Data   RO         4641    .rodata             libecc.a(uECC.o)
-    0x0800943c   0x0800943c   0x00000008   Data   RO         4640    .rodata.str1.1      libecc.a(uECC.o)
-    0x08009444   0x08009444   0x00000020   Data   RO         5084    Region$$Table       anon$$obj.o
+    0x080055b4   0x080055b4   0x00000004   Code   RO         3920    i.HardFault_Handler  stm32f10x_it.o
+    0x080055b8   0x080055b8   0x00000010   Code   RO         1665    i.IWDG_Enable       stm32f10x_iwdg.o
+    0x080055c8   0x080055c8   0x00000008   Code   RO         3852    i.IWDG_Feed         fault.o
+    0x080055d0   0x080055d0   0x00000026   Code   RO         3853    i.IWDG_Init         fault.o
+    0x080055f6   0x080055f6   0x00000002   PAD
+    0x080055f8   0x080055f8   0x00000010   Code   RO         1667    i.IWDG_ReloadCounter  stm32f10x_iwdg.o
+    0x08005608   0x08005608   0x0000000c   Code   RO         1668    i.IWDG_SetPrescaler  stm32f10x_iwdg.o
+    0x08005614   0x08005614   0x0000000c   Code   RO         1669    i.IWDG_SetReload    stm32f10x_iwdg.o
+    0x08005620   0x08005620   0x0000000c   Code   RO         1670    i.IWDG_WriteAccessCmd  stm32f10x_iwdg.o
+    0x0800562c   0x0800562c   0x00000004   Code   RO         3921    i.MemManage_Handler  stm32f10x_it.o
+    0x08005630   0x08005630   0x00000002   Code   RO         3922    i.NMI_Handler       stm32f10x_it.o
+    0x08005632   0x08005632   0x00000002   PAD
+    0x08005634   0x08005634   0x00000070   Code   RO          137    i.NVIC_Init         misc.o
+    0x080056a4   0x080056a4   0x00000014   Code   RO          138    i.NVIC_PriorityGroupConfig  misc.o
+    0x080056b8   0x080056b8   0x000000b4   Code   RO         3682    i.Parse_PhoneAndChat  flash.o
+    0x0800576c   0x0800576c   0x00000002   Code   RO         3923    i.PendSV_Handler    stm32f10x_it.o
+    0x0800576e   0x0800576e   0x00000002   PAD
+    0x08005770   0x08005770   0x00000018   Code   RO         1773    i.RCC_ADCCLKConfig  stm32f10x_rcc.o
+    0x08005788   0x08005788   0x00000020   Code   RO         1775    i.RCC_APB1PeriphClockCmd  stm32f10x_rcc.o
+    0x080057a8   0x080057a8   0x00000020   Code   RO         1777    i.RCC_APB2PeriphClockCmd  stm32f10x_rcc.o
+    0x080057c8   0x080057c8   0x000000d4   Code   RO         1785    i.RCC_GetClocksFreq  stm32f10x_rcc.o
+    0x0800589c   0x0800589c   0x00000050   Code   RO         3683    i.Read_FLASH_Rent_Struct  flash.o
+    0x080058ec   0x080058ec   0x00000050   Code   RO         3684    i.Read_FLASH_Super_Struct  flash.o
+    0x0800593c   0x0800593c   0x00000002   Code   RO         3924    i.SVC_Handler       stm32f10x_it.o
+    0x0800593e   0x0800593e   0x00000002   PAD
+    0x08005940   0x08005940   0x000000a8   Code   RO         3685    i.Save_NowFlashStruct  flash.o
+    0x080059e8   0x080059e8   0x00000060   Code   RO         3686    i.Save_RentUser_Struct  flash.o
+    0x08005a48   0x08005a48   0x00000016   Code   RO         3351    i.Send_AT_Command   bluetooth.o
+    0x08005a5e   0x08005a5e   0x00000002   PAD
+    0x08005a60   0x08005a60   0x00000010   Code   RO         3352    i.Send_CommandFlashCarve  bluetooth.o
+    0x08005a70   0x08005a70   0x00000010   Code   RO         3353    i.Send_CommandOver  bluetooth.o
+    0x08005a80   0x08005a80   0x00000010   Code   RO         3354    i.Send_CommandStart  bluetooth.o
+    0x08005a90   0x08005a90   0x000000b8   Code   RO         3220    i.Serial_Init       serial.o
+    0x08005b48   0x08005b48   0x0000001a   Code   RO         3223    i.Serial_SendArray  serial.o
+    0x08005b62   0x08005b62   0x00000002   PAD
+    0x08005b64   0x08005b64   0x00000020   Code   RO         3224    i.Serial_SendByte   serial.o
+    0x08005b84   0x08005b84   0x00000008   Code   RO           24    i.SetSysClock       system_stm32f10x.o
+    0x08005b8c   0x08005b8c   0x000000e0   Code   RO           25    i.SetSysClockTo72   system_stm32f10x.o
+    0x08005c6c   0x08005c6c   0x00000002   Code   RO         3925    i.SysTick_Handler   stm32f10x_it.o
+    0x08005c6e   0x08005c6e   0x00000002   PAD
+    0x08005c70   0x08005c70   0x00000060   Code   RO           27    i.SystemInit        system_stm32f10x.o
+    0x08005cd0   0x08005cd0   0x00000024   Code   RO         3355    i.TIM2_IRQHandler   bluetooth.o
+    0x08005cf4   0x08005cf4   0x00000006   Code   RO         2416    i.TIM_ClearITPendingBit  stm32f10x_tim.o
+    0x08005cfa   0x08005cfa   0x00000018   Code   RO         2421    i.TIM_Cmd           stm32f10x_tim.o
+    0x08005d12   0x08005d12   0x00000022   Code   RO         2442    i.TIM_GetITStatus   stm32f10x_tim.o
+    0x08005d34   0x08005d34   0x00000012   Code   RO         2446    i.TIM_ITConfig      stm32f10x_tim.o
+    0x08005d46   0x08005d46   0x00000002   PAD
+    0x08005d48   0x08005d48   0x000000a4   Code   RO         2492    i.TIM_TimeBaseInit  stm32f10x_tim.o
+    0x08005dec   0x08005dec   0x00000066   Code   RO         3356    i.TimeClock_Init    bluetooth.o
+    0x08005e52   0x08005e52   0x00000002   PAD
+    0x08005e54   0x08005e54   0x000000a0   Code   RO         3227    i.USART1_IRQHandler  serial.o
+    0x08005ef4   0x08005ef4   0x0000010c   Code   RO         3357    i.USART3_IRQHandler  bluetooth.o
+    0x08006000   0x08006000   0x0000001e   Code   RO         2957    i.USART_ClearITPendingBit  stm32f10x_usart.o
+    0x0800601e   0x0800601e   0x00000018   Code   RO         2960    i.USART_Cmd         stm32f10x_usart.o
+    0x08006036   0x08006036   0x0000001a   Code   RO         2963    i.USART_GetFlagStatus  stm32f10x_usart.o
+    0x08006050   0x08006050   0x00000054   Code   RO         2964    i.USART_GetITStatus  stm32f10x_usart.o
+    0x080060a4   0x080060a4   0x0000004a   Code   RO         2966    i.USART_ITConfig    stm32f10x_usart.o
+    0x080060ee   0x080060ee   0x00000002   PAD
+    0x080060f0   0x080060f0   0x000000d8   Code   RO         2967    i.USART_Init        stm32f10x_usart.o
+    0x080061c8   0x080061c8   0x0000000a   Code   RO         2974    i.USART_ReceiveData  stm32f10x_usart.o
+    0x080061d2   0x080061d2   0x00000008   Code   RO         2977    i.USART_SendData    stm32f10x_usart.o
+    0x080061da   0x080061da   0x00000002   PAD
+    0x080061dc   0x080061dc   0x00000078   Code   RO         3687    i.UpdateUser        flash.o
+    0x08006254   0x08006254   0x0000001c   Code   RO         3688    i.Update_Struct_ChatNumber  flash.o
+    0x08006270   0x08006270   0x0000001c   Code   RO         3689    i.Update_Struct_DeviceName  flash.o
+    0x0800628c   0x0800628c   0x0000001c   Code   RO         3690    i.Update_Struct_PhoneNumber  flash.o
+    0x080062a8   0x080062a8   0x0000001c   Code   RO         3691    i.Update_Struct_WalletAddress  flash.o
+    0x080062c4   0x080062c4   0x00000004   Code   RO         3926    i.UsageFault_Handler  stm32f10x_it.o
+    0x080062c8   0x080062c8   0x00000078   Code   RO         3692    i.VerifyIf_RentUser  flash.o
+    0x08006340   0x08006340   0x0000002c   Code   RO         3693    i.VerifyIf_Superser  flash.o
+    0x0800636c   0x0800636c   0x00000074   Code   RO         3358    i.Verify_Time       bluetooth.o
+    0x080063e0   0x080063e0   0x0000001c   Code   RO         3359    i.Verify_UUID       bluetooth.o
+    0x080063fc   0x080063fc   0x00000030   Code   RO         4924    i.__0snprintf       mc_w.l(printfa.o)
+    0x0800642c   0x0800642c   0x00000028   Code   RO         4925    i.__0sprintf        mc_w.l(printfa.o)
+    0x08006454   0x08006454   0x00000008   Code   RO         5062    i.__aeabi_errno_addr  mc_w.l(errno.o)
+    0x0800645c   0x0800645c   0x0000005c   Code   RO         4955    i.__free$realloc    mc_w.l(mallocr.o)
+    0x080064b8   0x080064b8   0x00000050   Code   RO         4956    i.__malloc$realloc  mc_w.l(mallocr.o)
+    0x08006508   0x08006508   0x0000000e   Code   RO         5099    i.__scatterload_copy  mc_w.l(handlers.o)
+    0x08006516   0x08006516   0x00000002   Code   RO         5100    i.__scatterload_null  mc_w.l(handlers.o)
+    0x08006518   0x08006518   0x0000000e   Code   RO         5101    i.__scatterload_zeroinit  mc_w.l(handlers.o)
+    0x08006526   0x08006526   0x00000002   PAD
+    0x08006528   0x08006528   0x00000184   Code   RO         4930    i._fp_digits        mc_w.l(printfa.o)
+    0x080066ac   0x080066ac   0x0000000e   Code   RO         4983    i._is_digit         mc_w.l(scanf_fp.o)
+    0x080066ba   0x080066ba   0x00000002   PAD
+    0x080066bc   0x080066bc   0x000006dc   Code   RO         4931    i._printf_core      mc_w.l(printfa.o)
+    0x08006d98   0x08006d98   0x00000024   Code   RO         4932    i._printf_post_padding  mc_w.l(printfa.o)
+    0x08006dbc   0x08006dbc   0x0000002e   Code   RO         4933    i._printf_pre_padding  mc_w.l(printfa.o)
+    0x08006dea   0x08006dea   0x00000016   Code   RO         4934    i._snputc           mc_w.l(printfa.o)
+    0x08006e00   0x08006e00   0x0000000a   Code   RO         4935    i._sputc            mc_w.l(printfa.o)
+    0x08006e0a   0x08006e0a   0x00000036   Code   RO         3981    i.add_item_to_array  cjson.o
+    0x08006e40   0x08006e40   0x0000007a   Code   RO         3982    i.add_item_to_object  cjson.o
+    0x08006eba   0x08006eba   0x0000002e   Code   RO         3617    i.beep              beep.o
+    0x08006ee8   0x08006ee8   0x0000002c   Code   RO         3618    i.beep_Init         beep.o
+    0x08006f14   0x08006f14   0x00000040   Code   RO         3619    i.beep_lock         beep.o
+    0x08006f54   0x08006f54   0x00000010   Code   RO         3620    i.beep_off          beep.o
+    0x08006f64   0x08006f64   0x00000010   Code   RO         3621    i.beep_on           beep.o
+    0x08006f74   0x08006f74   0x00000040   Code   RO         3622    i.beep_unlock       beep.o
+    0x08006fb4   0x08006fb4   0x00000048   Code   RO         3983    i.buffer_skip_whitespace  cjson.o
+    0x08006ffc   0x08006ffc   0x0000003c   Code   RO         3993    i.cJSON_AddNumberToObject  cjson.o
+    0x08007038   0x08007038   0x00000034   Code   RO         3996    i.cJSON_AddStringToObject  cjson.o
+    0x0800706c   0x0800706c   0x00000064   Code   RO         4007    i.cJSON_CreateNumber  cjson.o
+    0x080070d0   0x080070d0   0x00000018   Code   RO         4008    i.cJSON_CreateObject  cjson.o
+    0x080070e8   0x080070e8   0x00000034   Code   RO         4011    i.cJSON_CreateString  cjson.o
+    0x0800711c   0x0800711c   0x00000060   Code   RO         4015    i.cJSON_Delete      cjson.o
+    0x0800717c   0x0800717c   0x00000010   Code   RO         4027    i.cJSON_GetErrorPtr  cjson.o
+    0x0800718c   0x0800718c   0x00000012   Code   RO         4029    i.cJSON_GetObjectItem  cjson.o
+    0x0800719e   0x0800719e   0x00000016   Code   RO         4040    i.cJSON_IsNumber    cjson.o
+    0x080071b4   0x080071b4   0x00000016   Code   RO         4043    i.cJSON_IsString    cjson.o
+    0x080071ca   0x080071ca   0x0000001a   Code   RO         4046    i.cJSON_New_Item    cjson.o
+    0x080071e4   0x080071e4   0x00000010   Code   RO         4047    i.cJSON_Parse       cjson.o
+    0x080071f4   0x080071f4   0x000000d4   Code   RO         4049    i.cJSON_ParseWithLengthOpts  cjson.o
+    0x080072c8   0x080072c8   0x00000028   Code   RO         4050    i.cJSON_ParseWithOpts  cjson.o
+    0x080072f0   0x080072f0   0x00000014   Code   RO         4054    i.cJSON_PrintUnformatted  cjson.o
+    0x08007304   0x08007304   0x00000038   Code   RO         4064    i.cJSON_strdup      cjson.o
+    0x0800733c   0x0800733c   0x00000048   Code   RO         4065    i.case_insensitive_strcmp  cjson.o
+    0x08007384   0x08007384   0x00000002   Code   RO         4066    i.cast_away_const   cjson.o
+    0x08007386   0x08007386   0x00000002   PAD
+    0x08007388   0x08007388   0x000000d0   Code   RO         3502    i.changeDeviceName  battery.o
+    0x08007458   0x08007458   0x0000008c   Code   RO         3503    i.checkBatteryCommand  battery.o
+    0x080074e4   0x080074e4   0x00000020   Code   RO         3694    i.checkUserValid    flash.o
+    0x08007504   0x08007504   0x0000005c   Code   RO         3695    i.cleanIllegalUser  flash.o
+    0x08007560   0x08007560   0x00000074   Code   RO         4067    i.compare_double    cjson.o
+    0x080075d4   0x080075d4   0x000000cc   Code   RO         3360    i.createFlashToPhoneJson  bluetooth.o
+    0x080076a0   0x080076a0   0x000000b8   Code   RO         4069    i.ensure            cjson.o
+    0x08007758   0x08007758   0x00000004   Code   RO         4071    i.get_decimal_point  cjson.o
+    0x0800775c   0x0800775c   0x00000052   Code   RO         4072    i.get_object_item   cjson.o
+    0x080077ae   0x080077ae   0x00000002   PAD
+    0x080077b0   0x080077b0   0x00000050   Code   RO         4957    i.internal_alloc    mc_w.l(mallocr.o)
+    0x08007800   0x08007800   0x00000230   Code   RO         3870    i.main              main.o
+    0x08007a30   0x08007a30   0x00000180   Code   RO         3361    i.parse_ALLJSON     bluetooth.o
+    0x08007bb0   0x08007bb0   0x000000f8   Code   RO         4074    i.parse_array       cjson.o
+    0x08007ca8   0x08007ca8   0x0000005a   Code   RO         4075    i.parse_hex4        cjson.o
+    0x08007d02   0x08007d02   0x00000002   PAD
+    0x08007d04   0x08007d04   0x00000138   Code   RO         4076    i.parse_number      cjson.o
+    0x08007e3c   0x08007e3c   0x0000014c   Code   RO         4077    i.parse_object      cjson.o
+    0x08007f88   0x08007f88   0x0000018e   Code   RO         4078    i.parse_string      cjson.o
+    0x08008116   0x08008116   0x00000002   PAD
+    0x08008118   0x08008118   0x0000013c   Code   RO         4079    i.parse_value       cjson.o
+    0x08008254   0x08008254   0x000000bc   Code   RO         4080    i.print             cjson.o
+    0x08008310   0x08008310   0x000000b2   Code   RO         4081    i.print_array       cjson.o
+    0x080083c2   0x080083c2   0x00000002   PAD
+    0x080083c4   0x080083c4   0x00000154   Code   RO         4082    i.print_number      cjson.o
+    0x08008518   0x08008518   0x00000174   Code   RO         4083    i.print_object      cjson.o
+    0x0800868c   0x0800868c   0x00000010   Code   RO         4084    i.print_string      cjson.o
+    0x0800869c   0x0800869c   0x00000174   Code   RO         4085    i.print_string_ptr  cjson.o
+    0x08008810   0x08008810   0x00000104   Code   RO         4086    i.print_value       cjson.o
+    0x08008914   0x08008914   0x00000006   Code   RO         3696    i.read_Flash        flash.o
+    0x0800891a   0x0800891a   0x00000002   PAD
+    0x0800891c   0x0800891c   0x0000006c   Code   RO         4958    i.realloc           mc_w.l(mallocr.o)
+    0x08008988   0x08008988   0x0000003c   Code   RO         4090    i.skip_utf8_bom     cjson.o
+    0x080089c4   0x080089c4   0x0000001c   Code   RO         4656    i.strtod            m_ws.l(strtod.o)
+    0x080089e0   0x080089e0   0x00000006   Code   RO         4091    i.suffix_object     cjson.o
+    0x080089e6   0x080089e6   0x00000030   Code   RO         3572    i.unLockBikeCommand1  controller.o
+    0x08008a16   0x08008a16   0x00000036   Code   RO         3573    i.unLockBikeCommand2  controller.o
+    0x08008a4c   0x08008a4c   0x00000036   Code   RO         3574    i.unLockBikeCommand3  controller.o
+    0x08008a82   0x08008a82   0x00000024   Code   RO         4092    i.update_offset     cjson.o
+    0x08008aa6   0x08008aa6   0x0000012c   Code   RO         4093    i.utf16_literal_to_utf8  cjson.o
+    0x08008bd2   0x08008bd2   0x00000081   Data   RO         5033    .constdata          mc_w.l(ctype_o.o)
+    0x08008c53   0x08008c53   0x00000001   PAD
+    0x08008c54   0x08008c54   0x00000004   Data   RO         5034    .constdata          mc_w.l(ctype_o.o)
+    0x08008c58   0x08008c58   0x00000844   Data   RO         4654    .rodata             libecc.a(uECC.o)
+    0x0800949c   0x0800949c   0x00000008   Data   RO         4653    .rodata.str1.1      libecc.a(uECC.o)
+    0x080094a4   0x080094a4   0x00000020   Data   RO         5097    Region$$Table       anon$$obj.o
 
 
-    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x08009464, Size: 0x00004730, Max: 0x00005000, ABSOLUTE)
+    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x080094c4, Size: 0x00004730, Max: 0x00005000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x20000000   0x08009464   0x00000014   Data   RW         1805    .data               stm32f10x_rcc.o
-    0x20000014   0x08009478   0x00000003   Data   RW         3230    .data               serial.o
-    0x20000017   0x0800947b   0x00000001   PAD
-    0x20000018   0x0800947c   0x00000018   Data   RW         3296    .data               ad.o
-    0x20000030   0x08009494   0x0000001c   Data   RW         3363    .data               bluetooth.o
-    0x2000004c   0x080094b0   0x00000008   Data   RW         3505    .data               battery.o
-    0x20000054   0x080094b8   0x0000000c   Data   RW         3685    .data               flash.o
-    0x20000060   0x080094c4   0x00000010   Data   RW         3858    .data               main.o
-    0x20000070   0x080094d4   0x00000014   Data   RW         4082    .data               cjson.o
-    0x20000084   0x080094e8   0x00000004   Data   RW         5047    .data               mc_w.l(mvars.o)
-    0x20000088   0x080094ec   0x00000004   Data   RW         5048    .data               mc_w.l(mvars.o)
-    0x2000008c   0x080094f0   0x00000004   Data   RW         5052    .data               mc_w.l(errno.o)
+    0x20000000   0x080094c4   0x00000014   Data   RW         1805    .data               stm32f10x_rcc.o
+    0x20000014   0x080094d8   0x00000003   Data   RW         3230    .data               serial.o
+    0x20000017   0x080094db   0x00000001   PAD
+    0x20000018   0x080094dc   0x00000018   Data   RW         3296    .data               ad.o
+    0x20000030   0x080094f4   0x0000001c   Data   RW         3363    .data               bluetooth.o
+    0x2000004c   0x08009510   0x00000008   Data   RW         3505    .data               battery.o
+    0x20000054   0x08009518   0x0000000c   Data   RW         3698    .data               flash.o
+    0x20000060   0x08009524   0x00000010   Data   RW         3871    .data               main.o
+    0x20000070   0x08009534   0x00000014   Data   RW         4095    .data               cjson.o
+    0x20000084   0x08009548   0x00000004   Data   RW         5060    .data               mc_w.l(mvars.o)
+    0x20000088   0x0800954c   0x00000004   Data   RW         5061    .data               mc_w.l(mvars.o)
+    0x2000008c   0x08009550   0x00000004   Data   RW         5065    .data               mc_w.l(errno.o)
     0x20000090        -       0x000003e8   Zero   RW         3229    .bss                serial.o
     0x20000478        -       0x00000e44   Zero   RW         3362    .bss                bluetooth.o
     0x200012bc        -       0x0000002a   Zero   RW         3504    .bss                battery.o
-    0x200012e6   0x080094f4   0x00000002   PAD
-    0x200012e8        -       0x0000083f   Zero   RW         3684    .bss                flash.o
-    0x20001b27   0x080094f4   0x00000001   PAD
-    0x20001b28        -       0x00000004   Zero   RW         4639    .bss                libecc.a(uECC.o)
-    0x20001b2c   0x080094f4   0x00000004   PAD
+    0x200012e6   0x08009554   0x00000002   PAD
+    0x200012e8        -       0x0000083f   Zero   RW         3697    .bss                flash.o
+    0x20001b27   0x08009554   0x00000001   PAD
+    0x20001b28        -       0x00000004   Zero   RW         4652    .bss                libecc.a(uECC.o)
+    0x20001b2c   0x08009554   0x00000004   PAD
     0x20001b30        -       0x00001c00   Zero   RW            2    HEAP                startup_stm32f10x_md.o
     0x20003730        -       0x00001000   Zero   RW            1    STACK               startup_stm32f10x_md.o
 
@@ -2858,15 +2886,15 @@ Image component sizes
 
        532         62          0         24          0       2913   ad.o
        656        214          0          8         42       5432   battery.o
-       250         14          0          0          0       3174   beep.o
+       250         14          0          0          0       3178   beep.o
       3308        718          0         28       3652      16771   bluetooth.o
       5364        186          0         20          0      37490   cjson.o
        232         14          0          0          0       2826   controller.o
          0          0          0          0          0       4508   core_cm3.o
         70          0          0          0          0        906   delay.o
-         8          0          0          0          0        412   fault.o
+        46          0          0          0          0        844   fault.o
       1996        220          0         12       2111      21353   flash.o
-       556         34          0         16          0       1191   main.o
+       560         34          0         16          0       1199   main.o
        132         22          0          0          0     213711   misc.o
        402         34          0          3       1000       2923   serial.o
         36          8        236          0      11264        808   startup_stm32f10x_md.o
@@ -2874,16 +2902,16 @@ Image component sizes
        330         38          0          0          0      11284   stm32f10x_flash.o
        304          0          0          0          0      11732   stm32f10x_gpio.o
         26          0          0          0          0       3650   stm32f10x_it.o
-        16          6          0          0          0        429   stm32f10x_iwdg.o
+        68         30          0          0          0       2242   stm32f10x_iwdg.o
        300         38          0         20          0      13405   stm32f10x_rcc.o
        246         42          0          0          0      23574   stm32f10x_tim.o
        472          6          0          0          0      12379   stm32f10x_usart.o
        328         28          0          0          0      45137   system_stm32f10x.o
 
     ----------------------------------------------------------------------
-     16076       1710        268        132      18072     456469   Object Totals
+     16172       1734        268        132      18072     458726   Object Totals
          0          0         32          0          0          0   (incl. Generated)
-        52         12          0          1          3          0   (incl. Padding)
+        54         12          0          1          3          0   (incl. Padding)
 
     ----------------------------------------------------------------------
 
@@ -2970,15 +2998,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-     35462       2006       2526        144      18080     449705   Grand Totals
-     35462       2006       2526        144      18080     449705   ELF Image Totals
-     35462       2006       2526        144          0          0   ROM Totals
+     35558       2030       2526        144      18080     451702   Grand Totals
+     35558       2030       2526        144      18080     451702   ELF Image Totals
+     35558       2030       2526        144          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                37988 (  37.10kB)
+    Total RO  Size (Code + RO Data)                38084 (  37.19kB)
     Total RW  Size (RW Data + ZI Data)             18224 (  17.80kB)
-    Total ROM Size (Code + RO Data + RW Data)      38132 (  37.24kB)
+    Total ROM Size (Code + RO Data + RW Data)      38228 (  37.33kB)
 
 ==============================================================================
 
