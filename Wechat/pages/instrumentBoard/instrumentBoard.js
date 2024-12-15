@@ -637,7 +637,7 @@ listentoBlue:function(){
     if(!ifHavingThisDevice && this.data.UsingcarVersion!='' && this.data.UUIDOfSTM!='' && this.data.connectingName!=''){
       const newDevice ={
         version:this.data.UsingcarVersion,
-        id:this.data.myDevice.length>0 ? this.data.myDevice[myDevice.length-1].id+1 : 1,
+        id:this.data.myDevice.length>0 ? this.data.myDevice[this.data.myDevice.length-1].id+1 : 1,
         name:this.data.connectingName,
         uuid:this.data.UUIDOfSTM,
         rentUser:[]

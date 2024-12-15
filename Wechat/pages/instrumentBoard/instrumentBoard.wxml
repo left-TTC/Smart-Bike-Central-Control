@@ -88,16 +88,16 @@
       </view>
       <view class="signalBlock">
         <view wx:if="{{devicecon === 1}}">
-          <view wx:if = "{{device.signalStrength > -75}}">
+          <view wx:if = "{{device.signalStrength > -85}}">
             <image class = "signalima" src = "/image/good.png"></image>
           </view>
-          <view wx:if = "{{device.signalStrength <= -75 && device.signalStrength>-85}}">
+          <view wx:if = "{{device.signalStrength <= -85 && device.signalStrength>-95}}">
             <image class = "signalima" src = "/image/high.png"></image>
           </view>
-          <view wx:if = "{{device.signalStrength <= -85 && device.signalStrength>-90}}">
+          <view wx:if = "{{device.signalStrength <= -95 && device.signalStrength>-110}}">
             <image class = "signalima" src = "/image/middle.png"></image>
           </view>
-          <view wx:if = "{{device.signalStrength <= -90}}">
+          <view wx:if = "{{device.signalStrength <= -110}}">
             <image class = "signalima" src = "/image/low.png"></image>
           </view>
         </view>
@@ -152,7 +152,7 @@
       </button>
     </view>
     <view class="deviceChooseLine"></view>
-    <button class="connectWindowButton" bindtap="hideModal">关闭</button>
+    <button class="connectWindowButton" bindtap="hideModal" style="position: relative; left: 0rpx; top: 6rpx">关闭</button>
   </view>
 </view>
 <!--租借弹窗-->
@@ -182,8 +182,12 @@
       <text>是否完全信任该用户：</text>
       <switch checked="{{ifTrustRent === 'yes'}}" bindchange="RentTrustChange" />
     </view>
-    <button class="SubmitRentButton" bindtap="submitRent">确认提交</button>
-    <button class="ExitRentButton" bindtap="ExitRent">取消</button>
+    <button class="SubmitRentButton" bindtap="submitRent">
+      <text class="exitBorrowText">确认提交</text>
+    </button>
+    <button class="ExitRentButton" bindtap="ExitRent">
+      <text class="exitBorrowText">取消</text>
+    </button>
   </view>
 </view>
 <!--借用区-->
