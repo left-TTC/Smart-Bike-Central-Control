@@ -41,4 +41,3 @@ If you are interested in this project or have any questions, please contact us v
 @Andy：[**116033@qq.com**](mailto:116033@qq.com)          
 @Left-TTC:  [**264495046@qq.com**](mailto:264495046@qq.com)   
 
-占用一点公共资源：本人是一名大学生，如果您有相关的职位空缺，可以考虑一下我:@Left-TTC
